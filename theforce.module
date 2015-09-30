@@ -1,0 +1,493 @@
+<?php
+
+/**
+ * @file
+ * Primarily Drupal hooks and global API functions to control The Force.
+ *
+ * This is the main module file for The Force.
+ */
+
+require_once dirname(__FILE__) . '/includes/theforce.ajax.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function theforce_menu() {
+  return array(
+    'admin/config/user-interface/theforce' => array(
+      'title' => t('The Force'),
+      'description' => t('Controll and configure the Force'),
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('theforce_admin_form'),
+      'access callback' => 'user_access',
+      'access arguments' => array('administer theforce'),
+      'type' => MENU_NORMAL_ITEM,
+      'file' => 'includes/theforce.admin.inc',
+    ),
+    'admin/config/user-interface/theforce/plugin/activate/%/%' => array(
+      'title' => t('Activate an item of The Force'),
+      'description' => t('Activate a plugin of a given type in a given region.'),
+      'page callback' => 'theforce_admin_plugin_activate',
+      'page arguments' => array(6, 7),
+      'access callback' => 'user_access',
+      'access arguments' => array('administer theforce'),
+      'type' => MENU_CALLBACK,
+      'file' => 'includes/theforce.admin.plugin.inc',
+    ),
+    'admin/config/user-interface/theforce/plugin/settings/%theforce_plugin' => array(
+      'title' => t('Plugin Settings'),
+      'description' => t('Change a plugin\'s settings.'),
+      'page callback' => 'theforce_admin_plugin_settings',
+      'page arguments' => array(6),
+      'access callback' => 'user_access',
+      'access arguments' => array('administer theforce'),
+      'type' => MENU_CALLBACK,
+      'file' => 'includes/theforce.admin.plugin.inc',
+    ),
+    'admin/config/user-interface/theforce/plugin/remove/%theforce_plugin' => array(
+      'title' => t('Plugin Remove'),
+      'description' => t('Remove a plugin from The Force'),
+      'page callback' => 'theforce_admin_plugin_remove',
+      'page arguments' => array(6),
+      'access callback' => 'user_access',
+      'access arguments' => array('administer theforce'),
+      'type' => MENU_CALLBACK,
+      'file' => 'includes/theforce.admin.plugin.inc',
+    ),
+    'admin/config/user-interface/theforce/plugin/weights' => array(
+      'page callback' => 'theforce_admin_plugin_weights_save',
+      'delivery callback' => 'ajax_deliver',
+      'access callback' => 'user_access',
+      'access arguments' => array('administer theforce'),
+      'type' => MENU_CALLBACK,
+      'file' => 'includes/theforce.admin.plugin.inc',
+    ),
+  );
+}
+
+/**
+ * Implements hook_theme().
+ */
+function theforce_theme($existing, $type, $theme, $path) {
+  $path = drupal_get_path('module', 'theforce');
+  $items['theforce'] = array(
+    'variables' => array(
+      'content' => array(),
+      'type' => '',
+      'regions' => array(),
+    ),
+    'template' => 'theforce',
+    'path' => $path . '/theme',
+    'file' => 'theforce.theme.inc',
+  );
+  $items['theforce_region'] = array(
+    'variables' => array(
+      'content' => array(),
+      'type' => '',
+      'region' => '',
+      'attributes' => array(),
+    ),
+    'path' => $path . '/theme',
+    'file' => 'theforce.theme.inc',
+  );
+  $items['theforce_item'] = array(
+    'variables' => array('content' => array(), 'attributes' => array(), 'plugin' => ''),
+    'path' => $path . '/theme',
+    'file' => 'theforce.theme.inc',
+  );
+  $items['theforce_plugin_form'] = array(
+    'render element' => 'element',
+    'path' => $path . '/theme',
+    'file' => 'theforce.theme.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_library().
+ */
+function theforce_library(){
+  $path = drupal_get_path('module', 'theforce');
+  $libraries['theforce'] = array(
+    'title' => 'The Force',
+    'website' => 'https://github.com/jacerider/theforce',
+    'version' => '7.x-1.x-dev',
+    'js' => array(
+      "$path/js/theforce.js" => array('group' => JS_DEFAULT, 'every_page' => true),
+    ),
+    'css' => array(
+      "$path/css/theforce.scss" => array(
+        'type' => 'file',
+        'media' => 'screen',
+        'group' => CSS_DEFAULT,
+      ),
+    ),
+    'dependencies' => array(
+      array('system', 'drupal.ajax'),
+    ),
+  );
+  return $libraries;
+}
+
+/**
+ * Implements hook_page_build()
+ */
+function theforce_page_build(&$page) {
+  if (theforce_is_available()) {
+    $content = theforce_content_top();
+    if(!empty($content)){
+      $page['page_top']['theforce'] = $content;
+    }
+    $content = theforce_content_side();
+    if(!empty($content)){
+      $page['page_bottom']['theforce'] = $content;
+    }
+    if(theforce_is_management()){
+      $page['page_bottom']['theforce_loader'] = array(
+        '#markup' => '<div class="theforce-ui-loader"><img src="' . url(drupal_get_path('module', 'theforce')) . '/images/loader.svg" /></div>',
+      );
+    }
+  }
+}
+
+/**
+ * Generate the top bar content.
+ */
+function theforce_content_top(){
+  return theforce_content('top', array('left', 'right'));
+}
+
+/**
+ * Generate the side bar content.
+ */
+function theforce_content_side(){
+  return theforce_content('side', array('top', 'bottom'));
+}
+
+/**
+ * Generate content for a type.
+ *
+ * @param $regions
+ *   An array of regions supported for a plugin type.
+ */
+function theforce_content($type, $regions){
+  $content = array();
+  foreach($regions as $region){
+    $region_content = theforce_content_region($type, $region);
+    if(!empty($region_content)){
+      $content[$region] = $region_content;
+    }
+  }
+  if(!empty($content) || theforce_is_management()){
+    $content = array(
+      '#theme' => 'theforce',
+      '#type' => $type,
+      '#regions' => $regions,
+      '#content' => $content,
+      '#attached' => array(
+        'library' => array(array('theforce', 'theforce')),
+      ),
+    );
+  }
+  return $content;
+}
+
+/**
+ * Generate region content of a bar.
+ */
+function theforce_content_region($type, $region){
+  $plugins = theforce_query()->filterActive()->filterType($type)->filterRegion($region)->loadHandler()->execute();
+  $content = array();
+  foreach($plugins as $id => $plugin){
+    $content['items'][$id] = array(
+      '#theme' => 'theforce_item',
+      '#plugin' => $plugin,
+      '#content' => $plugin['handler']->render(),
+    );
+  }
+  if(!empty($content) || theforce_is_management()){
+    $content['items'] = array(
+      '#theme' => 'theforce_region',
+      '#type' => $type,
+      '#region' => $region,
+      '#content' => $content,
+      '#attributes' => array(
+        'id' => "theforce-$type-$region-content",
+      ),
+    );
+    if(theforce_is_management()){
+      $content['items']['#attributes']['class'][] = 'theforce-ui-sort';
+    }
+  }
+  return $content;
+}
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function theforce_preprocess_html(&$vars) {
+  if (theforce_is_available()) {
+    $has_top = !empty($vars['page']['page_top']['theforce']);
+    $has_side = !empty($vars['page']['page_bottom']['theforce']);
+    if($has_top || $has_side){
+      $vars['theforce'] = 1;
+      $vars['classes_array'][] = 'theforce-enabled';
+      if($has_top){
+        $vars['classes_array'][] = 'theforce-top-enabled';
+      }
+      if($has_side){
+        $vars['classes_array'][] = 'theforce-side-enabled';
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_process_html().
+ */
+function theforce_process_html(&$vars){
+  if(!empty($vars['theforce'])){
+    $vars['page'] = '<div id="theforce-wrap">' . $vars['page'] . '</div><!-- /#theforce-wrap -->';
+  }
+}
+
+/**
+ * Implements hook_user_insert().
+ */
+function theforce_user_insert(&$edit, $account, $category){
+  // If we are using the asset profile image, we need to set its title and owner
+  // after the user is created.
+  $wrapper = entity_metadata_wrapper('user', $account);
+  if(isset($wrapper->field_image_asset)){
+    $asset = $wrapper->field_image_asset->value();
+    $asset->title = t('Profile image for !username', array('!username' => $account->name));
+    $asset->uid = $account->uid;
+    $asset->save();
+  }
+}
+
+/**
+ * Get settings.
+ */
+
+function theforce_settings(){
+  return drupal_array_merge_deep(theforce_settings_definition(), variable_get('theforce', array()));
+}
+
+/**
+ * The Force default settings.
+ */
+function theforce_settings_definition() {
+  $defaults = &drupal_static(__FUNCTION__, array());
+  if(empty($defaults)){
+    $defaults = array('menu' => '');
+  }
+  return $defaults;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function theforce_permission() {
+  return array(
+    'view theforce' => array(
+      'title' => t('Use the Force'),
+      'description' => t('Access the Force and all its glory'),
+    ),
+    'administer theforce' => array(
+      'title' => t('Administer the Force'),
+      'description' => t('Control the Force settings and configurations'),
+    ),
+  );
+}
+
+/**
+ * Wrapper to check whether various theforce features are accessible to the
+ * current user and compatible with the current theme.
+ */
+function theforce_is_enabled() {
+  global $theme_info;
+  // If the theme does not specify some flag for this feature, assume
+  // it is compatible.
+  if (!isset($theme_info->info['theforce']) || $theme_info->info['theforce']) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Helper for returning whether the Force toolbar should be displayed.
+ */
+function theforce_is_available() {
+  if (theforce_is_enabled() && user_access('view theforce')) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Check to see if current page is The Force admin page.
+ */
+function theforce_is_management() {
+  static $is_management;
+  if(!isset($is_management)){
+  // dsm($_GET);
+  // dsm($_POST);
+    $is_management = arg(0) == 'admin' && arg(1) == 'config' && arg(2) == 'user-interface' && arg(3) == 'theforce' && !arg(4);
+    if(!empty($_POST['form_id']) && substr($_POST['form_id'], 0, 8) == 'theforce'){
+      $is_management = true;
+    }
+  }
+  return $is_management;
+}
+
+/**
+ * Implements hook_form_alter(). Alter user create/form.
+ */
+function theforce_form_alter(&$form, &$form_state, $form_id){
+  if(in_array($form_id, array('user_profile_form','user_register_form'))){
+    // Make sure user profile image is never required.
+    if(isset($form['field_image_asset'])){
+      $ief = &$form['field_image_asset'][$form['field_image_asset']['#language']]['form']['field_image'];
+      $ief[$ief['#language']][0]['#required'] = 0;
+    }
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Plugin CRUD
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Activate a new plugin.
+ */
+function theforce_plugin_activate($id, $region, $weight = null, array $settings = array()){
+  $data = array(
+    'id' => $id,
+    'region' => $region,
+    'weight' => 100,
+    'settings' => array(),
+  );
+  if(isset($weight) && is_numeric($weight)){
+    $data['weight'] = $weight;
+  }
+  if(!empty($settings) && is_array($settings)){
+    $data['settings'] = $settings;
+  }
+  $data['settings'] = serialize($data['settings']);
+  db_insert('theforce_plugin')->fields($data)->execute();
+}
+
+/**
+ * Update an active plugin.
+ */
+function theforce_plugin_update($id, $weight = null, $settings = null){
+  $data = array();
+  if(isset($weight) && is_numeric($weight)){
+    $data['weight'] = $weight;
+  }
+  if(!empty($settings) && is_array($settings)){
+    $data['settings'] = serialize($settings);
+  }
+  db_update('theforce_plugin')->fields($data)->condition('id', $id)->execute();
+}
+
+/**
+ * Update an active plugin.
+ */
+function theforce_plugin_weight_save($id, $weight){
+  if(is_numeric($weight)){
+    return db_update('theforce_plugin')->fields(array('weight' => $weight))->condition('id', $id)->execute();
+  }
+  return false;
+}
+
+/**
+ * Remove a plugin
+ */
+function theforce_plugin_deactivate($id){
+  return db_delete('theforce_plugin')->condition('id', $id)->execute();
+}
+
+/**
+ * Create a query for available Force plugins.
+ *
+ * @param $type
+ *   The type of plugin to query. (top or side)
+ *
+ * @return
+ *   An array of matching plugins. When querying by filterId, the plugin will
+ *   directly returned.
+ */
+function theforce_query(){
+  return theforceQuery::query();
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Ctools
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Implements hook_ctools_plugin_type().
+ *
+ * Has plenty options. See ctools/help/plugins-creating.html
+ */
+function theforce_ctools_plugin_type() {
+  return array(
+    'top' => array(
+      'use hooks' => TRUE,
+      'classes' => array('handler'),
+    ),
+    'side' => array(
+      'use hooks' => TRUE,
+      'classes' => array('handler'),
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_theforce_top().
+ *
+ * This is a ctools plugins hook.
+ */
+function theforce_theforce_top(){
+  module_load_include('inc', 'theforce', 'theforce.plugins');
+  return _theforce_theforce_top();
+}
+
+/**
+ * Implementation of hook_theforce_side().
+ *
+ * This is a ctools plugins hook.
+ */
+function theforce_theforce_side(){
+  module_load_include('inc', 'theforce', 'theforce.plugins');
+  return _theforce_theforce_side();
+}
+
+/**
+ * Fetch metadata for one theforce plugin by the given name.
+ */
+function theforce_plugin_get($type = 'top', $key) {
+  ctools_include('plugins');
+  $plugins = ctools_get_plugins('theforce', $type);
+  if (isset($plugins[$key]) && $class = ctools_plugin_get_class($plugins[$key], 'handler')) {
+    // Check that class exists until CTools & registry issues are resolved.
+    if (class_exists($class)) {
+      $all_args = func_get_args();
+      $args = array_slice($all_args, 2);
+      array_unshift($args, $plugins[$key]);
+      return new $class($key, $args);
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * A Drupal load handler for plugins.
+ */
+function theforce_plugin_load($id){
+  return theforce_query()->returnOnEmpty(false)->filterActive()->filterId($id)->loadHandler()->execute();
+}

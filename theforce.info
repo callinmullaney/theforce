@@ -1,0 +1,17 @@
+name = The Force | Core
+description = An admin menu interface. My the force be with you. Always.
+package = The Force
+core = 7.x
+
+dependencies[] = menu
+dependencies[] = ctools
+
+files[] = handlers/theforce.inc
+files[] = handlers/theforceQuery.inc
+files[] = handlers/theforceText.inc
+files[] = handlers/theforceLink.inc
+files[] = handlers/theforceDropdown.inc
+files[] = handlers/theforceDropdownList.inc
+
+configure = admin/config/user-interface/theforce
+

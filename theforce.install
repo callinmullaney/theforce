@@ -1,0 +1,123 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function theforce_install() {
+  // Create image style
+  if(!image_style_load('theforce_top')){
+    $style = image_style_save(array(
+      'name' => 'theforce_top',
+      'label' => 'THE FORCE | Top')
+    );
+    $effect = array(
+      'name' => 'image_scale_and_crop',
+      'data' => array(
+        'width' => 28,
+        'height' => 28,
+        'upscale' => TRUE,
+      ),
+      'isid' => $style['isid'],
+    );
+    image_effect_save($effect);
+  }
+
+  // Store user profile picture in files directory.
+  $directory = 'public://theforce';
+  file_prepare_directory($directory, FILE_CREATE_DIRECTORY);
+  $file_path = drupal_get_path('module', 'theforce') . '/images/profile.png';
+  $file_move = file_unmanaged_copy($file_path, $directory, FILE_EXISTS_RENAME);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function theforce_uninstall() {
+  variable_del('theforce');
+  db_query("DELETE FROM {variable} WHERE name LIKE 'theforce_%'");
+
+  // Remove image style
+  if($style = image_style_load('theforce')){
+    image_style_delete($style);
+  }
+
+  // Remove image profile field
+  $instances = field_info_instances('user', 'user');
+  $field_names = array('field_image', 'field_image_asset');
+  foreach($field_names as $field_name){
+    if(array_key_exists($field_name, $instances)){
+      field_delete_instance($instances[$field_name]);
+    }
+  }
+
+  // Remove menu
+  if ($menu = menu_load('theforce')) {
+    menu_delete($menu);
+  }
+
+  // Remove user profile picture from files directory.
+  $directory = 'public://theforce';
+  file_unmanaged_delete_recursive($directory);
+}
+
+/**
+ * Implements hook_schema().
+ */
+function theforce_schema() {
+  // $schema['theforce'] = array(
+  //   'description' => 'Setting storage for The Force module.',
+  //   'fields' => array(
+  //     'id' => array(
+  //       'description' => 'The name of the variable.',
+  //       'type' => 'varchar',
+  //       'length' => 128,
+  //       'not null' => TRUE,
+  //       'default' => '',
+  //     ),
+  //     'value' => array(
+  //       'description' => 'The value of the setting.',
+  //       'type' => 'blob',
+  //       'not null' => TRUE,
+  //       'size' => 'big',
+  //       'translatable' => TRUE,
+  //     ),
+  //   ),
+  //   'primary key' => array('id'),
+  // );
+  $schema['theforce_plugin'] = array(
+    'description' => 'The Force active plugins.',
+    'fields' => array(
+      'id' => array(
+        'description' => 'The name of the variable.',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'region' => array(
+        'description' => 'The region where the plugin resides..',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'weight' => array(
+        'description' => 'Weight of the plugin. Lighter weights are higher up, heavier weights go down.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'settings' => array(
+        'description' => 'Plugin settings.',
+        'type' => 'blob',
+        'not null' => TRUE,
+        'size' => 'big',
+      ),
+    ),
+    'primary key' => array('id'),
+    'indexes' => array(
+      'region' => array('region'),
+    ),
+  );
+  return $schema;
+}
