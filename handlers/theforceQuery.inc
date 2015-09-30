@@ -5,12 +5,12 @@
  */
 class theforceQuery{
 
+  // The query results.
+  static private $query = array();
   // The database query results.
   static private $results = array();
   // All ctools plugins of $type.
   static private $plugins = array();
-  // The query results.
-  static private $query = array();
   // A flag used to return a single result. Default returns an array of results.
   static private $single;
   // The value to return if no results are found.
