@@ -113,7 +113,10 @@ function theforce_library(){
     'website' => 'https://github.com/jacerider/theforce',
     'version' => '7.x-1.x-dev',
     'js' => array(
-      "$path/js/theforce.js" => array('group' => JS_DEFAULT, 'every_page' => true),
+      "$path/js/theforce.js" => array(
+        'group' => JS_DEFAULT,
+        'every_page' => true
+      ),
     ),
     'css' => array(
       "$path/css/theforce.scss" => array(
@@ -366,10 +369,17 @@ function theforce_plugin_activate($id, $region, $weight = null, array $settings 
   $data = array(
     'id' => $id,
     'region' => $region,
-    'weight' => 100,
     'settings' => array(),
   );
   if(isset($weight) && is_numeric($weight)){
+    $data['weight'] = $weight;
+  }
+  else{
+    $plugins = db_select('theforce_plugin', 'f')->fields('f', array('id'))->condition('region', $region)->execute();
+    $weight = $plugins->rowCount();
+    if($region == 'right'){
+      $weight *= -1;
+    }
     $data['weight'] = $weight;
   }
   if(!empty($settings) && is_array($settings)){
