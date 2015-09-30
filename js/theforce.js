@@ -16,38 +16,41 @@ Drupal.behaviors.theforce = {
    */
   dropdown: function(context, settings){
     var self = this;
+    var $dropdownTriggers = $('.theforce-dropdown-trigger', context);
+    if($dropdownTriggers.length){
 
-    var open = function($dropdown){
-      if(self.$dropdown){
-        close(self.$dropdown);
+      var open = function($dropdown){
+        if(self.$dropdown){
+          close(self.$dropdown);
+        }
+        $dropdown.addClass('open');
+        self.$dropdown = $dropdown;
+        setTimeout(function(){
+          $(window).on('click' + '.theforce', function(e){
+            if(!$(e.target).closest('.theforce-dropdown-content').length){
+              close(self.$dropdown);
+            }
+          });
+        }, 10);
       }
-      $dropdown.addClass('open');
-      self.$dropdown = $dropdown;
-      setTimeout(function(){
-        $(window).on('click' + '.theforce', function(e){
-          if(!$(e.target).closest('.theforce-dropdown-content').length){
-            close(self.$dropdown);
-          }
-        });
-      }, 10);
+
+      var close = function($dropdown){
+        $dropdown.removeClass('open');
+        self.$dropdown = null;
+        $(window).off('click' + '.theforce');
+      }
+
+      $dropdownTriggers.once('theforce').on('click', function(e){
+        e.preventDefault();
+        var $dropdown = $(this).closest('.theforce-dropdown');
+        if(self.$dropdown && $dropdown[0] == self.$dropdown[0]){
+          close();
+        }
+        else{
+          open($dropdown);
+        }
+      });
     }
-
-    var close = function($dropdown){
-      $dropdown.removeClass('open');
-      self.$dropdown = null;
-      $(window).off('click' + '.theforce');
-    }
-
-    $('.theforce-dropdown-trigger', context).once('theforce').on('click', function(e){
-      e.preventDefault();
-      var $dropdown = $(this).closest('.theforce-dropdown');
-      if(self.$dropdown && $dropdown[0] == self.$dropdown[0]){
-        close();
-      }
-      else{
-        open($dropdown);
-      }
-    });
   },
 
   /**
