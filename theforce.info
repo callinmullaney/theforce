@@ -5,6 +5,7 @@ core = 7.x
 
 dependencies[] = menu
 dependencies[] = ctools
+dependencies[] = jquery_update
 
 files[] = handlers/theforce.inc
 files[] = handlers/theforceQuery.inc
