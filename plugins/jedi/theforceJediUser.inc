@@ -3,15 +3,18 @@
 /**
  * Base class for a The Force top bar content.
  */
-class theforceTopUser extends theforceDropdownList {
+class theforceJediUser extends theforceDropdownList {
 
   // protected $listStyle = 'mini';
+  protected $textHtml = 1;
+  protected $textPrefix = '';
+  protected $textSuffix = '';
 
   /**
    * The default settings for this plugin.
    */
-  public function settingsDefinition(){
-    return array(
+  public function valuesDefinition(){
+    return parent::valuesDefinition() + array(
       'show_avatar' => 1,
     );
   }
@@ -20,12 +23,12 @@ class theforceTopUser extends theforceDropdownList {
    * The settings form.
    */
   public function settingsForm($form, &$form_state){
-    $form = parent::settingsForm($form, $form_state);
+    // $form = parent::settingsForm($form, $form_state);
 
     $form['show_avatar'] = array(
       '#type' => 'checkbox',
       '#title' => t('Show Avatar'),
-      '#default_value' => $this->settings['show_avatar'],
+      '#default_value' => $this->values['show_avatar'],
     );
 
     return $form;
@@ -37,11 +40,11 @@ class theforceTopUser extends theforceDropdownList {
    * @return
    *   A string or Drupal render array.
    */
-  protected function content(){
+  protected function text(){
     global $user;
-    $output = parent::content();
+    $output = parent::text();
     $account = user_load($user->uid);
-    if($this->settings['show_avatar']){
+    if($this->values['show_avatar']){
       $output['image'] = $this->userImage();
     }
     $output['name']['#markup'] = '<span>' . $account->name . '</span>';
@@ -54,7 +57,7 @@ class theforceTopUser extends theforceDropdownList {
    * @return
    *   A string or Drupal render array.
    */
-  protected function items(){
+  protected function listItems(){
     global $user;
     $output = array();
 

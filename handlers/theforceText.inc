@@ -1,28 +1,91 @@
 <?php
 
 /**
- * Base class for a The Force top bar content.
+ * Base class for a The Force top bar text.
  */
 class theforceText extends theforce {
 
-  protected $content = '';
-  protected $contentPrefix = '<span>';
-  protected $contentSuffix = '</span>';
-  protected $badge = null;
+  protected $text = '';
+  protected $textHtml = 0;
+
+  // Element to wrap each item.
+  protected $textPrefix = '<span class="theforce-text">';
+  protected $textSuffix = '</span>';
+
+  protected $icon = '';
+  protected $iconPrefix = 'fa';
+
+  protected $badge = 0;
   protected $badgeColor = 'green';
 
   /**
-   * Define the content that will be placed in the toolbar.
+   * The default values for this plugin.
+   */
+  public function valuesDefinition(){
+    return array(
+      'text' => $this->text,
+      'textHtml' => $this->textHtml,
+      'textPrefix' => $this->textPrefix,
+      'textSuffix' => $this->textSuffix,
+      'icon' => $this->icon,
+      'iconPrefix' => $this->iconPrefix,
+      'badge' => $this->badge,
+      'badgeColor' => $this->badgeColor,
+    ) + parent::valuesDefinition();
+  }
+
+  /**
+   * The settings form.
+   */
+  public function settingsForm($form, &$form_state){
+    $form = parent::settingsForm($form, $form_state);
+
+    if(module_exists('fawesome')){
+      $form['icon'] = array(
+        '#type' => 'fawesome_select',
+        '#title' => t('Icon'),
+        '#default_value' => $this->values['icon'],
+      );
+    }
+    else{
+      $form['icon'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Icon'),
+        '#default_value' => $this->values['icon'],
+      );
+    }
+
+    $form['text'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Text'),
+      '#default_value' => $this->values['text'],
+    );
+
+    return $form;
+  }
+
+  /**
+   * Define the text that will be placed in the toolbar.
    *
    * @return
    *   A string or Drupal render array.
    */
-  protected function content(){
-    return $this->content;
+  protected function text(){
+    return $this->text;
   }
 
   /**
-   * Define the badge text that will be placed in the toolbar.
+   * Define the icon that will be placed in the toolbar.
+   *
+   * @return
+   *   An icon class name to be used as an icon in the toolbar.
+   */
+  protected function icon(){
+    return $this->icon;
+  }
+
+  /**
+   * Define the badge count that will be placed in the toolbar.
    *
    * @return
    *   A value to be placed in a badge in the toolbar.
@@ -32,32 +95,53 @@ class theforceText extends theforce {
   }
 
   /**
-   * Pull in the content for rendering.
+   * Pull in the text for rendering.
    *
    * @return [type]
    */
-  private function contentRender(){
-    $content = $this->content();
-    if(!is_array($content)){
-      $content = array('#markup' => $content);
+  private function textRender(){
+    $text = $this->values['text'];
+    if(!is_array($text)){
+      if(!$this->values['textHtml']){
+        $text = check_plain($text);
+      }
+      $text = array('#markup' => $text);
     }
-    return $content;
+    $text['#prefix'] = $this->textPrefix;
+    $text['#suffix'] = $this->textSuffix;
+    return $text;
   }
 
   /**
-   * Pull in the content for rendering.
+   * Pull in the icon for rendering.
+   *
+   * @return [type]
+   */
+  private function iconRender(){
+    $icon = $this->values['icon'];
+    if(!empty($icon)){
+      $icon = array('#markup' => '<i class="theforce-icon ' . $this->values['iconPrefix'] . ' ' . $this->values['iconPrefix'] . '-' . $this->values['icon'] . '"></i>');
+    }
+    else{
+      $icon = array();
+    }
+    return $icon;
+  }
+
+  /**
+   * Pull in the badge for rendering.
    *
    * @return [type]
    */
   private function badgeRender(){
-    $content = $this->badge();
-    if(!empty($content)){
-      $content = array('#markup' => '  <em class="theforce-badge ' . $this->badgeColor . '">' . $content . '</em>');
+    $badge = $this->values['badge'];
+    if(!empty($badge)){
+      $badge = array('#markup' => '  <em class="theforce-badge ' . $this->values['badgeColor'] . '">' . $badge . '</em>');
     }
     else{
-      $content = array();
+      $badge = array();
     }
-    return $content;
+    return $badge;
   }
 
   /**
@@ -66,11 +150,10 @@ class theforceText extends theforce {
    * @return
    *   A Drupal render array.
    */
-  public function render(){
+  protected function output(){
     $output = array();
-    $output['content'] = $this->contentRender();
-    $output['content']['#prefix'] = $this->contentPrefix;
-    $output['content']['#suffix'] = $this->contentSuffix;
+    $output['icon'] = $this->iconRender();
+    $output['text'] = $this->textRender();
     $output['badge'] = $this->badgeRender();
     return $output;
   }

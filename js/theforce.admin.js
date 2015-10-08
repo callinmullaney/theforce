@@ -18,7 +18,7 @@ Drupal.behaviors.theforceAdmin = {
 
 var theforceAdminUI = {
   once: 0,
-  $itemsTop: {},
+  $items: {},
   $loader: null,
   transEndEventNames: 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd'
 };
@@ -31,19 +31,20 @@ theforceAdminUI.attach = function(context, settings){
     self.$loader = $('.theforce-ui-loader');
   }
 
-  self.$itemsTop = $('#theforce-top .theforce-ui-item:not(.theforce-processed)');
+  self.$items = $('.theforce .theforce-ui-item:not(.theforce-processed)');
 
-  self.itemsTopInit(settings);
-  self.itemsTopSort();
+  self.itemsInit(settings);
+  self.itemsSort();
 }
 
-theforceAdminUI.itemsTopInit = function(settings){
-  var self = this, $item, $ops, $drag, $remove, $edit, url, id, config, base, vars;
+theforceAdminUI.itemsInit = function(settings){
+  var self = this, $item, $ops, $drag, $remove, $edit, $trash, url, id, config, trash, base, vars;
 
-  self.$itemsTop.addClass('theforce-processed').each(function(){
+  self.$items.addClass('theforce-processed').each(function(){
     $item = $(this);
     $ops = $('<div class="theforce-ui-ops"></div>');
     config = $item.data('config');
+    trash = $item.data('trash');
     id = $item.data('id');
 
     // Drag
@@ -66,26 +67,20 @@ theforceAdminUI.itemsTopInit = function(settings){
     Drupal.ajax[base] = new Drupal.ajax(base, $remove, vars);
     // $lock = $('<div class="theforce-ui-lock theforce-ui-op"><i class="fa fa-lock"></i></div>').appendTo($ops);
     $ops.appendTo($item);
-  });
 
-  // Bind Ajax behaviors to all items showing the class.
-  $('.use-theforce:not(.theforce-processed)').addClass('theforce-processed').each(function () {
-    var element_settings = {};
-    // Clicked links look better with the throbber than the progress bar.
-    element_settings.progress = { 'type': 'theforce' };
-
-    // For anchor tags, these will go to the target of the anchor rather
-    // than the usual location.
-    if ($(this).attr('href')) {
-      element_settings.url = $(this).attr('href') + '/ajax';
-      element_settings.event = 'click';
+    // Delete
+    if(trash){
+      base = 'theforce-ui-delete-' + id;
+      url = settings.basePath + settings.pathPrefix + settings.theforce.basePath + '/plugin/delete/' + id;
+      $trash = $('<a href="'+url+'" class="theforce-ui-delete theforce-ui-op"><i class="fa fa-trash"></i></a>').appendTo($ops);
+      vars = {url: url + '/nojs',event: 'click',progress: {type: 'theforce'}};
+      Drupal.ajax[base] = new Drupal.ajax(base, $trash, vars);
     }
-    var base = $(this).attr('id');
-    Drupal.ajax[base] = new Drupal.ajax(base, this, element_settings);
+
   });
 }
 
-theforceAdminUI.itemsTopSort = function(){
+theforceAdminUI.itemsSort = function(){
   var self = this;
   var els = document.getElementsByClassName('theforce-ui-sort');
   if(els){
@@ -151,12 +146,12 @@ Drupal.ajax.prototype.beforeSend = function (xmlhttprequest, options){
 /**
  * Extend the default Drupal.ajax.prototype.beforeSend;
  */
-Drupal.ajax.prototype.successOriginal = Drupal.ajax.prototype.success;
+var successOriginal = Drupal.ajax.prototype.success;
 Drupal.ajax.prototype.success = function (response, status){
   if (this.progress.type == 'theforce') {
     theforceAdminUI.success();
   }
-  this.successOriginal(response, status);
+  successOriginal.call(this, response, status);
 }
 
 
@@ -245,7 +240,7 @@ var clouds = function () {
       var cloud = document.createElement( 'img' );
       cloud.style.opacity = 0;
       var r = Math.random();
-      var src = '/sites/all/modules/private/theforce/images/settings.cloud.png';
+      var src = Drupal.settings.basePath + Drupal.settings.pathPrefix + Drupal.settings.theforce.modulePath + '/images/settings.cloud.png';
       ( function( img ) { img.addEventListener( 'load', function() {
         img.style.opacity = .8;
       } ) } )( cloud );

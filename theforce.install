@@ -84,18 +84,25 @@ function theforce_schema() {
   //   ),
   //   'primary key' => array('id'),
   // );
-  $schema['theforce_plugin'] = array(
+  $schema['theforce_active'] = array(
     'description' => 'The Force active plugins.',
     'fields' => array(
       'id' => array(
-        'description' => 'The name of the variable.',
+        'description' => 'The name of the active plugin.',
         'type' => 'varchar',
         'length' => 128,
         'not null' => TRUE,
         'default' => '',
       ),
       'region' => array(
-        'description' => 'The region where the plugin resides..',
+        'description' => 'The region where the plugin resides.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'location' => array(
+        'description' => 'The location within the region where the plugin resides.',
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
@@ -117,6 +124,42 @@ function theforce_schema() {
     'primary key' => array('id'),
     'indexes' => array(
       'region' => array('region'),
+    ),
+  );
+  $schema['theforce_custom'] = array(
+    'description' => 'The Force custom plugins.',
+    'fields' => array(
+      'id' => array(
+        'description' => 'Primary Key: Identifier for a custom Force component.',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'title' => array(
+        'description' => 'The title of this node, always treated as non-markup plain text.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'class' => array(
+        'description' => 'The class this component uses',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'settings' => array(
+        'description' => 'Plugin settings.',
+        'type' => 'blob',
+        'not null' => TRUE,
+        'size' => 'big',
+      ),
+    ),
+    'primary key' => array('id'),
+    'indexes' => array(
+      'class' => array('class'),
     ),
   );
   return $schema;

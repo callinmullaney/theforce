@@ -3,18 +3,23 @@
 /**
  * Query hander for Force plugins.
  */
-class theforceQuery{
+final class theforceQuery{
 
-  // The query results.
-  static private $query = array();
-  // The database query results.
-  static private $results = array();
+  private function __construct() {}
+  // The query active.
+  private static $query = array();
+  // All prepared results.
+  private static $results = null;
+  // The database query active.
+  private static $active = null;
+  // The database query custom.
+  private static $custom = null;
   // All ctools plugins of $type.
-  static private $plugins = array();
-  // A flag used to return a single result. Default returns an array of results.
-  static private $single;
-  // The value to return if no results are found.
-  static private $empty;
+  private static $plugins = null;
+  // A flag used to return a single result. Default returns an array of active.
+  private static $single;
+  // The value to return if no active are found.
+  private static $empty;
 
   final public static function query(){
     self::$query = self::prepare();
@@ -37,6 +42,20 @@ class theforceQuery{
     return new static;
   }
 
+  final public static function filterInvalid($region = null, $location = null){
+    if($region){
+      self::$query = array_filter(self::$query, function($val) use( &$region) {
+        return !isset($val['limit_region']) || in_array($region, $val['limit_region']);
+      });
+    }
+    if($location){
+      self::$query = array_filter(self::$query, function($val) use( &$location) {
+        return !isset($val['limit_location']) || in_array($location, $val['limit_location']);
+      });
+    }
+    return new static;
+  }
+
   final public static function filterId($id){
     self::$single = true;
     self::$query = array_filter(self::$query, function($val) use( &$id) {
@@ -52,6 +71,31 @@ class theforceQuery{
     return new static;
   }
 
+  /**
+   * Filter to only show public plugins. Plugins that are allowed to be added
+   * to regions.
+   *
+   * A public plugin is either a jedi plugin or a generated plugin built off of
+   * a master plugin.
+   */
+  final public static function filterPublic(){
+    self::$query = array_filter(self::$query, function($val) use( &$type) {
+      return $val['type'] == 'jedi' || !empty($val['padawan']);
+    });
+    return new static;
+  }
+
+  /**
+   * Filter to only show private plugins. Plugins that are not allowed to be
+   * added directly to regions and must be generated as a padawan plugin.
+   */
+  final public static function filterPrivate(){
+    self::$query = array_filter(self::$query, function($val) use( &$type) {
+      return $val['type'] == 'master' && empty($val['padawan']);
+    });
+    return new static;
+  }
+
   final public static function filterRegion($region){
     self::$query = array_filter(self::$query, function($val) use( &$region) {
       return $val['region'] == $region;
@@ -59,9 +103,16 @@ class theforceQuery{
     return new static;
   }
 
+  final public static function filterLocation($location){
+    self::$query = array_filter(self::$query, function($val) use( &$location) {
+      return $val['location'] == $location;
+    });
+    return new static;
+  }
+
   final public static function loadHandler(){
     foreach(self::$query as $id => &$plugin){
-      $plugin['handler'] = theforce_plugin_get($plugin['type'], $id, $plugin['settings']);
+      $plugin['handler'] = theforce_plugin_get($plugin);
     }
     return new static;
   }
@@ -76,39 +127,76 @@ class theforceQuery{
   }
 
   final private static function prepare(){
-    $results = self::results();
-    $plugins = self::plugins();
-    foreach($plugins as $id => &$plugin){
-      $plugin['active'] = isset($results[$id]) ? 1: 0;
-      $plugin['region'] = isset($results[$id]->region) ? $results[$id]->region : '';
-      $plugin['weight'] = isset($results[$id]->weight) ? $results[$id]->weight : 0;
-      $plugin['settings'] = isset($results[$id]->settings) ? $results[$id]->settings : array();
-      // Rename type for ease of use.
-      $plugin['type'] = $plugin['plugin type'];
-      unset($plugin['plugin type']);
-      $plugin['id'] = $plugin['name'];
-      unset($plugin['name']);
-    }
-    uasort($plugins, 'drupal_sort_weight');
-    return $plugins;
-  }
-
-  final private static function results(){
-    if(empty(self::$results)){
-      $results = db_select('theforce_plugin', 'f')
-        ->fields('f')
-        ->execute()
-        ->fetchAll();
-      foreach($results as $result){
-        $result->settings = !empty($result->settings) ? unserialize($result->settings) : array();
-        self::$results[$result->id] = $result;
+    if(is_null(self::$results)){
+      $active = self::active();
+      $custom = self::custom();
+      $plugins = self::plugins();
+      foreach($custom as $id => $item){
+        if(isset($plugins[$item->class])){
+          $plugins[$id] = $plugins[$item->class];
+          $plugins[$id]['padawan'] = 1;
+          // $plugins[$id]['plugin type'] = 'jedi';
+          $plugins[$id]['id'] = $id;
+          $plugins[$id]['title'] = $item->title;
+          $plugins[$id]['settings'] = $item->settings;
+        }
       }
+      foreach($plugins as $id => &$plugin){
+        $plugin['active'] = isset($active[$id]) ? 1: 0;
+        $plugin['region'] = isset($active[$id]->region) ? $active[$id]->region : '';
+        $plugin['location'] = isset($active[$id]->location) ? $active[$id]->location : '';
+        $plugin['weight'] = isset($active[$id]->weight) ? $active[$id]->weight : 0;
+        $plugin['settings'] = isset($plugin['settings']) && is_array($plugin['settings']) ? $plugin['settings'] : array();
+        $plugin['settings_custom'] = 0;
+        if(isset($active[$id]->settings) && is_array($active[$id]->settings) && !empty($active[$id]->settings)){
+          $plugin['settings'] = drupal_array_merge_deep($plugin['settings'], $active[$id]->settings);
+          $plugin['settings_custom'] = 1;
+        }
+        // Rename type for ease of use.
+        $plugin['type'] = $plugin['plugin type'];
+        if(!isset($plugin['id'])){
+          $plugin['id'] = $plugin['name'];
+        }
+      }
+      uasort($plugins, 'drupal_sort_weight');
+      self::$results = $plugins;
     }
     return self::$results;
   }
 
+  final private static function active(){
+    if(is_null(self::$active)){
+      self::$active = array();
+      $active = db_select('theforce_active', 'f')
+        ->fields('f')
+        ->execute()
+        ->fetchAll();
+      foreach($active as $result){
+        $result->settings = !empty($result->settings) ? unserialize($result->settings) : array();
+        self::$active[$result->id] = $result;
+      }
+    }
+    return self::$active;
+  }
+
+  final private static function custom(){
+    if(is_null(self::$custom)){
+      self::$custom = array();
+      $custom = db_select('theforce_custom', 'f')
+        ->fields('f')
+        ->execute()
+        ->fetchAll();
+      foreach($custom as $result){
+        $result->settings = !empty($result->settings) ? unserialize($result->settings) : array();
+        self::$custom[$result->id] = $result;
+      }
+    }
+    return self::$custom;
+  }
+
   final private static function plugins(){
-    if(empty(self::$plugins)){
+    if(is_null(self::$plugins)){
+      self::$plugins = array();
       ctools_include('plugins');
       foreach(theforce_ctools_plugin_type() as $type => $info){
         $plugins = ctools_get_plugins('theforce', $type);

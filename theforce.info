@@ -1,4 +1,4 @@
-name = The Force | Core
+name = The Force
 description = An admin menu interface. My the force be with you. Always.
 package = The Force
 core = 7.x
@@ -9,6 +9,8 @@ dependencies[] = jquery_update
 
 files[] = handlers/theforce.inc
 files[] = handlers/theforceQuery.inc
+files[] = handlers/theforceMarkup.inc
+files[] = handlers/theforceMenu.inc
 files[] = handlers/theforceText.inc
 files[] = handlers/theforceLink.inc
 files[] = handlers/theforceDropdown.inc

@@ -5,7 +5,7 @@
  */
 class theforceDropdownList extends theforceDropdown {
 
-  protected $items = array();
+  protected $listItems = array();
   protected $listTitle = '';
 
   // List style (full, mini)
@@ -15,24 +15,59 @@ class theforceDropdownList extends theforceDropdown {
   protected $dropdownAttributes = array();
 
   /**
+   * The default values for this plugin.
+   */
+  public function valuesDefinition(){
+    return array(
+      'listItems' => $this->listItems,
+      'listTitle' => $this->listTitle,
+      'listStyle' => $this->listStyle,
+    ) + parent::valuesDefinition();
+  }
+
+  /**
+   * The settings form.
+   */
+  public function settingsForm($form, &$form_state){
+    $form = parent::settingsForm($form, $form_state);
+
+    // $form['dropdown']['#access'] = false;
+    unset($form['dropdown']);
+
+    $form['listStyle'] = array(
+      '#type' => 'radios',
+      '#title' => t('Style'),
+      '#options' => array('full' => t('Full'), 'mini' => t('Mini')),
+      '#default_value' => $this->values['listStyle'],
+    );
+
+    return $form;
+  }
+
+  /**
    * The content that will be placed in the item list.
    *
    * @return
    *   A string or Drupal render array.
    */
-  protected function items(){
-    return $this->items;
+  protected function listItems(){
+    return $this->listItems;
   }
 
-  private function listRender(){
+  /**
+   * Pull in the list for rendering.
+   *
+   * @return [type]
+   */
+  private function listItemsRender(){
     $attributes = array();
     $attributes['class'][] = 'theforce-list';
-    $attributes['class'][] = $this->listStyle;
+    $attributes['class'][] = $this->values['listStyle'];
 
     $output = array(
       '#theme' => 'item_list',
-      '#title' => $this->listTitle,
-      '#items' => $this->items(),
+      '#title' => $this->values['listTitle'],
+      '#items' => $this->values['listItems'],
       '#attributes' => $attributes,
     );
     return $output;
@@ -45,7 +80,7 @@ class theforceDropdownList extends theforceDropdown {
    *   A string or Drupal render array.
    */
   protected function dropdown(){
-    return $this->listRender();
+    return $this->listItemsRender();
   }
 
 }

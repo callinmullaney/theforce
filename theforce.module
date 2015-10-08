@@ -24,6 +24,25 @@ function theforce_menu() {
       'type' => MENU_NORMAL_ITEM,
       'file' => 'includes/theforce.admin.inc',
     ),
+    'admin/config/user-interface/theforce/plugin/create' => array(
+      'title' => t('Create an item of The Force'),
+      'description' => t('Create a configurable plugin.'),
+      'page callback' => 'theforce_admin_plugin_create',
+      'access callback' => 'user_access',
+      'access arguments' => array('administer theforce'),
+      'type' => MENU_CALLBACK,
+      'file' => 'includes/theforce.admin.plugin.inc',
+    ),
+    'admin/config/user-interface/theforce/plugin/create/%/%' => array(
+      'title' => t('Create and activate an item of The Force'),
+      'description' => t('Create a configurable plugin.'),
+      'page callback' => 'theforce_admin_plugin_create_active',
+      'page arguments' => array(6, 7),
+      'access callback' => 'user_access',
+      'access arguments' => array('administer theforce'),
+      'type' => MENU_CALLBACK,
+      'file' => 'includes/theforce.admin.plugin.inc',
+    ),
     'admin/config/user-interface/theforce/plugin/activate/%/%' => array(
       'title' => t('Activate an item of The Force'),
       'description' => t('Activate a plugin of a given type in a given region.'),
@@ -54,6 +73,16 @@ function theforce_menu() {
       'type' => MENU_CALLBACK,
       'file' => 'includes/theforce.admin.plugin.inc',
     ),
+    'admin/config/user-interface/theforce/plugin/delete/%theforce_plugin' => array(
+      'title' => t('Plugin Delete'),
+      'description' => t('Delete a plugin from The Force'),
+      'page callback' => 'theforce_admin_plugin_delete',
+      'page arguments' => array(6),
+      'access callback' => 'user_access',
+      'access arguments' => array('administer theforce'),
+      'type' => MENU_CALLBACK,
+      'file' => 'includes/theforce.admin.plugin.inc',
+    ),
     'admin/config/user-interface/theforce/plugin/weights' => array(
       'page callback' => 'theforce_admin_plugin_weights_save',
       'delivery callback' => 'ajax_deliver',
@@ -61,6 +90,16 @@ function theforce_menu() {
       'access arguments' => array('administer theforce'),
       'type' => MENU_CALLBACK,
       'file' => 'includes/theforce.admin.plugin.inc',
+    ),
+    'system/theforce/content/%theforce_plugin' => array(
+      'page callback' => 'theforce_content_ajax',
+      'page arguments' => array(3),
+      'delivery callback' => 'ajax_deliver',
+      'theme callback' => 'ajax_base_page_theme',
+      'access callback' => 'theforce_plugin_access',
+      'access arguments' => array(3),
+      'type' => MENU_CALLBACK,
+      'file' => 'includes/theforce.ajax.inc',
     ),
   );
 }
@@ -73,8 +112,8 @@ function theforce_theme($existing, $type, $theme, $path) {
   $items['theforce'] = array(
     'variables' => array(
       'content' => array(),
-      'type' => '',
-      'regions' => array(),
+      'region' => '',
+      'locations' => array(),
     ),
     'template' => 'theforce',
     'path' => $path . '/theme',
@@ -83,8 +122,8 @@ function theforce_theme($existing, $type, $theme, $path) {
   $items['theforce_region'] = array(
     'variables' => array(
       'content' => array(),
-      'type' => '',
       'region' => '',
+      'location' => '',
       'attributes' => array(),
     ),
     'path' => $path . '/theme',
@@ -95,11 +134,21 @@ function theforce_theme($existing, $type, $theme, $path) {
     'path' => $path . '/theme',
     'file' => 'theforce.theme.inc',
   );
-  $items['theforce_plugin_form'] = array(
+  $items['theforce_menu'] = array(
+    'render element' => 'tree',
+    'path' => $path . '/theme',
+    'file' => 'theforce.theme.inc',
+  );
+  $items['theforce_menu_link'] = array(
     'render element' => 'element',
     'path' => $path . '/theme',
     'file' => 'theforce.theme.inc',
   );
+  // $items['theforce_plugin_form'] = array(
+  //   'render element' => 'element',
+  //   'path' => $path . '/theme',
+  //   'file' => 'theforce.theme.inc',
+  // );
   return $items;
 }
 
@@ -124,6 +173,9 @@ function theforce_library(){
         'media' => 'screen',
         'group' => CSS_DEFAULT,
       ),
+      "https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700" => array(
+        'type' => 'external',
+      ),
     ),
     'dependencies' => array(
       array('system', 'drupal.ajax'),
@@ -133,17 +185,43 @@ function theforce_library(){
 }
 
 /**
+ * Plugin frontend access check.
+ */
+function theforce_plugin_access($plugin, $account = null){
+  if(user_access('administer theforce', $account)){
+    return true;
+  }
+  return true;
+}
+
+/**
+ * A map of regions used for The Force.
+ *
+ * @param $region
+ *   An optional region id. Will return the locations within that region if
+ *   found.
+ */
+function theforce_regions($region = null){
+  $regions = array(
+    'top' => array('left','right'),
+    'side' => array('top','bottom'),
+  );
+  if($region){
+    return isset($regions[$region]) ? $regions[$region] : array();
+  }
+  return $regions;
+}
+
+/**
  * Implements hook_page_build()
  */
 function theforce_page_build(&$page) {
   if (theforce_is_available()) {
-    $content = theforce_content_top();
-    if(!empty($content)){
-      $page['page_top']['theforce'] = $content;
-    }
-    $content = theforce_content_side();
-    if(!empty($content)){
-      $page['page_bottom']['theforce'] = $content;
+    foreach(theforce_regions() as $region => $locations){
+      $content = theforce_content($region);
+      if(!empty($content)){
+        $page['page_bottom']['theforce_' . $region] = $content;
+      }
     }
     if(theforce_is_management()){
       $page['page_bottom']['theforce_loader'] = array(
@@ -154,52 +232,54 @@ function theforce_page_build(&$page) {
 }
 
 /**
- * Generate the top bar content.
- */
-function theforce_content_top(){
-  return theforce_content('top', array('left', 'right'));
-}
-
-/**
- * Generate the side bar content.
- */
-function theforce_content_side(){
-  return theforce_content('side', array('top', 'bottom'));
-}
-
-/**
  * Generate content for a type.
  *
- * @param $regions
- *   An array of regions supported for a plugin type.
+ * @param $region
+ *   The region id you wish to generate content for.
  */
-function theforce_content($type, $regions){
+function theforce_content($region){
   $content = array();
-  foreach($regions as $region){
-    $region_content = theforce_content_region($type, $region);
-    if(!empty($region_content)){
-      $content[$region] = $region_content;
+  if($locations = theforce_regions($region)){
+    foreach($locations as $location){
+      $location_content = theforce_content_region($region, $location);
+      if(!empty($location_content)){
+        $content[$location] = $location_content;
+      }
     }
-  }
-  if(!empty($content) || theforce_is_management()){
-    $content = array(
-      '#theme' => 'theforce',
-      '#type' => $type,
-      '#regions' => $regions,
-      '#content' => $content,
-      '#attached' => array(
-        'library' => array(array('theforce', 'theforce')),
-      ),
-    );
+    if(!empty($content) || theforce_is_management()){
+      $path = drupal_get_path('module', 'theforce');
+      $js_settings = array(
+        'basePath' => current_path(),
+        'modulePath' => $path,
+        'isManagement' => theforce_is_management(),
+      );
+      $content = array(
+        '#theme' => 'theforce',
+        '#region' => $region,
+        '#locations' => $locations,
+        '#content' => $content,
+        '#attached' => array(
+          'library' => array(array('theforce', 'theforce')),
+          'js' => array(
+            array('data' => array('theforce' => $js_settings), 'type' => 'setting'),
+          ),
+        ),
+      );
+    }
   }
   return $content;
 }
 
 /**
  * Generate region content of a bar.
+ *
+ * @param $region
+ *   The region id you wish to generate content for.
+ * @param $location
+ *   The location id within the region you wish to generate content for.
  */
-function theforce_content_region($type, $region){
-  $plugins = theforce_query()->filterActive()->filterType($type)->filterRegion($region)->loadHandler()->execute();
+function theforce_content_region($region, $location){
+  $plugins = theforce_query()->filterActive()->filterRegion($region)->filterLocation($location)->loadHandler()->execute();
   $content = array();
   foreach($plugins as $id => $plugin){
     $content['items'][$id] = array(
@@ -211,11 +291,11 @@ function theforce_content_region($type, $region){
   if(!empty($content) || theforce_is_management()){
     $content['items'] = array(
       '#theme' => 'theforce_region',
-      '#type' => $type,
       '#region' => $region,
+      '#location' => $location,
       '#content' => $content,
       '#attributes' => array(
-        'id' => "theforce-$type-$region-content",
+        'id' => "theforce-$region-$location-content",
       ),
     );
     if(theforce_is_management()){
@@ -230,16 +310,17 @@ function theforce_content_region($type, $region){
  */
 function theforce_preprocess_html(&$vars) {
   if (theforce_is_available()) {
-    $has_top = !empty($vars['page']['page_top']['theforce']);
-    $has_side = !empty($vars['page']['page_bottom']['theforce']);
-    if($has_top || $has_side){
-      $vars['theforce'] = 1;
-      $vars['classes_array'][] = 'theforce-enabled';
-      if($has_top){
-        $vars['classes_array'][] = 'theforce-top-enabled';
+    $vars['theforce'] = 0;
+    foreach(theforce_regions() as $region => $locations){
+      if(!empty($vars['page']['page_bottom']['theforce_' . $region])){
+        $vars['theforce'] = 1;
+        $vars['classes_array'][] = 'theforce-' . $region . '-enabled';
       }
-      if($has_side){
-        $vars['classes_array'][] = 'theforce-side-enabled';
+    }
+    if($vars['theforce']){
+      $vars['classes_array'][] = 'theforce-enabled';
+      if(theforce_is_management()){
+        $vars['classes_array'][] = 'theforce-side-hover';
       }
     }
   }
@@ -250,7 +331,7 @@ function theforce_preprocess_html(&$vars) {
  */
 function theforce_process_html(&$vars){
   if(!empty($vars['theforce'])){
-    $vars['page'] = '<div id="theforce-wrap">' . $vars['page'] . '</div><!-- /#theforce-wrap -->';
+    $vars['page'] = '<div id="theforce-wrap"><div id="theforce-content">' . $vars['page'] . '</div><!-- /#theforce-content --></div><!-- /#theforce-wrap -->';
   }
 }
 
@@ -272,9 +353,19 @@ function theforce_user_insert(&$edit, $account, $category){
 /**
  * Get settings.
  */
-
 function theforce_settings(){
   return drupal_array_merge_deep(theforce_settings_definition(), variable_get('theforce', array()));
+}
+
+/**
+ * Set a specific setting.
+ */
+function theforce_setting_set($key, $value){
+  $settings = theforce_settings();
+  if(isset($settings[$key])){
+    $settings[$key] = $value;
+    variable_set('theforce', $settings);
+  }
 }
 
 /**
@@ -286,6 +377,13 @@ function theforce_settings_definition() {
     $defaults = array('menu' => '');
   }
   return $defaults;
+}
+
+/**
+ * Prepare a configurable plugin id.
+ */
+function theforce_plugin_id_prepare($id){
+  return 'theforcePadawan' . ucfirst($id);
 }
 
 /**
@@ -334,8 +432,6 @@ function theforce_is_available() {
 function theforce_is_management() {
   static $is_management;
   if(!isset($is_management)){
-  // dsm($_GET);
-  // dsm($_POST);
     $is_management = arg(0) == 'admin' && arg(1) == 'config' && arg(2) == 'user-interface' && arg(3) == 'theforce' && !arg(4);
     if(!empty($_POST['form_id']) && substr($_POST['form_id'], 0, 8) == 'theforce'){
       $is_management = true;
@@ -363,30 +459,97 @@ function theforce_form_alter(&$form, &$form_state, $form_id){
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Activate a new plugin.
+ * Create a plugin based on a master.
  */
-function theforce_plugin_activate($id, $region, $weight = null, array $settings = array()){
-  $data = array(
-    'id' => $id,
-    'region' => $region,
-    'settings' => array(),
-  );
-  if(isset($weight) && is_numeric($weight)){
-    $data['weight'] = $weight;
+function theforce_plugin_create($id, $title, $class, $settings = array()){
+  if(!theforce_plugin_exists($id)){
+    $data = array(
+      'id' => $id,
+      'title' => $title,
+      'class' => $class,
+      'settings' => array(),
+    );
+    if(!empty($settings) && is_array($settings)){
+      $data['settings'] = $settings;
+    }
+    $data['settings'] = serialize($data['settings']);
+    return db_insert('theforce_custom')->fields($data)->execute();
   }
   else{
-    $plugins = db_select('theforce_plugin', 'f')->fields('f', array('id'))->condition('region', $region)->execute();
-    $weight = $plugins->rowCount();
-    if($region == 'right'){
-      $weight *= -1;
+    drupal_set_message(t('A plugin with this id (%id) already exists.', array('%id' => $id)), 'error');
+    return false;
+  }
+}
+
+/**
+ * Remove a plugin
+ */
+function theforce_plugin_delete($id){
+  return db_delete('theforce_custom')->condition('id', $id)->execute();
+}
+
+/**
+ * Check if plugin already exists with this id.
+ *
+ * @return [type]
+ */
+function theforce_plugin_exists($id){
+  $id = theforce_plugin_id_prepare($id);
+  $result = db_select('theforce_custom', 'f')
+    ->fields('f', array('id'))
+    ->condition('id', $id)
+    ->range(0, 1)
+    ->execute()
+    ->rowCount();
+  return !empty($result);
+}
+
+/**
+ * Activate a new plugin.
+ */
+function theforce_plugin_activate($id, $region, $location, $weight = null, array $settings = array()){
+  if(in_array($location, theforce_regions($region))){
+    $data = array(
+      'id' => $id,
+      'region' => $region,
+      'location' => $location,
+      'settings' => array(),
+    );
+    if(isset($weight) && is_numeric($weight)){
+      $data['weight'] = $weight;
     }
-    $data['weight'] = $weight;
+    else{
+      $order_by = 'DESC';
+      if($location == 'right'){
+        $order_by = 'ASC';
+      }
+      $result = db_select('theforce_active', 'f')
+        ->fields('f', array('weight'))
+        ->condition('region', $region)
+        ->condition('location', $location)
+        ->orderBy('weight', $order_by)
+        ->range(0, 1)
+        ->execute()
+        ->fetchAssoc();
+      $weight = isset($result['weight']) ? $result['weight'] : 0;
+      if($location == 'right'){
+        $weight--;
+      }
+      else{
+        $weight++;
+      }
+      $data['weight'] = $weight;
+    }
+    if(!empty($settings) && is_array($settings)){
+      $data['settings'] = $settings;
+    }
+    $data['settings'] = serialize($data['settings']);
+    return db_insert('theforce_active')->fields($data)->execute();
   }
-  if(!empty($settings) && is_array($settings)){
-    $data['settings'] = $settings;
+  else{
+    drupal_set_message(t('The region %region does not contain a location named %location.', array('%region' => $region, '%location' => $location)), 'error');
+    return false;
   }
-  $data['settings'] = serialize($data['settings']);
-  db_insert('theforce_plugin')->fields($data)->execute();
 }
 
 /**
@@ -397,10 +560,10 @@ function theforce_plugin_update($id, $weight = null, $settings = null){
   if(isset($weight) && is_numeric($weight)){
     $data['weight'] = $weight;
   }
-  if(!empty($settings) && is_array($settings)){
+  if(!is_null($settings) && is_array($settings)){
     $data['settings'] = serialize($settings);
   }
-  db_update('theforce_plugin')->fields($data)->condition('id', $id)->execute();
+  db_update('theforce_active')->fields($data)->condition('id', $id)->execute();
 }
 
 /**
@@ -408,7 +571,7 @@ function theforce_plugin_update($id, $weight = null, $settings = null){
  */
 function theforce_plugin_weight_save($id, $weight){
   if(is_numeric($weight)){
-    return db_update('theforce_plugin')->fields(array('weight' => $weight))->condition('id', $id)->execute();
+    return db_update('theforce_active')->fields(array('weight' => $weight))->condition('id', $id)->execute();
   }
   return false;
 }
@@ -417,7 +580,7 @@ function theforce_plugin_weight_save($id, $weight){
  * Remove a plugin
  */
 function theforce_plugin_deactivate($id){
-  return db_delete('theforce_plugin')->condition('id', $id)->execute();
+  return db_delete('theforce_active')->condition('id', $id)->execute();
 }
 
 /**
@@ -446,11 +609,11 @@ function theforce_query(){
  */
 function theforce_ctools_plugin_type() {
   return array(
-    'top' => array(
+    'jedi' => array(
       'use hooks' => TRUE,
       'classes' => array('handler'),
     ),
-    'side' => array(
+    'master' => array(
       'use hooks' => TRUE,
       'classes' => array('handler'),
     ),
@@ -458,38 +621,37 @@ function theforce_ctools_plugin_type() {
 }
 
 /**
- * Implementation of hook_theforce_top().
+ * Implementation of hook_theforce_jedi().
  *
  * This is a ctools plugins hook.
  */
-function theforce_theforce_top(){
+function theforce_theforce_jedi(){
   module_load_include('inc', 'theforce', 'theforce.plugins');
-  return _theforce_theforce_top();
+  return _theforce_theforce_jedi();
 }
 
 /**
- * Implementation of hook_theforce_side().
+ * Implementation of hook_theforce_master().
  *
  * This is a ctools plugins hook.
  */
-function theforce_theforce_side(){
+function theforce_theforce_master(){
   module_load_include('inc', 'theforce', 'theforce.plugins');
-  return _theforce_theforce_side();
+  return _theforce_theforce_master();
 }
 
 /**
  * Fetch metadata for one theforce plugin by the given name.
  */
-function theforce_plugin_get($type = 'top', $key) {
+function theforce_plugin_get($plugin) {
   ctools_include('plugins');
-  $plugins = ctools_get_plugins('theforce', $type);
-  if (isset($plugins[$key]) && $class = ctools_plugin_get_class($plugins[$key], 'handler')) {
+  if ($class = ctools_plugin_get_class($plugin, 'handler')) {
     // Check that class exists until CTools & registry issues are resolved.
     if (class_exists($class)) {
       $all_args = func_get_args();
       $args = array_slice($all_args, 2);
-      array_unshift($args, $plugins[$key]);
-      return new $class($key, $args);
+      // array_unshift($args, $plugins[$key]);
+      return new $class($plugin, $args);
     }
   }
   return FALSE;
