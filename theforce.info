@@ -15,6 +15,7 @@ files[] = handlers/theforceText.inc
 files[] = handlers/theforceLink.inc
 files[] = handlers/theforceDropdown.inc
 files[] = handlers/theforceDropdownList.inc
+files[] = handlers/theforceSide.inc
 
 configure = admin/config/user-interface/theforce
 

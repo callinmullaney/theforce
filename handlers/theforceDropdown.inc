@@ -13,14 +13,11 @@ class theforceDropdown extends theforceLink {
   protected $linkAttributes = array('class' => array('theforce-dropdown-trigger'));
 
   /**
-   * The default values for this plugin.
+   * The default settings for this plugin. Settings are exportable.
    */
   public function valuesDefinition(){
     return array(
       'dropdown' => $this->dropdown,
-      'dropdownAttributes' => $this->dropdownAttributes,
-      'dropdownPrefix' => $this->dropdownPrefix,
-      'dropdownSuffix' => $this->dropdownSuffix,
     ) + parent::valuesDefinition();
   }
 
@@ -44,6 +41,7 @@ class theforceDropdown extends theforceLink {
       '#type' => 'checkbox',
       '#title' => t('Use Ajax'),
       '#default_value' => $this->values['ajax'],
+      '#weight' => 100,
     );
 
     return $form;
@@ -79,19 +77,18 @@ class theforceDropdown extends theforceLink {
     $content = $this->values['dropdown'];
 
     if(!empty($content)){
-      $this->values['linkAfter'] = ' <i class="fa fa-angle-down"></i>';
-      $this->values['dropdownAttributes']['class'][] = 'theforce-dropdown-content';
+      $this->linkAfter = ' <i class="fa fa-angle-down"></i>';
+      $this->dropdownAttributes['class'][] = 'theforce-dropdown-content';
 
       if($this->values['ajax']){
-        // ID used by theforce_content_ajax() to place content.
-        $this->values['dropdownAttributes']['id'] = 'ajax-' . $this->info['id'];
-        // Use built-in ajaxification.
-        $this->values['linkAttributes']['class'][] = 'use-theforce';
+        // ID used by theforce_html_ajax() to place content.
+        $this->dropdownAttributes['id'] = 'ajax-' . $this->info['id'];
         // No loading bar.
-        $this->values['linkAttributes']['data-progress'] = 'none';
+        $this->linkAttributes['data-progress'] = 'none';
         // Run ajax request only once.
-        $this->values['linkAttributes']['data-once'] = 1;
-        $this->values['linkPath'] = 'system/theforce/content/' . $this->info['id'];
+        $this->linkAttributes['data-once'] = 1;
+        // Set URL
+        $this->values['linkPath'] = 'system/theforce/html/' . $this->info['id'];
         $content = '<div class="theforce-dropdown-loader"><img src="' . url(drupal_get_path('module', 'theforce')) . '/images/loader.svg" /></div>';
       }
 
@@ -99,7 +96,7 @@ class theforceDropdown extends theforceLink {
         $content = array('#markup' => $content);
       }
       $output = array(
-        '#prefix' => '<div' . drupal_attributes($this->values['dropdownAttributes']) . '>',
+        '#prefix' => '<div' . drupal_attributes($this->dropdownAttributes) . '>',
         '#suffix' => '</div>',
       );
       $output['content'] = $content;
@@ -135,8 +132,8 @@ class theforceDropdown extends theforceLink {
     $output = parent::output();
     $output['dropdown'] = $dropdown;
     $output['#attributes']['class'][] = 'theforce-dropdown';
-    $output['#prefix'] = $this->values['dropdownPrefix'];
-    $output['#suffix'] = $this->values['dropdownSuffix'];
+    $output['#prefix'] = $this->dropdownPrefix;
+    $output['#suffix'] = $this->dropdownSuffix;
     return $output;
   }
 

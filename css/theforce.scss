@@ -7,7 +7,9 @@ $theforce-color: #3E3E3E;
 $theforce-font-family: 'Open Sans', "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
 
 $theforce-overlay-bg: #F2F2F2 !default;
-
+$theforce-overlay-color: #595959;
+$theforce-overlay-color-alt: darken($theforce-overlay-color, 20%) !default;
+$theforce-overlay-font-size:12px !default;
 
 $theforce-top-bg: #F2F2F2 !default;
 $theforce-top-color: #595959;
@@ -23,7 +25,7 @@ $theforce-side-width-active: 350px !default;
 $theforce-side-color: #999999;
 $theforce-side-color-alt: lighten($theforce-side-color, 30%) !default;
 $theforce-side-item-height: 40px !default;
-$theforce-side-item-padding: 16px !default;
+$theforce-side-item-padding: 14px !default;
 $theforce-side-font-size:12px !default;
 
 $theforce-primary-color: #0080BA !default;
@@ -48,8 +50,135 @@ $theforce-dropdown-size: 13px !default;
   font-family: $theforce-font-family;
   color: $theforce-color;
 
+  div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+  }
+
+  article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block;
+  }
+
+  ol, ul {
+    list-style: none;
+  }
+
+  blockquote, q {
+    quotes: none;
+  }
+
+  blockquote {
+    &:before, &:after {
+      content: '';
+      content: none;
+    }
+  }
+
+  q {
+    &:before, &:after {
+      content: '';
+      content: none;
+    }
+  }
+
+  .tabledrag-toggle-weight-wrapper{
+    // display:none;
+    float:right;
+    font-size:8px;
+    text-transform: uppercase;
+  }
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border:none;
+    background:none;
+
+    thead{
+      background:none;
+    }
+
+    th,
+    td{
+      border:none;
+      padding:5px;
+      background:none;
+    }
+
+    tr,
+    tr.odd,
+    tr.even{
+      border:none;
+      background: none;
+
+      td:last-child,
+      td.menu-operations{
+        border:none;
+        text-align: right;
+      }
+    }
+
+    a.tabledrag-handle{
+      cursor: move;
+      float: left;
+      height: 1.7em;
+      margin-left: -1em;
+      overflow: hidden;
+      text-decoration: none;
+
+      .handle {
+        background: transparent url("/misc/draggable.png") no-repeat scroll 6px 9px;
+        height: 13px;
+        margin: -0.4em 0.5em;
+        padding: 0.42em 0.5em;
+        width: 13px;
+      }
+    }
+
+    input{
+      margin:0;
+    }
+  }
+
+  fieldset{
+    margin-bottom:10px;
+
+    .fieldset-legend{
+      // position: relative;
+      margin:0;
+      padding:0;
+    }
+
+    .fieldset-wrapper{
+      padding:20px 0 0 0;
+    }
+  }
+
+  .messages{
+    padding:10px 10px 10px 35px;
+  }
+
+  .form-item{
+    margin-bottom:10px;
+  }
+
+  .form-actions{
+    padding-top:10px;
+
+    a{
+      margin-right:1em;
+    }
+  }
+
   *{
     box-sizing: border-box;
+
+    &.handle{
+      box-sizing: content-box;
+    }
   }
 
   a{
@@ -59,6 +188,10 @@ $theforce-dropdown-size: 13px !default;
     &:hover{
       text-decoration: none;
       text-shadow:none;
+    }
+
+    &:focus{
+      outline: none;
     }
   }
 
@@ -70,6 +203,12 @@ $theforce-dropdown-size: 13px !default;
   li{
     margin:0;
     padding:0;
+  }
+
+  div.indentation{
+    float: left;
+    height: 1.7em;
+    width: 20px;
   }
 
   span.ink-wrap{
@@ -104,6 +243,31 @@ $theforce-dropdown-size: 13px !default;
     margin-top: -17px;
     top: 8px;
     border-radius: 50%;
+  }
+
+  .theforce-grid{
+    margin:0;
+    padding:0;
+
+    li{
+      display:block;
+      margin:0;
+      padding:0;
+      list-style-type: none;
+    }
+
+    a{
+      display:block;
+      text-align: center;
+      padding:10px;
+      font-size:10px;
+      text-transform: uppercase;
+    }
+
+    i{
+      display:block;
+      font-size:30px;
+    }
   }
 
   img + span{
@@ -142,6 +306,10 @@ $theforce-dropdown-size: 13px !default;
     }
   }
 
+  .theforce-item .theforce-element.theforce-node-create i{
+    font-size: $theforce-top-font-size+28;
+  }
+
   .ink{
     background: darken($theforce-top-bg, 10%);
   }
@@ -152,7 +320,7 @@ $theforce-dropdown-size: 13px !default;
   top:0;
   left:0;
   bottom:0;
-  width: $theforce-side-width;
+  width:0;
   background: $theforce-side-bg;
   // overflow-x: visible;
   // overflow-y: auto;
@@ -167,12 +335,39 @@ $theforce-dropdown-size: 13px !default;
     @include flex(auto);
   }
 
+  .theforce-grid{
+    margin: -5px;
+
+    li{
+      display:block;
+      width:50%;
+      float:left;
+    }
+
+    a{
+      background: $theforce-side-bg-alt;
+      margin:5px;
+      @include transition(background 300ms);
+
+      &:hover{
+        background: $theforce-primary-color;
+      }
+    }
+  }
+
   .ink{
     background: darken($theforce-side-bg, 10%);
   }
 }
 
-body.theforce-side-hover{
+body.theforce-side-content{
+
+  #theforce-side{
+    width: $theforce-side-width !important;
+  }
+}
+
+body.theforce-side-active{
 
   #theforce-side{
     width: $theforce-side-width-active !important;
@@ -208,6 +403,22 @@ html, body{
   @include perspective(1500px);
   @include transition(left 300ms);
   @include transition-delay(300ms);
+
+  &:after{
+    display:block;
+    content:"";
+    position:absolute;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    background: rgba(#000, .5);
+    box-shadow: inset 0 10px 10px rgba(#000, .3);
+    z-index:100;
+    visibility: hidden;
+    opacity:0;
+    @include transition(opacity 300ms);
+  }
 }
 
 #theforce-content{
@@ -226,16 +437,30 @@ html, body{
   @include transition(transform 500ms ease 0ms);
 }
 
+body.theforce-inset{
+
+  #theforce-content{
+    @include transform-style(preserve-3d);
+    @include transform(translate3d(0px, 0px, -200px) rotate(0deg));
+    overflow: hidden;
+  }
+
+  #theforce-wrap:after{
+    opacity:1;
+    visibility: visible;
+  }
+}
+
 body.theforce-enabled{
 
-  &.theforce-top-enabled{
+  &.theforce-top-content{
 
     #theforce-wrap{
       top: $theforce-top-item-height;
     }
   }
 
-  &.theforce-side-enabled{
+  &.theforce-side-content{
     // margin-left: $theforce-side-width;
 
     #theforce-wrap,
@@ -265,6 +490,11 @@ body.theforce-enabled{
 
     a.theforce-element{
       @include transition(color 300ms);
+
+      &.active{
+        color: $theforce-primary-color !important;
+        cursor: default;
+      }
     }
 
     i{
@@ -273,6 +503,12 @@ body.theforce-enabled{
       vertical-align: middle;
       text-align: center;
     }
+  }
+
+  .theforce-label{
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 11px;
   }
 
   .theforce-icon{
@@ -288,6 +524,11 @@ body.theforce-enabled{
 
 #theforce-top{
 
+  .theforce-label{
+    float:left;
+    line-height:$theforce-top-item-height;
+  }
+
   .theforce-item{
     float:left;
     border-width: 0 1px;
@@ -295,6 +536,7 @@ body.theforce-enabled{
     color: $theforce-top-color;
     height: $theforce-top-item-height;
     margin-left: -1px;
+    white-space: nowrap;
 
     &:first-child{
       margin-left:0;
@@ -360,10 +602,18 @@ body.theforce-enabled{
 
 #theforce-side{
 
+  .theforce-label{
+    padding:8px 0 0;
+    color: darken($theforce-side-color, 20%);
+    text-shadow: 0 1px 0 darken($theforce-side-bg, 40%);
+  }
+
   .theforce-icon{
-    font-size: $theforce-side-font-size + 3;
-    padding-left: $theforce-side-item-padding;
-    @include transition(padding 300ms 0ms);
+    font-size: $theforce-side-font-size + 6;
+    width: $theforce-side-font-size*2;
+    text-align: center;
+    padding: 0;
+    @include transition(font-size 300ms);
   }
 
   .theforce-text{
@@ -383,11 +633,15 @@ body.theforce-enabled{
     margin-top: -1px;
 
     .theforce-element{
-      padding-left: $theforce-side-item-padding;
-      padding-right: $theforce-side-item-padding;
+      padding-left: $theforce-side-item-padding+$theforce-side-item-padding;
       color: $theforce-side-color;
       font-size:$theforce-side-font-size;
       line-height:$theforce-side-item-height;
+      @include transition(padding 300ms 0ms);
+
+      // .theforce-element{
+      //   padding-left:0;
+      // }
     }
 
     a.theforce-element{
@@ -397,18 +651,29 @@ body.theforce-enabled{
       }
     }
   }
+
+  .theforce-elements{
+    .theforce-icon{
+      padding-left:0;
+    }
+  }
 }
 
-body.theforce-side-hover{
+body.theforce-side-active{
 
   #theforce-side{
 
-    .theforce-icon{
-      // font-size: $theforce-side-font-size + 3;
-      padding-left: 0;
-      padding-right: 5px;
-      min-width: 0px;
+    .theforce-element{
+      padding-left: $theforce-side-item-padding;
       @include transition(padding 300ms 0ms);
+    }
+
+    .theforce-icon{
+      font-size: $theforce-side-font-size + 3;
+      // padding-left: 0;
+      // padding-right: 5px;
+      // min-width: 0px;
+      // @include transition(padding 300ms 0ms);
     }
 
     .theforce-text{
@@ -768,17 +1033,34 @@ body.theforce-side-hover{
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Overlay
+/// Tabs
 ////////////////////////////////////////////////////////////////////////////////
 
-body.has-theforce-overlay{
 
-  #theforce-content{
-    @include transform-style(preserve-3d);
-    @include transform(translate3d(0px, 0px, -200px) rotate(0deg));
-    overflow: hidden;
+.theforce-tabs{
+
+  li{
+    position: relative;
   }
 }
+
+#theforce-side{
+
+  .theforce-tabs-secondary{
+    background: darken($theforce-side-bg-alt, 3%);
+    border-radius: 2px;
+    margin: 4px;
+
+    > li{
+      margin: 0 -4px;
+    }
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// Overlay
+////////////////////////////////////////////////////////////////////////////////
 
 #theforce-overlay{
   position:absolute;
@@ -788,17 +1070,20 @@ body.has-theforce-overlay{
   bottom:0;
   box-shadow: 0 0 0 rgba(#000, .3);
   padding:30px;
+  z-index:200;
   @include transition(background 500ms, box-shadow 500ms);
 
   &.animate{
-    background: rgba(#000, .5);
-    box-shadow: inset 0 10px 10px rgba(#000, .3);
 
     #theforce-overlay-inner{
       opacity:1;
       @include transform(scale(1));
       box-shadow: 0 10px 10px rgba(#000, .3);
     }
+  }
+
+  .sticky-header{
+    left:0 !important;
   }
 }
 
@@ -812,6 +1097,7 @@ body.has-theforce-overlay{
   box-shadow: 0 0 0 rgba(#000, .3);
   padding: 30px;
   overflow:auto;
+  font-size:$theforce-overlay-font-size;
   -webkit-overflow-scrolling: touch;
   @include transform(scale(1.2));
   @include transform-origin(center bottom);
@@ -832,23 +1118,67 @@ body.has-theforce-overlay{
     padding-bottom:20px;
     text-align: center;
   }
+
+  a{
+    color: $theforce-primary-color;
+    @include transition(color 300ms);
+
+    &:hover{
+      color: lighten($theforce-primary-color, 5%);
+    }
+  }
+
+  .form-actions{
+    margin-bottom:0;
+
+    input{
+      margin-bottom:0;
+    }
+  }
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Shelf
+/// Side Content
 ////////////////////////////////////////////////////////////////////////////////
 
-#theforce-shelf{
+#theforce-side-content{
   position:absolute;
-  top:100%;
-  left:10px;
-  right:10px;
-  background:#fff;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  overflow-y:auto;
+  background:$theforce-side-bg;
   z-index:200;
   box-shadow: 0 1px 1px rgba(#000, .2), inset 0 1px 3px -1px rgba(#000, .2);
-  padding:30px;
+  padding:10px;
+  width: $theforce-side-width-active;
+  opacity:0;
   @include clearfix();
+  @include transition(opacity 300ms);
+
+  .theforce-side-title{
+    text-transform: uppercase;
+    font-size:14px;
+    line-height:14px;
+    padding-bottom:10px;
+    font-weight:600;
+    text-align: center;
+    color: $theforce-side-color-alt;
+  }
+
+  .theforce-side-description{
+    font-size:13px;
+    line-height:13px;
+    padding-bottom:20px;
+    text-align: center;
+    color: $theforce-side-color;
+  }
+
+  &.animate{
+    opacity:1;
+  }
 }
 
 

@@ -13,7 +13,7 @@ require_once dirname(__FILE__) . '/includes/theforce.ajax.inc';
  * Implements hook_menu().
  */
 function theforce_menu() {
-  return array(
+  $items = array(
     'admin/config/user-interface/theforce' => array(
       'title' => t('The Force'),
       'description' => t('Controll and configure the Force'),
@@ -91,8 +91,18 @@ function theforce_menu() {
       'type' => MENU_CALLBACK,
       'file' => 'includes/theforce.admin.plugin.inc',
     ),
-    'system/theforce/content/%theforce_plugin' => array(
-      'page callback' => 'theforce_content_ajax',
+    'system/theforce/html/%theforce_plugin' => array(
+      'page callback' => 'theforce_html_ajax',
+      'page arguments' => array(3),
+      'delivery callback' => 'ajax_deliver',
+      'theme callback' => 'ajax_base_page_theme',
+      'access callback' => 'theforce_plugin_access',
+      'access arguments' => array(3),
+      'type' => MENU_CALLBACK,
+      'file' => 'includes/theforce.ajax.inc',
+    ),
+    'system/theforce/side/%theforce_plugin' => array(
+      'page callback' => 'theforce_side_ajax',
       'page arguments' => array(3),
       'delivery callback' => 'ajax_deliver',
       'theme callback' => 'ajax_base_page_theme',
@@ -102,6 +112,48 @@ function theforce_menu() {
       'file' => 'includes/theforce.ajax.inc',
     ),
   );
+  $items['admin/structure/menu/manage/%menu/edit/ajax'] = array(
+    'title' => 'Edit menu',
+    'description' => t('Edit, add, reset and reorder menu items.'),
+    'delivery callback' => 'ajax_deliver',
+    'theme callback' => 'ajax_base_page_theme',
+    'page callback' => 'theforce_admin_menu_edit',
+    'page arguments' => array(4),
+    'access arguments' => array('administer menu'),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/theforce.admin.menu.inc',
+  );
+  $items['admin/structure/menu/item/%menu_link/edit/ajax'] = array(
+    'title' => 'Edit menu link',
+    'delivery callback' => 'ajax_deliver',
+    'theme callback' => 'ajax_base_page_theme',
+    'page callback' => 'theforce_admin_menu_edit_item',
+    'page arguments' => array(4),
+    'access arguments' => array('administer menu'),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/theforce.admin.menu.inc',
+  );
+  $items['admin/structure/menu/item/%menu_link/reset/ajax'] = array(
+    'title' => 'Reset menu link',
+    'delivery callback' => 'ajax_deliver',
+    'theme callback' => 'ajax_base_page_theme',
+    'page callback' => 'theforce_admin_menu_reset_item',
+    'page arguments' => array(4),
+    'access arguments' => array('administer menu'),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/theforce.admin.menu.inc',
+  );
+  $items['admin/structure/menu/item/%menu_link/delete/ajax'] = array(
+    'title' => 'Delete menu link',
+    'delivery callback' => 'ajax_deliver',
+    'theme callback' => 'ajax_base_page_theme',
+    'page callback' => 'theforce_admin_menu_delete_item',
+    'page arguments' => array(4),
+    'access arguments' => array('administer menu'),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/theforce.admin.menu.inc',
+  );
+  return $items;
 }
 
 /**
@@ -232,6 +284,19 @@ function theforce_page_build(&$page) {
 }
 
 /**
+ * Determine if a region should show even if it has no content.
+ */
+function theforce_region_show($region){
+  $plugins = theforce_query()->filterActive()->loadHandler()->execute();
+  foreach($plugins as $plugin){
+    if(!empty($plugin['handler']->force[$region])){
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
  * Generate content for a type.
  *
  * @param $region
@@ -246,7 +311,7 @@ function theforce_content($region){
         $content[$location] = $location_content;
       }
     }
-    if(!empty($content) || theforce_is_management()){
+    if(!empty($content) || theforce_region_show($region) || theforce_is_management()){
       $path = drupal_get_path('module', 'theforce');
       $js_settings = array(
         'basePath' => current_path(),
@@ -282,11 +347,14 @@ function theforce_content_region($region, $location){
   $plugins = theforce_query()->filterActive()->filterRegion($region)->filterLocation($location)->loadHandler()->execute();
   $content = array();
   foreach($plugins as $id => $plugin){
-    $content['items'][$id] = array(
-      '#theme' => 'theforce_item',
-      '#plugin' => $plugin,
-      '#content' => $plugin['handler']->render(),
-    );
+    $plugin_content = $plugin['handler']->render();
+    if(!empty($plugin_content)){
+      $content['items'][$id] = array(
+        '#theme' => 'theforce_item',
+        '#plugin' => $plugin,
+        '#content' => $plugin_content,
+      );
+    }
   }
   if(!empty($content) || theforce_is_management()){
     $content['items'] = array(
@@ -315,12 +383,15 @@ function theforce_preprocess_html(&$vars) {
       if(!empty($vars['page']['page_bottom']['theforce_' . $region])){
         $vars['theforce'] = 1;
         $vars['classes_array'][] = 'theforce-' . $region . '-enabled';
+        if(!empty($vars['page']['page_bottom']['theforce_' . $region]['#content'])){
+          $vars['classes_array'][] = 'theforce-' . $region . '-content';
+        }
       }
     }
     if($vars['theforce']){
       $vars['classes_array'][] = 'theforce-enabled';
       if(theforce_is_management()){
-        $vars['classes_array'][] = 'theforce-side-hover';
+        $vars['classes_array'][] = 'theforce-side-active';
       }
     }
   }
@@ -330,6 +401,12 @@ function theforce_preprocess_html(&$vars) {
  * Implements hook_process_html().
  */
 function theforce_process_html(&$vars){
+  if(isset($_GET['theforce'])){
+    $commands = array();
+    $commands[] = ajax_command_replace('#theforce-content', '<div id="theforce-content">' . $vars['page'] . '</div>');
+    print ajax_render($commands);
+    drupal_exit();
+  }
   if(!empty($vars['theforce'])){
     $vars['page'] = '<div id="theforce-wrap"><div id="theforce-content">' . $vars['page'] . '</div><!-- /#theforce-content --></div><!-- /#theforce-wrap -->';
   }
@@ -473,7 +550,7 @@ function theforce_plugin_create($id, $title, $class, $settings = array()){
       $data['settings'] = $settings;
     }
     $data['settings'] = serialize($data['settings']);
-    return db_insert('theforce_custom')->fields($data)->execute();
+    return db_merge('theforce_custom')->key(array('id' => $id))->fields($data)->execute();
   }
   else{
     drupal_set_message(t('A plugin with this id (%id) already exists.', array('%id' => $id)), 'error');
@@ -544,7 +621,7 @@ function theforce_plugin_activate($id, $region, $location, $weight = null, array
       $data['settings'] = $settings;
     }
     $data['settings'] = serialize($data['settings']);
-    return db_insert('theforce_active')->fields($data)->execute();
+    return db_merge('theforce_active')->key(array('id' => $id))->fields($data)->execute();
   }
   else{
     drupal_set_message(t('The region %region does not contain a location named %location.', array('%region' => $region, '%location' => $location)), 'error');
@@ -662,4 +739,26 @@ function theforce_plugin_get($plugin) {
  */
 function theforce_plugin_load($id){
   return theforce_query()->returnOnEmpty(false)->filterActive()->filterId($id)->loadHandler()->execute();
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Features
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Implementation of hook_features_api
+ */
+function theforce_features_api() {
+  return array(
+    'theforce' => array(
+      'name' => 'The Force',
+      'file' => drupal_get_path('module', 'theforce') .'/includes/theforce.features.inc',
+      'feature_source' => TRUE,
+      'default_hook' => 'theforce_items',
+      'alter_hook' => 'theforce_items',
+      // 'default_hook' => 'theforce_default_items',
+      // 'default_file' => FEATURES_DEFAULTS_INCLUDED,
+    ),
+  );
 }

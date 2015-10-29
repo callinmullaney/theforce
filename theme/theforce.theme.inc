@@ -112,7 +112,7 @@ function template_preprocess_theforce_item(&$vars){
       if(!empty($vars['plugin']['configurable'])){
         $vars['attributes']['data-config'] = 1;
       }
-      if(!empty($vars['plugin']['padawan'])){
+      if(empty($vars['plugin']['default']) && !empty($vars['plugin']['custom'])){
         $vars['attributes']['data-trash'] = 1;
       }
       $vars['attributes']['data-region'] = $location;

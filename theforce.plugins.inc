@@ -28,6 +28,23 @@ function _theforce_theforce_jedi() {
      */
     // 'limit_location' => array('right'),
   );
+  $plugins['theforceJediNodeCreate'] = array(
+    'title' => 'Node Creation',
+    'handler' => array(
+      'path' => $path,
+      'file' => 'theforceJediNodeCreate.inc',
+      'class' => 'theforceJediNodeCreate',
+    ),
+  );
+  $plugins['theforceJediMenuManage'] = array(
+    'title' => 'Menu Manage',
+    'configurable' => 1,
+    'handler' => array(
+      'path' => $path,
+      'file' => 'theforceJediMenuManage.inc',
+      'class' => 'theforceJediMenuManage',
+    ),
+  );
   $plugins['theforceJediLocalTabs'] = array(
     'title' => 'Local Tabs',
     'handler' => array(

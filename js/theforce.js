@@ -2,7 +2,8 @@
 
 var theForce = {
   $dropdown: null,
-  forceUses: 0
+  forceUses: 0,
+  sideActive: 0
 }
 
 theForce.attach = function(context, settings) {
@@ -47,22 +48,33 @@ theForce.side = function(context, settings){
     var $side = $('#theforce-side:not(.theforce-side-processed)').addClass('theforce-side-processed');
     var timeout;
     if($side.length){
-      $side.on('mouseenter', function(){
-        timeout = setTimeout(function(){
-          self.$body.addClass('theforce-side-hover').trigger('theforce-side:show');
-        }, 300);
+      var clientX;
+      // Use mousemove event to prevent mouse from immediately trigger side
+      // active events.
+      $('body').on('mousemove.theforce', function(e){
+        clientX = e.clientX;
+        $('body.theforce').off('mousemove');
+      });
+      $side.on('mouseenter', function(e){
+        if(!theForce.sideActive && clientX){
+          timeout = setTimeout(function(){
+            self.$body.addClass('theforce-side-active').trigger('theforce-side:show');
+          }, 400);
+        }
       }).on('mouseleave', function(){
-        clearTimeout(timeout);
-        self.$body.removeClass('theforce-side-hover').trigger('theforce-side:hide');
+        if(!theForce.sideActive){
+          clearTimeout(timeout);
+          self.$body.removeClass('theforce-side-active').trigger('theforce-side:hide');
+        }
       });
     }
   }
 };
 
 
-  /**
-   * Dropdown handler.
-   */
+/**
+ * Dropdown handler.
+ */
 theForce.dropdown = function(context, settings){
   var self = this;
   var $dropdownTriggers = $('.theforce-dropdown-trigger', context);
@@ -104,7 +116,6 @@ theForce.dropdown = function(context, settings){
     $dropdownTriggers.once('theforce-dropdown').on('click', function(e){
       e.preventDefault();
       var $dropdown = $(this).closest('.theforce-dropdown');
-      console.log($dropdown);
       if(self.$dropdown && $dropdown[0] == self.$dropdown[0]){
         close($dropdown);
       }
@@ -116,13 +127,12 @@ theForce.dropdown = function(context, settings){
 };
 
 
-  /**
-   * Dropdown handler.
-   */
+/**
+ * Dropdown handler.
+ */
 theForce.menu = function(context, settings){
   var self = this, $this, $trigger;
   var $menuExpand = $('.theforce-menu-expand', context);
-  console.log($menuExpand);
   if($menuExpand.length){
     $menuExpand.once('theforce-menu').each(function(){
       $this = $(this);
@@ -132,9 +142,9 @@ theForce.menu = function(context, settings){
   }
 };
 
-  /**
-   * Ink handler.
-   */
+/**
+ * Ink handler.
+ */
 theForce.ink = function(context, settings) {
   var $parent, $ink, d, x, y;
   $(".theforce-item a").once('theforce-ink').click(function(e){
@@ -167,6 +177,73 @@ theForce.ink = function(context, settings) {
 
 Drupal.behaviors.theforce = theForce;
 
+
+/**
+ * Inset and shade the content area.
+ */
+var theforceInset = {
+  count: 0,
+};
+
+theforceInset.open = function() {
+  var self = this;
+  if(!self.count){
+    $('body').addClass('theforce-inset');
+  }
+  self.count++;
+}
+
+theforceInset.close = function() {
+  var self = this;
+  self.count--;
+  if(!self.count){
+    $('body').removeClass('theforce-inset');
+  }
+}
+
+
+/**
+ * Reload content area
+ */
+Drupal.ajax.prototype.commands.theforceRedirect = function (ajax, response, status) {
+  var $element = $('<div />');
+  var element_settings = {};
+  element_settings.progress = { 'type': 'theforce' };
+  var base = 'theforce-redirect';
+  // For anchor tags, these will go to the target of the anchor rather
+  // than the usual location.
+  element_settings.theforce = 1;
+  element_settings.url = response.url;
+  element_settings.event = 'onload';
+  element_settings.base = base;
+  element_settings.effect = 'fade';
+  element_settings.speed = 600;
+  Drupal.ajax[base] = new Drupal.ajax(base, $element, element_settings);
+  $element.trigger('onload');
+  $element.remove();
+};
+
+
+/**
+ * Reload content area
+ */
+Drupal.ajax.prototype.commands.theforceReload = function (ajax, response, status) {
+  var $element = $('#theforce-content');
+  var element_settings = {};
+  element_settings.progress = { 'type': 'theforce' };
+  var base = 'theforce-reload';
+  // For anchor tags, these will go to the target of the anchor rather
+  // than the usual location.
+  element_settings.theforce = 1;
+  element_settings.url = window.location + '?theforce=1';
+  element_settings.event = 'onload';
+  element_settings.base = base;
+  element_settings.effect = 'fade';
+  element_settings.speed = 600;
+  Drupal.ajax[base] = new Drupal.ajax(base, $element, element_settings);
+  $element.trigger('onload');
+};
+
 /**
  * Overlay
  */
@@ -176,6 +253,7 @@ Drupal.behaviors.theforce = theForce;
  */
 Drupal.ajax.prototype.commands.theforceOverlay = function (ajax, response, status) {
   var settings = response.settings || ajax.settings || Drupal.settings;
+  // theforceSide.close();
   theforceOverlay.open(response.data, settings);
 };
 
@@ -192,65 +270,96 @@ theforceOverlay.open = function(html, settings) {
   if(!self.$overlay){
     self.$overlay = $('<div id="theforce-overlay" class="theforce"></div>').appendTo($('#theforce-wrap'));
 
-    $(window).on('click' + '.offcanvas', function(e){
-      if(!$(e.target).closest('#theforce-overlay-inner').length){
+    $(window).on('click' + '.theforceoverlay', function(e){
+      if(!$(e.target).closest('.theforce-percist').length){
         theforceOverlay.close();
       }
     });
 
     setTimeout(function(){
+      theforceInset.open();
       $('body').addClass('has-theforce-overlay');
       self.$overlay.addClass('animate');
     }, 20);
   }
-  self.$overlay.html('<div id="theforce-overlay-inner">' + html + '</div>');
-  Drupal.attachBehaviors(self.$shelf, settings);
+  self.$overlay.html('<div id="theforce-overlay-inner" class="theforce-percist">' + html + '</div>');
+  Drupal.attachBehaviors(self.$side, settings);
 }
 
 theforceOverlay.close = function(html) {
   var self = this;
   if(self.$overlay){
-    self.$overlay.removeClass('animate')
+    self.$overlay.removeClass('animate');
     setTimeout(function(){
       self.$overlay.remove();
       self.$overlay = null;
     }, 300);
+    theforceInset.close();
     $('body').removeClass('has-theforce-overlay');
-    $(window).off('click' + '.offcanvas');
+    $(window).off('click' + '.theforceoverlay');
   }
 }
 
 /**
- * Shelf
+ * Side
  */
 
 /**
  * Command to insert new content into shelf.
  */
-Drupal.ajax.prototype.commands.theforceShelf = function (ajax, response, status) {
+Drupal.ajax.prototype.commands.theforceSide = function (ajax, response, status) {
   var settings = response.settings || ajax.settings || Drupal.settings;
-  theforceShelf.close();
-  theforceShelf.open(response.data, settings);
+  theforceOverlay.close();
+  theforceSide.open(response.data, settings);
 };
 
-Drupal.ajax.prototype.commands.theforceShelfClose = function (ajax, response, status) {
-  theforceShelf.close();
+Drupal.ajax.prototype.commands.theforceSideClose = function (ajax, response, status) {
+  theforceSide.close();
 };
 
-var theforceShelf = {
-  $shelf: null,
+var theforceSide = {
+  $side: null,
 };
 
-theforceShelf.open = function(html, settings) {
+theforceSide.open = function(html, settings) {
   var self = this;
-  self.$shelf = $('<div id="theforce-shelf"></div>').html(html).appendTo($('#theforce-top'));
-  Drupal.attachBehaviors(self.$shelf, settings);
+  if(!self.$side){
+    theForce.sideActive = 1;
+    self.$wrapper = $('#theforce-side');
+    self.$side = $('<div id="theforce-side-content" class="theforce-percist"></div>').appendTo(self.$wrapper);
+
+    $(window).on('click' + '.theforceside', function(e){
+      if(!$(e.target).closest('.theforce-percist').length){
+        theforceSide.close();
+      }
+    });
+
+    setTimeout(function(){
+      theforceInset.open();
+      $('body').addClass('has-theforce-side-content');
+      self.$side.addClass('animate');
+    }, 20);
+  }
+  self.$side.html(html);
+  Drupal.attachBehaviors(self.$side, settings);
+  $('body').addClass('theforce-side-active');
 }
 
-theforceShelf.close = function(html) {
+theforceSide.close = function(html) {
   var self = this;
-  if(self.$shelf){
-    self.$shelf.remove();
+  if(self.$side){
+    theForce.sideActive = 0;
+    self.$side.removeClass('animate');
+    setTimeout(function(){
+      self.$side.remove();
+      self.$side = null;
+    }, 300);
+    if(!Drupal.settings.theforce.isManagement){
+      $('body').removeClass('theforce-side-active');
+    }
+    theforceInset.close();
+    $('body').removeClass('has-theforce-side-content');
+    $(window).off('click' + '.theforceside');
   }
 }
 

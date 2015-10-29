@@ -80,18 +80,18 @@ final class theforceQuery{
    */
   final public static function filterPublic(){
     self::$query = array_filter(self::$query, function($val) use( &$type) {
-      return $val['type'] == 'jedi' || !empty($val['padawan']);
+      return $val['type'] == 'jedi' || !empty($val['custom']);
     });
     return new static;
   }
 
   /**
    * Filter to only show private plugins. Plugins that are not allowed to be
-   * added directly to regions and must be generated as a padawan plugin.
+   * added directly to regions and must be generated as a custom plugin.
    */
   final public static function filterPrivate(){
     self::$query = array_filter(self::$query, function($val) use( &$type) {
-      return $val['type'] == 'master' && empty($val['padawan']);
+      return $val['type'] == 'master' && empty($val['custom']);
     });
     return new static;
   }
@@ -134,11 +134,20 @@ final class theforceQuery{
       foreach($custom as $id => $item){
         if(isset($plugins[$item->class])){
           $plugins[$id] = $plugins[$item->class];
-          $plugins[$id]['padawan'] = 1;
-          // $plugins[$id]['plugin type'] = 'jedi';
+          $plugins[$id]['custom'] = 1;
+          $plugins[$id]['default'] = !empty($item->default);
           $plugins[$id]['id'] = $id;
           $plugins[$id]['title'] = $item->title;
           $plugins[$id]['settings'] = $item->settings;
+          // if(isset($item->region) && isset($item->location) && isset($item->weight)){
+          //   $active[$id] = (object) array(
+          //     'id' => $id,
+          //     'region' => $item->region,
+          //     'location' => $item->location,
+          //     'weight' => $item->weight,
+          //     'settings' => $item->settings,
+          //   );
+          // }
         }
       }
       foreach($plugins as $id => &$plugin){
@@ -154,8 +163,10 @@ final class theforceQuery{
         }
         // Rename type for ease of use.
         $plugin['type'] = $plugin['plugin type'];
+        // Rename class for ease of use
+        $plugin['class'] = $plugin['name'];
         if(!isset($plugin['id'])){
-          $plugin['id'] = $plugin['name'];
+          $plugin['id'] = $plugin['class'];
         }
       }
       uasort($plugins, 'drupal_sort_weight');
@@ -182,6 +193,19 @@ final class theforceQuery{
   final private static function custom(){
     if(is_null(self::$custom)){
       self::$custom = array();
+
+      // if ($cache = cache_get('theforce_custom', 'cache')) {
+      //   self::$custom = $cache->data;
+      // }
+      foreach (module_implements('theforce_items') as $module) {
+        $module_custom = module_invoke($module, 'theforce_items');
+        foreach($module_custom as $id => $custom){
+          $custom['id'] = $id;
+          $custom['default'] = 1;
+          self::$custom[$id] = (object) $custom;
+        }
+      }
+
       $custom = db_select('theforce_custom', 'f')
         ->fields('f')
         ->execute()
@@ -190,6 +214,9 @@ final class theforceQuery{
         $result->settings = !empty($result->settings) ? unserialize($result->settings) : array();
         self::$custom[$result->id] = $result;
       }
+
+      drupal_alter('theforce_items', self::$custom);
+      // cache_set('theforce_custom', self::$custom);
     }
     return self::$custom;
   }

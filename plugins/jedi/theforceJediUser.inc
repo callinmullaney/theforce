@@ -11,12 +11,12 @@ class theforceJediUser extends theforceDropdownList {
   protected $textSuffix = '';
 
   /**
-   * The default settings for this plugin.
+   * The default settings for this plugin. Settings are exportable.
    */
   public function valuesDefinition(){
-    return parent::valuesDefinition() + array(
+    return array(
       'show_avatar' => 1,
-    );
+    ) + parent::valuesDefinition();
   }
 
   /**

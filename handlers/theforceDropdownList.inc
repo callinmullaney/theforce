@@ -15,12 +15,11 @@ class theforceDropdownList extends theforceDropdown {
   protected $dropdownAttributes = array();
 
   /**
-   * The default values for this plugin.
+   * The default settings for this plugin. Settings are exportable.
    */
   public function valuesDefinition(){
     return array(
       'listItems' => $this->listItems,
-      'listTitle' => $this->listTitle,
       'listStyle' => $this->listStyle,
     ) + parent::valuesDefinition();
   }
@@ -66,7 +65,7 @@ class theforceDropdownList extends theforceDropdown {
 
     $output = array(
       '#theme' => 'item_list',
-      '#title' => $this->values['listTitle'],
+      '#title' => $this->listTitle,
       '#items' => $this->values['listItems'],
       '#attributes' => $attributes,
     );

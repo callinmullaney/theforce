@@ -24,7 +24,7 @@ class theforceMasterView extends theforceDropdown {
       $this->values['view'] = drupal_array_get_nested_value($form_state['values'], $parents);
     }
 
-    $settings_id = 'theforce-' . $this->info['name'];
+    $settings_id = 'theforce-' . $this->info['class'];
     $options = views_get_views_as_options(TRUE, 'all', NULL, FALSE, TRUE);
     $form['view'] = array(
       '#type' => 'select',

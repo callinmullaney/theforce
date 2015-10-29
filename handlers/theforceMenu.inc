@@ -11,12 +11,12 @@ class theforceMenu extends theforce {
   protected $itemElement = '';
 
   /**
-   * The default values for this plugin.
+   * The default settings for this plugin. Settings are exportable.
    */
-  public function valuesDefinition(){
+  public function settingsDefinition(){
     return array(
       'menuId' => $this->menuId,
-    ) + parent::valuesDefinition();
+    ) + parent::settingsDefinition();
   }
 
   /**
@@ -50,17 +50,14 @@ class theforceMenu extends theforce {
     $plugin = theforce_query()->filterId('theforceMasterLink')->loadHandler()->execute();
     $this->linkHandler = $plugin['handler'];
 
-    $markup = $this->asdf($tree);
-    return $markup;
-
-    $markup = $this->menuBuild($tree);
+    $markup = $this->menuPrepare($tree);
     return $markup;
   }
 
 
 
 
-  private function asdf($tree){
+  private function menuPrepare($tree){
     $build = array();
     $items = array();
 
@@ -92,7 +89,7 @@ class theforceMenu extends theforce {
       $build[$data['link']['mlid']] = $handler->render();
 
       if($has_children){
-        $build[$data['link']['mlid']]['below'] = $this->asdf($data['below']);
+        $build[$data['link']['mlid']]['below'] = $this->menuPrepare($data['below']);
       }
 
 

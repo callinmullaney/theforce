@@ -19,18 +19,13 @@ class theforceText extends theforce {
   protected $badgeColor = 'green';
 
   /**
-   * The default values for this plugin.
+   * The default settings for this plugin. Settings are exportable.
    */
   public function valuesDefinition(){
     return array(
-      'text' => $this->text,
-      'textHtml' => $this->textHtml,
-      'textPrefix' => $this->textPrefix,
-      'textSuffix' => $this->textSuffix,
       'icon' => $this->icon,
-      'iconPrefix' => $this->iconPrefix,
+      'text' => $this->text,
       'badge' => $this->badge,
-      'badgeColor' => $this->badgeColor,
     ) + parent::valuesDefinition();
   }
 
@@ -102,7 +97,7 @@ class theforceText extends theforce {
   private function textRender(){
     $text = $this->values['text'];
     if(!is_array($text)){
-      if(!$this->values['textHtml']){
+      if(!$this->textHtml){
         $text = check_plain($text);
       }
       $text = array('#markup' => $text);
@@ -120,7 +115,7 @@ class theforceText extends theforce {
   private function iconRender(){
     $icon = $this->values['icon'];
     if(!empty($icon)){
-      $icon = array('#markup' => '<i class="theforce-icon ' . $this->values['iconPrefix'] . ' ' . $this->values['iconPrefix'] . '-' . $this->values['icon'] . '"></i>');
+      $icon = array('#markup' => '<i class="theforce-icon ' . $this->iconPrefix . ' ' . $this->iconPrefix . '-' . $this->values['icon'] . '"></i>');
     }
     else{
       $icon = array();
@@ -136,7 +131,7 @@ class theforceText extends theforce {
   private function badgeRender(){
     $badge = $this->values['badge'];
     if(!empty($badge)){
-      $badge = array('#markup' => '  <em class="theforce-badge ' . $this->values['badgeColor'] . '">' . $badge . '</em>');
+      $badge = array('#markup' => '  <em class="theforce-badge ' . $this->badgeColor . '">' . $badge . '</em>');
     }
     else{
       $badge = array();

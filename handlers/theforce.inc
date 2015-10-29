@@ -6,23 +6,30 @@
 class theforce {
 
   public $info;
+  public $settings;
   public $values;
+  public $force;
 
   // ELement to wrap each item.
   protected $itemElement = 'span';
   protected $itemElementAttributes = array();
 
-  // Ajax flag that will enable the /system/theforce/content/%theforce_plugin
-  // which, when called, will place returned content in
-  // '#ajax-' . $plugin['id'].
   protected $ajax = 0;
+  protected $access = true;
+  protected $isManagement = false;
+  protected $elementWrapperClass = 'theforce-element';
 
   /**
    * Constructor for top bar content.
    */
   public function __construct($info, $args = array()) {
     $this->info = $info;
-    $this->values = drupal_array_merge_deep($this->valuesProcess(), $info['settings']);
+    $this->settings = drupal_array_merge_deep($this->valuesDefinition(), $this->info['settings']);
+    $this->values = drupal_array_merge_deep($this->valuesProcess(), $this->info['settings']);
+    $this->isManagement = theforce_is_management();
+    foreach(theforce_regions() as $region => $locations){
+      $this->force[$region] = false;
+    }
   }
 
   /**
@@ -30,8 +37,6 @@ class theforce {
    */
   public function valuesDefinition(){
     return array(
-      'itemElement' => $this->itemElement,
-      'itemElementAttributes' => $this->itemElementAttributes,
       'ajax' => $this->ajax,
     );
   }
@@ -40,7 +45,7 @@ class theforce {
    * Prepare values and call methods for processing.
    */
   private function valuesProcess(){
-    $this->values = $this->valuesDefinition();
+    $this->values = $this->settings;
     foreach($this->values as $key => &$value){
       if(method_exists($this, $key)){
         $value = $this->{$key}();
@@ -100,10 +105,17 @@ class theforce {
    */
   final public function render(){
     $output = $this->output();
-    if(!empty($this->values['itemElement'])){
-      $this->values['itemElementAttributes']['class'][] = 'theforce-element';
-      $output['#prefix'] = '<' . $this->values['itemElement'] . drupal_attributes($this->values['itemElementAttributes']) . '>';
-      $output['#suffix'] = '</' . $this->values['itemElement'] . '>';
+    // Check access
+    if(!$this->access && !$this->isManagement){
+      return null;
+    }
+    if(empty($output) && $this->isManagement){
+      $output['#markup'] = '<div class="theforce-label">' . t('@title Placeholder', array('@title' => $this->info['title'])) . '</div>';
+    }
+    if(!empty($this->itemElement)){
+      $this->itemElementAttributes['class'][] = $this->elementWrapperClass;
+      $output['#prefix'] = '<' . $this->itemElement . drupal_attributes($this->itemElementAttributes) . '>';
+      $output['#suffix'] = '</' . $this->itemElement . '>';
     }
     return $output;
   }

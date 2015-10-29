@@ -8,7 +8,7 @@ class theforceMarkup extends theforce {
   protected $markup = '';
 
   /**
-   * The default values for this plugin.
+   * The default settings for this plugin. Settings are exportable.
    */
   public function valuesDefinition(){
     return array(

@@ -7,6 +7,7 @@ class theforceLink extends theforceText {
 
   protected $linkPath = '';
   protected $linkAttributes = array();
+  protected $linkOptions = array();
   protected $linkFragment = '';
   protected $linkQuery = array();
   protected $linkHtml = true;
@@ -19,19 +20,12 @@ class theforceLink extends theforceText {
   protected $itemElement = '';
 
   /**
-   * The default values for this plugin.
+   * The default settings for this plugin. Settings are exportable.
    */
   public function valuesDefinition(){
     return array(
       'linkPath' => $this->linkPath(),
-      'linkAttributes' => $this->linkAttributes,
-      'linkFragment' => $this->linkFragment,
-      'linkQuery' => $this->linkQuery,
-      'linkHtml' => $this->linkHtml,
-      'linkBefore' => $this->linkBefore,
-      'linkAfter' => $this->linkAfter,
-      'linkPrefix' => $this->linkPrefix,
-      'linkSuffix' => $this->linkSuffix,
+      'linkOptions' => $this->linkOptions(),
     ) + parent::valuesDefinition();
   }
 
@@ -58,6 +52,13 @@ class theforceLink extends theforceText {
   }
 
   /**
+   * Link path
+   */
+  protected function linkOptions(){
+    return $this->linkOptions;
+  }
+
+  /**
    * Wrap output in a link.
    *
    * @param $output
@@ -72,18 +73,25 @@ class theforceLink extends theforceText {
    *   A Drupal render array.
    */
   private function renderLink($output){
-    $output['#prefix'] = $this->values['linkBefore'];
-    $output['#suffix'] = $this->values['linkAfter'];
-    $this->values['linkAttributes']['class'][] = 'theforce-element';
+    $output['#prefix'] = $this->linkBefore;
+    $output['#suffix'] = $this->linkAfter;
+    if($this->elementWrapperClass){
+      $this->linkAttributes['class'][] = $this->elementWrapperClass;
+    }
+    if($this->values['ajax']){
+      // Use built-in ajaxification.
+      $this->linkAttributes['class'][] = 'use-theforce';
+    }
     $link = array();
-    $link['#markup'] = l(drupal_render($output), $this->values['linkPath'], array(
-      'attributes' => $this->values['linkAttributes'],
-      'fragment' => $this->values['linkFragment'],
-      'query' => $this->values['linkQuery'],
-      'html' => $this->values['linkHtml'],
-    ));
-    $link['#prefix'] = $this->values['linkPrefix'];
-    $link['#suffix'] = $this->values['linkSuffix'];
+    $linkOptions = $this->values['linkOptions'] + array(
+      'attributes' => array(),
+      'html' => $this->linkHtml,
+    );
+    $linkOptions['attributes'] = drupal_array_merge_deep($linkOptions['attributes'], $this->linkAttributes);
+
+    $link['#markup'] = l(drupal_render($output), $this->values['linkPath'], $linkOptions);
+    $link['#prefix'] = $this->linkPrefix;
+    $link['#suffix'] = $this->linkSuffix;
     return $link;
   }
 
