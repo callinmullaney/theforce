@@ -14,9 +14,8 @@ class theforceJediLocalTabs extends theforce {
     $secondary = menu_secondary_local_tasks();
 
     // Remove tasks from the rest of the page output.
-    $tasks = &drupal_static('menu_local_tasks');
-    unset($tasks['tabs']);
-    // $data = null;
+    $current = &drupal_static('menu_local_tasks');
+    unset($current['tabs']);
 
     if(empty($primary) && empty($secondary)){
       // Disable access of this plugin if no tabs exist.

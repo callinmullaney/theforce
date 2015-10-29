@@ -98,6 +98,15 @@ class theforce {
   }
 
   /**
+   * Access check for the plugin.
+   *
+   * @return boolean
+   */
+  public function access(){
+    return user_access('view theforce');
+  }
+
+  /**
    * Render output.
    *
    * @return

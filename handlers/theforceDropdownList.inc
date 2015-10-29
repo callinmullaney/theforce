@@ -30,7 +30,6 @@ class theforceDropdownList extends theforceDropdown {
   public function settingsForm($form, &$form_state){
     $form = parent::settingsForm($form, $form_state);
 
-    // $form['dropdown']['#access'] = false;
     unset($form['dropdown']);
 
     $form['listStyle'] = array(

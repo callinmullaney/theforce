@@ -40,6 +40,13 @@ class theforceJediMenuManage extends theforceSide {
     return $form;
   }
 
+  public function access(){
+    if(module_exists('menu_admin_per_menu')){
+      return _menu_admin_per_menu_access();
+    }
+    return user_access('administer menu');
+  }
+
   /**
    * Pull in the markup for rendering.
    *
@@ -50,6 +57,9 @@ class theforceJediMenuManage extends theforceSide {
     $menus = array_filter($this->values['menus']);
     foreach ($result as $menu) {
       if(empty($menus) || !empty($menus[$menu['menu_name']])){
+        if(module_exists('menu_admin_per_menu') && !_menu_admin_per_menu_menu_link_access($menu)){
+          continue;
+        }
         $icon = 'list';
         $items[] = l('<i class="'. $this->iconPrefix . ' ' . $this->iconPrefix . '-' . $icon . '"></i> ' . $menu['title'], 'admin/structure/menu/manage/' . $menu['menu_name'] . '/edit', array('html' => true, 'attributes' => array('class' => array('use-theforce'))));
       }

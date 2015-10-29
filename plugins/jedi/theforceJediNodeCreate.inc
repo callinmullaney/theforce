@@ -22,6 +22,10 @@ class theforceJediNodeCreate extends theforceSide {
     return parent::output();
   }
 
+  public function access(){
+    return _node_add_access();
+  }
+
   /**
    * Pull in the markup for rendering.
    *

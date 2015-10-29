@@ -13,8 +13,8 @@ class theforceJediLocalActions extends theforce {
     $actions = menu_local_actions();
 
     // Remove tasks from the rest of the page output.
-    $tasks = &drupal_static('menu_local_tasks');
-    unset($tasks['actions']);
+    $current = &drupal_static('menu_local_tasks');
+    unset($current['actions']);
 
     if(empty($actions)){
       $this->access = false;
@@ -32,8 +32,6 @@ class theforceJediLocalActions extends theforce {
         $output['#suffix'] = '</ul>';
       }
     }
-    return $output;
-
     return $output;
   }
 

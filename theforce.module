@@ -112,6 +112,7 @@ function theforce_menu() {
       'file' => 'includes/theforce.ajax.inc',
     ),
   );
+
   $items['admin/structure/menu/manage/%menu/edit/ajax'] = array(
     'title' => 'Edit menu',
     'description' => t('Edit, add, reset and reorder menu items.'),
@@ -119,6 +120,7 @@ function theforce_menu() {
     'theme callback' => 'ajax_base_page_theme',
     'page callback' => 'theforce_admin_menu_edit',
     'page arguments' => array(4),
+    'access callback' => 'user_access',
     'access arguments' => array('administer menu'),
     'type' => MENU_CALLBACK,
     'file' => 'includes/theforce.admin.menu.inc',
@@ -153,6 +155,16 @@ function theforce_menu() {
     'type' => MENU_CALLBACK,
     'file' => 'includes/theforce.admin.menu.inc',
   );
+
+  if(module_exists('menu_admin_per_menu')){
+    foreach($items as $key => &$item){
+      if(strpos($key, 'admin/structure/menu/') !== false){
+        $item['access callback'] = '_menu_admin_per_menu_menu_access';
+        $item['access arguments'] = array(4);
+      }
+    }
+  }
+
   return $items;
 }
 
@@ -347,13 +359,15 @@ function theforce_content_region($region, $location){
   $plugins = theforce_query()->filterActive()->filterRegion($region)->filterLocation($location)->loadHandler()->execute();
   $content = array();
   foreach($plugins as $id => $plugin){
-    $plugin_content = $plugin['handler']->render();
-    if(!empty($plugin_content)){
-      $content['items'][$id] = array(
-        '#theme' => 'theforce_item',
-        '#plugin' => $plugin,
-        '#content' => $plugin_content,
-      );
+    if($plugin['handler']->access()){
+      $plugin_content = $plugin['handler']->render();
+      if(!empty($plugin_content)){
+        $content['items'][$id] = array(
+          '#theme' => 'theforce_item',
+          '#plugin' => $plugin,
+          '#content' => $plugin_content,
+        );
+      }
     }
   }
   if(!empty($content) || theforce_is_management()){
@@ -416,14 +430,14 @@ function theforce_process_html(&$vars){
  * Implements hook_user_insert().
  */
 function theforce_user_insert(&$edit, $account, $category){
-  // If we are using the asset profile image, we need to set its title and owner
+  // If we are using the theforce profile image, we need to set its title and owner
   // after the user is created.
   $wrapper = entity_metadata_wrapper('user', $account);
-  if(isset($wrapper->field_image_asset)){
-    $asset = $wrapper->field_image_asset->value();
-    $asset->title = t('Profile image for !username', array('!username' => $account->name));
-    $asset->uid = $account->uid;
-    $asset->save();
+  if(isset($wrapper->field_image_theforce)){
+    $theforce = $wrapper->field_image_theforce->value();
+    $theforce->title = t('Profile image for !username', array('!username' => $account->name));
+    $theforce->uid = $account->uid;
+    $theforce->save();
   }
 }
 
@@ -461,22 +475,6 @@ function theforce_settings_definition() {
  */
 function theforce_plugin_id_prepare($id){
   return 'theforcePadawan' . ucfirst($id);
-}
-
-/**
- * Implements hook_permission().
- */
-function theforce_permission() {
-  return array(
-    'view theforce' => array(
-      'title' => t('Use the Force'),
-      'description' => t('Access the Force and all its glory'),
-    ),
-    'administer theforce' => array(
-      'title' => t('Administer the Force'),
-      'description' => t('Control the Force settings and configurations'),
-    ),
-  );
 }
 
 /**
@@ -523,11 +521,40 @@ function theforce_is_management() {
 function theforce_form_alter(&$form, &$form_state, $form_id){
   if(in_array($form_id, array('user_profile_form','user_register_form'))){
     // Make sure user profile image is never required.
-    if(isset($form['field_image_asset'])){
-      $ief = &$form['field_image_asset'][$form['field_image_asset']['#language']]['form']['field_image'];
+    if(isset($form['field_image_theforce'])){
+      $ief = &$form['field_image_theforce'][$form['field_image_theforce']['#language']]['form']['field_image'];
       $ief[$ief['#language']][0]['#required'] = 0;
     }
   }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Access and Permissions
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Implements hook_permission().
+ */
+function theforce_permission() {
+  $permissions = array(
+    'view theforce' => array(
+      'title' => t('Use the Force'),
+      'description' => t('Access the Force and all its glory'),
+    ),
+    'administer theforce' => array(
+      'title' => t('Administer the Force'),
+      'description' => t('Control the Force settings and configurations'),
+    ),
+  );
+  // $plugins = theforce_query()->filterPublic()->execute();
+  // foreach($plugins as $id => $plugin){
+  //   $permissions['view ' . $id] = array(
+  //     'title' => t('View %name', array('%name' => $plugin['title'])),
+  //     'description' => t('View this plugin in all its glory'),
+  //   );
+  // }
+  return $permissions;
 }
 
 
@@ -739,6 +766,21 @@ function theforce_plugin_get($plugin) {
  */
 function theforce_plugin_load($id){
   return theforce_query()->returnOnEmpty(false)->filterActive()->filterId($id)->loadHandler()->execute();
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Views
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Implements hook_views_api().
+ */
+function theforce_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'theforce') . '/views',
+  );
 }
 
 

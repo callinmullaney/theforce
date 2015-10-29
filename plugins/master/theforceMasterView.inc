@@ -11,6 +11,7 @@ class theforceMasterView extends theforceDropdown {
     return array(
       'view' => '',
       'viewDisplay' => '',
+      'viewArguments' => '',
     );
   }
 
@@ -58,6 +59,15 @@ class theforceMasterView extends theforceDropdown {
         '#prefix' => '<div id="' . $settings_id . '">',
         '#suffix' => '</div>',
       );
+
+      $form['viewArguments'] = array(
+        '#title' => t('Contextual filters'),
+        '#description' => t('Use a comma (,) separated list of each contextual filter which should be forwared to the view.'),
+        '#type' => 'textfield',
+        '#default_value' => $this->values['viewArguments'],
+        '#fieldset' => 'views_field_view',
+        '#maxlength' => '256',
+      );
     }
     else{
       $form['viewDisplay'] = array(
@@ -68,12 +78,27 @@ class theforceMasterView extends theforceDropdown {
     return $form;
   }
 
+  public function access(){
+    $view = views_get_view($this->values['view']);
+    return $view->access($this->values['viewDisplay']);
+  }
+
   public function dropdownAjax(){
     $view = views_get_view($this->values['view']);
-    $view->set_display($this->values['viewDisplay']);
-    // Enable ajax view by default.
-    $view->display_handler->set_option('use_ajax', true);
-    return $view->preview($this->values['viewDisplay']);
+    if($view->access($this->values['viewDisplay'])){
+      $view->set_display($this->values['viewDisplay']);
+      // Enable ajax view by default.
+      $view->display_handler->set_option('use_ajax', true);
+      if(!empty($this->values['viewArguments'])){
+        $args = array($arg1, $arg2);
+        $view->set_arguments(array_filter(array_map('trim', explode(',', $this->values['viewArguments'])), 'strlen'));
+      }
+      return $view->preview($this->values['viewDisplay']);
+    }
+    else{
+      drupal_set_message('No access');
+      return '';
+    }
   }
 
 }
