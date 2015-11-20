@@ -4,24 +4,6 @@
  * Implements hook_install().
  */
 function theforce_install() {
-  // Create image style
-  if(!image_style_load('theforce_top')){
-    $style = image_style_save(array(
-      'name' => 'theforce_top',
-      'label' => 'THE FORCE | Top')
-    );
-    $effect = array(
-      'name' => 'image_scale_and_crop',
-      'data' => array(
-        'width' => 28,
-        'height' => 28,
-        'upscale' => TRUE,
-      ),
-      'isid' => $style['isid'],
-    );
-    image_effect_save($effect);
-  }
-
   // Store user profile picture in files directory.
   $directory = 'public://theforce';
   file_prepare_directory($directory, FILE_CREATE_DIRECTORY);

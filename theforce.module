@@ -183,7 +183,7 @@ function theforce_theme($existing, $type, $theme, $path) {
     'path' => $path . '/theme',
     'file' => 'theforce.theme.inc',
   );
-  $items['theforce_region'] = array(
+  $items['theforce_location'] = array(
     'variables' => array(
       'content' => array(),
       'region' => '',
@@ -372,7 +372,7 @@ function theforce_content_region($region, $location){
   }
   if(!empty($content) || theforce_is_management()){
     $content['items'] = array(
-      '#theme' => 'theforce_region',
+      '#theme' => 'theforce_location',
       '#region' => $region,
       '#location' => $location,
       '#content' => $content,
@@ -803,4 +803,31 @@ function theforce_features_api() {
       // 'default_file' => FEATURES_DEFAULTS_INCLUDED,
     ),
   );
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Images
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Implements hook_image_default_styles().
+ */
+function theforce_image_default_styles() {
+  $styles = array();
+  $styles['theforce-top'] = array(
+    'label' => 'THE FORCE | Top',
+    'effects' => array(
+      array(
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => 28,
+          'height' => 28,
+          'upscale' => TRUE,
+        ),
+        'weight' => 0,
+      ),
+    ),
+  );
+  return $styles;
 }
