@@ -1,6 +1,7 @@
 name = The Force
 description = An admin menu interface. My the force be with you. Always.
 package = The Force
+version = 7.x-1.x-dev
 core = 7.x
 
 dependencies[] = menu
