@@ -30,6 +30,7 @@ function _theforce_theforce_jedi() {
   );
   $plugins['theforceJediNodeCreate'] = array(
     'title' => 'Node Creation',
+    'configurable' => 1,
     'handler' => array(
       'path' => $path,
       'file' => 'theforceJediNodeCreate.inc',

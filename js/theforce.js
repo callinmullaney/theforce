@@ -1,6 +1,7 @@
 (function ($, Drupal) {
 
 var theForce = {
+  once: 0,
   $dropdown: null,
   forceUses: 0,
   sideActive: 0
@@ -9,6 +10,12 @@ var theForce = {
 theForce.attach = function(context, settings) {
   var self = this;
   self.$body = $('body');
+
+  if(!self.once){
+    self.once = 1;
+    // Set background color to reflect body background color.
+    $('#theforce-content').css('backgroundColor', $('body').css('backgroundColor'));
+  }
 
   // Bind Ajax behaviors to all items showing the class.
   $('.use-theforce:not(.used-theforce)').addClass('used-theforce').each(function () {
@@ -22,7 +29,7 @@ theForce.attach = function(context, settings) {
     // than the usual location.
     if ($(this).attr('href')) {
       element_settings.theforce = 1;
-      element_settings.url = $(this).attr('href') + '/ajax';
+      element_settings.url = $(this).attr('href') + '/ajax?destination=' + encodeURIComponent(settings.theforce.basePath);
       element_settings.event = 'click.theforce';
       element_settings.once = $(this).data('once') || 0;
       element_settings.base = base;
@@ -35,8 +42,64 @@ theForce.attach = function(context, settings) {
   self.side(context, settings);
   self.dropdown(context, settings);
   self.menu(context, settings);
+  // self.fitH('#theforce-top', context, settings);
   self.ink(context, settings);
 };
+
+
+  /**
+   * Sizing handler.
+   */
+theForce.fit = {h:[],w:[]};
+theForce.fitH = function(selector){
+  var self = this;
+  var $element = $(selector);
+  var elementWidth = $element.width();
+  var locationWidth = 0
+  // var locationItemWidth;
+  // $('.theforce-location', $element).each(function(){
+  //   locationItemWidth = 0;
+  //   $('.theforce-item', $(this)).each(function(){
+  //     locationItemWidth += $(this).outerWidth();
+  //   });
+  //   $(this).width(locationItemWidth);
+  //   locationWidth += locationItemWidth;
+  // });
+
+  $('.theforce-location', $element).each(function(){
+    locationWidth += $(this).outerWidth();
+  });
+
+  // $element.css({minWidth: locationWidth + 'px'});
+  $element.addClass('mini');
+  // if(elementWidth < locationWidth){
+  //   $element.addClass('mini');
+  // }
+  // else{
+  //   $element.removeClass('mini');
+  // }
+  // theForce.fit.h.push(selector);
+  // self.fitWatch();
+}
+
+theForce.fitWatchInit = 0;
+theForce.fitWatch = function(){
+  var self = this;
+
+  if(!theForce.fitWatchInit){
+    var timer;
+    theForce.fitWatchInit = 1;
+    $( window ).resize(function() {
+      clearTimeout(timer);
+      timer = setTimeout(function(){
+        $.each(self.fit.h, function(index, selector){
+          self.fitH(selector);
+        });
+      }, 200);
+
+    });
+  }
+}
 
 
   /**

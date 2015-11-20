@@ -140,7 +140,7 @@ class theforce {
   /**
    * Returns the user photo.
    */
-  public function userImage($style_name = 'theforce_top') {
+  public function userImage($style_name = 'theforce-top') {
     global $user;
     $account = user_load($user->uid);
     $image = array();

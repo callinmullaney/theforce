@@ -220,6 +220,16 @@ div.theforce{
   }
 }
 
+.theforce-ui-sort{
+
+  &:hover{
+
+    .theforce-ui-ops{
+      pointer-events:auto !important;
+    }
+  }
+}
+
 #theforce-side{
 
   .theforce-ui-item{
@@ -246,6 +256,7 @@ div.theforce{
     line-height: 12px;
     opacity:0;
     z-index:5;
+    pointer-events:none;
     @include transition(opacity 300ms);
 
     .theforce-ui-op{

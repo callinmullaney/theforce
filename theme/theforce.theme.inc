@@ -10,14 +10,15 @@ function template_preprocess_theforce(&$vars){
   $vars['location_attributes_array'] = array();
   foreach($vars['locations'] as $location){
     $vars['location_attributes_array'][$location]['id'] = 'theforce-' . $region . '-' . $location;
+    $vars['location_attributes_array'][$location]['class'][] = 'theforce-location';
   }
 
   if(theforce_is_management() && !empty($vars['locations'])){
     foreach($vars['locations'] as $location){
-      $weight = $location == 'bottom' ? -1 : 100;
+      $weight = $location == 'bottom' || $location == 'right' ? -1 : 100;
       $vars['content'][$location]['ops']['#weight'] = $weight;
       $vars['content'][$location]['ops']['add'] = array(
-        '#theme' => 'theforce_region',
+        '#theme' => 'theforce_location',
         '#region' => $vars['region'],
         '#location' => 'ops-' . $location,
         '#content' => array(
@@ -45,18 +46,17 @@ function template_process_theforce(&$vars){
 }
 
 /**
- * Default implementation of theme_theforce_region().
+ * Default implementation of theme_theforce_location().
  */
-function theme_theforce_region($vars){
+function theme_theforce_location($vars){
   return '<ul' . drupal_attributes($vars['attributes']) . '>' . drupal_render($vars['content']) . '</ul>';
 }
 
 /**
- * Implements hook_preprocess_theforce_region().
+ * Implements hook_preprocess_theforce_location().
  */
-function template_preprocess_theforce_region(&$vars){
-  // $vars['attributes']['id'] = 'theforce-' . $vars['region'] . '-' . $vars['region'];
-  $vars['attributes']['class'][] = 'theforce-region';
+function template_preprocess_theforce_location(&$vars){
+  $vars['attributes']['class'][] = 'theforce-items';
 }
 
 /**
