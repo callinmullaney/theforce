@@ -1,0 +1,7 @@
+name = The Force | Example
+description = An example module that demonstrates how to ue The Force API.
+package = The Force
+core = 7.x
+
+dependencies[] = theforce
+

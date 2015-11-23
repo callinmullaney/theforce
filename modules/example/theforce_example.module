@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function theforce_example_ctools_plugin_directory($module, $plugin){
+  if($module == 'theforce' && $plugin == 'jedi'){
+    return 'plugins/jedi';
+  }
+}
+
+/**
+ * Implements hook_theforce_items().
+ *
+ * @return [type]
+ */
+function theforce_example_theforce_items(){
+  $custom = array();
+  $custom['theforcePadawanHookTest'] = array(
+    'title' => t('TEST | Hook Test'),
+    'class' => 'theforceMasterText',
+    'settings' => array(
+      'icon' => 'star',
+      'text' => t('Hook Test'),
+    ),
+  );
+  return $custom;
+}
+
+/**
+ * Implements hook_theforce_items_alter().
+ *
+ * @return [type]
+ */
+function theforce_example_theforce_items_alter(&$custom){
+}
