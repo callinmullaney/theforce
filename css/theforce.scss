@@ -190,14 +190,6 @@ $theforce-dropdown-size: 13px !default;
     }
   }
 
-  *{
-    box-sizing: border-box;
-
-    &.handle{
-      box-sizing: content-box;
-    }
-  }
-
   a{
     text-decoration: none;
     text-shadow:none;
@@ -391,6 +383,19 @@ $theforce-dropdown-size: 13px !default;
       border-top: 1px solid darken($theforce-top-bg, 5%);
       padding: 10px 0 10px 0;
       margin: 10px 0 -10px 0;
+    }
+  }
+}
+
+// Some themes, like Adminimal... like to change this. We just need to add
+// a deeper selection method to stop this from happening.
+body .theforce{
+
+  *{
+    box-sizing: border-box;
+
+    &.handle{
+      box-sizing: content-box;
     }
   }
 }
@@ -1265,6 +1270,7 @@ body.theforce-side-active{
   box-shadow: 0 0 0 rgba(#000, .3);
   padding: 30px;
   font-size:$theforce-overlay-font-size;
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   @include transform(scale(1.2));
   @include transform-origin(center bottom);
@@ -1322,6 +1328,7 @@ body.theforce-side-active{
   padding:10px;
   width: $theforce-side-width-active;
   opacity:0;
+  box-sizing: border-box;
   @include clearfix();
   @include transition(opacity 300ms);
 

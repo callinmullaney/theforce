@@ -28,13 +28,13 @@ function _theforce_theforce_jedi() {
      */
     // 'limit_location' => array('right'),
   );
-  $plugins['theforceJediNodeCreate'] = array(
-    'title' => 'Node Creation',
+  $plugins['theforceJediCreate'] = array(
+    'title' => 'Content Creation',
     'configurable' => 1,
     'handler' => array(
       'path' => $path,
-      'file' => 'theforceJediNodeCreate.inc',
-      'class' => 'theforceJediNodeCreate',
+      'file' => 'theforceJediCreate.inc',
+      'class' => 'theforceJediCreate',
     ),
   );
   $plugins['theforceJediMenuManage'] = array(

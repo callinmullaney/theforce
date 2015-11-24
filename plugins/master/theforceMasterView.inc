@@ -80,7 +80,10 @@ class theforceMasterView extends theforceDropdown {
 
   public function access(){
     $view = views_get_view($this->values['view']);
-    return $view->access($this->values['viewDisplay']);
+    if($view && isset($view->display[$this->values['viewDisplay']])){
+      return $view->access($this->values['viewDisplay']);
+    }
+    return $this->isManagement;
   }
 
   public function dropdownAjax(){
