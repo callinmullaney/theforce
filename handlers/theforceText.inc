@@ -52,7 +52,7 @@ class theforceText extends theforce {
 
     $form['text'] = array(
       '#type' => 'textfield',
-      '#title' => t('Text'),
+      '#title' => t('Label'),
       '#default_value' => $this->values['text'],
     );
 

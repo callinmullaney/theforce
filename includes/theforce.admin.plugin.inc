@@ -326,7 +326,7 @@ function theforce_admin_plugin_create_form($form, &$form_state, $region = null, 
 
     $form['title'] = array(
       '#type' => 'textfield',
-      '#title' => t('Title'),
+      '#title' => t('Administrative Title'),
       '#description' => t('A descriptive label for this item used for administrative purposes.'),
       '#required' => true,
     );
