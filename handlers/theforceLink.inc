@@ -76,11 +76,11 @@ class theforceLink extends theforceText {
     $output['#prefix'] = $this->linkBefore;
     $output['#suffix'] = $this->linkAfter;
     if($this->elementWrapperClass){
-      $this->linkAttributes['class'][] = $this->elementWrapperClass;
+      $this->linkAttributes['class']['wrap'] = $this->elementWrapperClass;
     }
     if($this->values['ajax']){
       // Use built-in ajaxification.
-      $this->linkAttributes['class'][] = 'use-theforce';
+      $this->linkAttributes['class']['ajax'] = 'use-theforce';
     }
     $link = array();
     $linkOptions = $this->values['linkOptions'] + array(
@@ -105,6 +105,7 @@ class theforceLink extends theforceText {
     $content = parent::output();
     $output = array();
     $output['link'] = $this->renderLink($content);
+    $output['#attributes']['id'] = drupal_html_id($this->camel2dashed($this->info['id']));
     return $output;
   }
 

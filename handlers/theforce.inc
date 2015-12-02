@@ -122,7 +122,8 @@ class theforce {
       $output['#markup'] = '<div class="theforce-label">' . t('@title Placeholder', array('@title' => $this->info['title'])) . '</div>';
     }
     if(!empty($this->itemElement)){
-      $this->itemElementAttributes['class'][] = $this->elementWrapperClass;
+      $this->itemElementAttributes['class']['wrap'] = $this->elementWrapperClass;
+      $output['#attributes']['id'] = drupal_html_id($this->camel2dashed($this->info['name']));
       $output['#prefix'] = '<' . $this->itemElement . drupal_attributes($this->itemElementAttributes) . '>';
       $output['#suffix'] = '</' . $this->itemElement . '>';
     }
@@ -168,6 +169,13 @@ class theforce {
         ),
       ),
     );
+  }
+
+  /**
+   * Utility function that converts camel case to to dashes.
+   */
+  protected function camel2dashed($text) {
+    return drupal_html_class(preg_replace('/([A-Z])/', '-$1', $text));
   }
 
 }
