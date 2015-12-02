@@ -59,8 +59,9 @@ function theforce_views_default_theforce_content($type) {
     $handler->display->display_options['style_options']['columns']['ops'] = 'ops';
   }
   else{
-    $handler->display->display_options['style_options']['columns']['edit_node'] = 'edit_node';
-    $handler->display->display_options['style_options']['columns']['delete_node'] = 'edit_node';
+    $handler->display->display_options['style_options']['columns']['view_node'] = 'view_node';
+    $handler->display->display_options['style_options']['columns']['edit_node'] = 'view_node';
+    $handler->display->display_options['style_options']['columns']['delete_node'] = 'view_node';
   }
   $handler->display->display_options['style_options']['default'] = 'changed';
   $handler->display->display_options['style_options']['info'] = array(
@@ -95,12 +96,17 @@ function theforce_views_default_theforce_content($type) {
   );
   if(module_exists('views_ops')){
     $handler->display->display_options['style_options']['info']['ops'] = array(
-      'align' => '',
+      'align' => 'views-align-right',
       'separator' => '',
       'empty_column' => 0,
     );
   }
   else{
+    $handler->display->display_options['style_options']['info']['view_node'] = array(
+      'align' => 'views-align-right',
+      'separator' => ' &nbsp; ',
+      'empty_column' => 0,
+    );
     $handler->display->display_options['style_options']['info']['edit_node'] = array(
       'align' => '',
       'separator' => ' &nbsp; ',
@@ -126,6 +132,7 @@ function theforce_views_default_theforce_content($type) {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
   /* Field: Content: Published */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'node';
@@ -159,20 +166,27 @@ function theforce_views_default_theforce_content($type) {
     $handler->display->display_options['fields']['ops']['element_label_colon'] = FALSE;
   }
   else{
+    /* Field: Content: Link */
+    $handler->display->display_options['fields']['view_node']['id'] = 'view_node';
+    $handler->display->display_options['fields']['view_node']['table'] = 'views_entity_node';
+    $handler->display->display_options['fields']['view_node']['field'] = 'view_node';
+    $handler->display->display_options['fields']['view_node']['label'] = '';
+    $handler->display->display_options['fields']['view_node']['element_label_colon'] = FALSE;
+    $handler->display->display_options['fields']['view_node']['text'] = '<i class="fa fa-eye"></i> <span class="fa-l">View</span>';
     /* Field: Content: Edit link */
     $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
     $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
     $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
     $handler->display->display_options['fields']['edit_node']['label'] = '';
     $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
-    $handler->display->display_options['fields']['edit_node']['text'] = '<i class="fa fa-edit"></i> Edit';
+    $handler->display->display_options['fields']['edit_node']['text'] = '<i class="fa fa-edit"></i><span class="fa-l"> Edit</span>';
     /* Field: Content: Delete link */
     $handler->display->display_options['fields']['delete_node']['id'] = 'delete_node';
     $handler->display->display_options['fields']['delete_node']['table'] = 'views_entity_node';
     $handler->display->display_options['fields']['delete_node']['field'] = 'delete_node';
     $handler->display->display_options['fields']['delete_node']['label'] = '';
     $handler->display->display_options['fields']['delete_node']['element_label_colon'] = FALSE;
-    $handler->display->display_options['fields']['delete_node']['text'] = '<i class="fa fa-trash-o"></i> Delete';
+    $handler->display->display_options['fields']['delete_node']['text'] = '<i class="fa fa-trash-o"></i><span class="fa-l"> Delete</span>';
   }
   /* Sort criterion: Content: Updated date */
   $handler->display->display_options['sorts']['changed']['id'] = 'changed';
@@ -226,6 +240,7 @@ function theforce_views_default_theforce_content($type) {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
   /* Field: Content: Published */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'node';
@@ -243,20 +258,27 @@ function theforce_views_default_theforce_content($type) {
     $handler->display->display_options['fields']['ops']['element_label_colon'] = FALSE;
   }
   else{
+    /* Field: Content: Link */
+    $handler->display->display_options['fields']['view_node']['id'] = 'view_node';
+    $handler->display->display_options['fields']['view_node']['table'] = 'views_entity_node';
+    $handler->display->display_options['fields']['view_node']['field'] = 'view_node';
+    $handler->display->display_options['fields']['view_node']['label'] = '';
+    $handler->display->display_options['fields']['view_node']['element_label_colon'] = FALSE;
+    $handler->display->display_options['fields']['view_node']['text'] = '<i class="fa fa-eye"></i> <span class="fa-l">View</span>';
     /* Field: Content: Edit link */
     $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
     $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
     $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
     $handler->display->display_options['fields']['edit_node']['label'] = '';
     $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
-    $handler->display->display_options['fields']['edit_node']['text'] = '<i class="fa fa-edit"></i> Edit';
+    $handler->display->display_options['fields']['edit_node']['text'] = '<i class="fa fa-edit"></i> <span class="fa-l"> Edit</span>';
     /* Field: Content: Delete link */
     $handler->display->display_options['fields']['delete_node']['id'] = 'delete_node';
     $handler->display->display_options['fields']['delete_node']['table'] = 'views_entity_node';
     $handler->display->display_options['fields']['delete_node']['field'] = 'delete_node';
     $handler->display->display_options['fields']['delete_node']['label'] = '';
     $handler->display->display_options['fields']['delete_node']['element_label_colon'] = FALSE;
-    $handler->display->display_options['fields']['delete_node']['text'] = '<i class="fa fa-trash-o"></i> Delete';
+    $handler->display->display_options['fields']['delete_node']['text'] = '<i class="fa fa-trash-o"></i> <span class="fa-l"> Delete</span>';
   }
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -349,7 +371,7 @@ function theforce_views_default_theforce_assets($type) {
       'empty_column' => 0,
     ),
     'asset_ops' => array(
-      'align' => '',
+      'align' => 'views-align-right',
       'separator' => '',
       'empty_column' => 0,
     ),
