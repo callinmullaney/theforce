@@ -20,15 +20,15 @@ $theforce-settings-bg-image: false !default;
     background:#46381E;
     overflow:hidden;
 
-    .bg{
-      position: absolute;
-      top:0;
-      left:0;
-      right:0;
-      bottom:0;
-      border-radius:26px 26px 170px 170px;
-      box-shadow: inset 100px 0px 2px rgba(#000, .1), inset -100px 0px 2px rgba(#fff, .15);
-    }
+    // .bg{
+    //   position: absolute;
+    //   top:0;
+    //   left:0;
+    //   right:0;
+    //   bottom:0;
+    //   border-radius:26px 26px 170px 170px;
+    //   box-shadow: inset 100px 0px 2px rgba(#000, .1), inset -100px 0px 2px rgba(#fff, .15);
+    // }
 
     .shine{
       position: absolute;
@@ -246,6 +246,13 @@ div.theforce{
     display:none;
   }
 
+  .theforce-label{
+    position:static;
+    line-height:$theforce-top-item-height;
+    padding-left: $theforce-top-item-padding;
+    padding-right: $theforce-top-item-padding;
+  }
+
   .theforce-ui-ops{
     position:absolute;
     top:100%;
@@ -442,3 +449,45 @@ div.theforce{
 //   box-shadow: 0 2px 2px rgba(#000, .2);
 //   cursor: move;
 // }
+
+#theforce-theme-select{
+    list-style: none;
+    margin:0;
+    padding:3px;
+    background:#2C2E2F;
+    border-radius:3px;
+    @include clearfix();
+
+    li{
+      float:left;
+      display:block;
+      margin:0;
+      padding:0;
+      width:33.33%;
+
+      a{
+        color:#434343;
+        display:block;
+        padding:2px 4px;
+        margin:3px;
+        background: #fff;
+        border:2px solid #fff;
+        border-radius:3px;
+        text-transform: uppercase;
+        line-height:16px;
+        font-size:12px;
+        vertical-align: middle;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover,
+        &.active{
+          border:2px solid #5DAA50;
+        }
+      }
+
+      i{
+        font-size:16px;
+      }
+    }
+  }

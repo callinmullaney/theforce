@@ -2,6 +2,22 @@
 /// Variables
 ////////////////////////////////////////////////////////////////////////////////
 
+@function theforce-color($color, $percent: 10%) {
+  @if (lightness($color) > 50) {
+    @return darken($color, $percent); // Lighter backgorund, return dark color
+  } @else {
+    @return lighten($color, $percent); // Darker background, return light color
+  }
+}
+
+@function theforce-shade($color, $percent: 10%) {
+  @if (lightness($color) > 50) {
+    @return lighten($color, $percent); // Lighter backgorund, return dark color
+  } @else {
+    @return darken($color, $percent); // Darker background, return light color
+  }
+}
+
 $theforce-bg: #444444 !default;
 $theforce-color: #3E3E3E;
 $theforce-font-family: 'Open Sans', "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
@@ -12,21 +28,24 @@ $theforce-overlay-color-alt: darken($theforce-overlay-color, 20%) !default;
 $theforce-overlay-font-size:12px !default;
 
 $theforce-top-bg: #F2F2F2 !default;
-$theforce-top-color: #595959;
-$theforce-top-color-alt: darken($theforce-top-color, 20%) !default;
+$theforce-top-color: theforce-color($theforce-top-bg, 45%);
+$theforce-top-color-alt: theforce-color($theforce-top-bg, 65%) !default;
 $theforce-top-item-height: 66px !default;
 $theforce-top-item-padding: 16px !default;
 $theforce-top-font-size:12px !default;
+$theforce-top-primary: #0997c3 !default;
+
 
 $theforce-side-bg: #2C2E2F !default;
-$theforce-side-bg-alt: #27292A !default;
+$theforce-side-bg-alt: theforce-shade($theforce-side-bg, 5%);
 $theforce-side-width: 80px !default;
 $theforce-side-width-active: 335px !default;
-$theforce-side-color: #999999;
-$theforce-side-color-alt: lighten($theforce-side-color, 30%) !default;
+$theforce-side-color: theforce-color($theforce-side-bg, 45%) !default;
+$theforce-side-color-alt: theforce-color($theforce-side-bg, 65%) !default;
 $theforce-side-item-height: 40px !default;
 $theforce-side-item-padding: 14px !default;
 $theforce-side-font-size:12px !default;
+$theforce-side-primary: #0997c3 !default;
 
 $theforce-primary-color: #0080BA !default;
 $theforce-green-color: #8BC832 !default;
@@ -40,7 +59,6 @@ $theforce-blue-color: #005FCA !default;
 
 $theforce-dropdown-padding: 10px !default;
 $theforce-dropdown-size: 13px !default;
-
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Global Styling
@@ -64,10 +82,6 @@ $theforce-dropdown-size: 13px !default;
 
   ol, ul {
     list-style: none;
-  }
-
-  a{
-    color:$theforce-primary-color;
   }
 
   blockquote, q {
@@ -324,13 +338,13 @@ $theforce-dropdown-size: 13px !default;
       line-height: 20px;
       padding:0 5px;
       width:100%;
-      background: darken($theforce-top-bg, 5%);
+      background: theforce-color($theforce-top-bg, 5%);
     }
 
     .form-submit{
       margin:12px 0 0;
       padding:0 10px;
-      background:$theforce-primary-color;
+      background:$theforce-top-primary;
       border: none;
       border-radius: 0;
       color: #fff;
@@ -415,6 +429,20 @@ body .theforce{
   @include transition(left 300ms);
   @include transition-delay(300ms);
 
+  a{
+    color:$theforce-top-primary;
+    @include transition(color 300ms);
+
+    &:hover{
+      color: theforce-color($theforce-top-primary, 10%);
+    }
+  }
+
+  table td,
+  table th{
+    color: $theforce-top-color;
+  }
+
   &.mini{
     overflow-x: auto;
     white-space: nowrap;
@@ -429,19 +457,6 @@ body .theforce{
       left:0;
       z-index: 1000;
     }
-
-  //   > div{
-  //     float:none !important;
-  //     display:inline-block;
-  //   }
-
-  // .theforce-item{
-  //   height: ($theforce-top-item-height/2) !important;
-
-  //   .theforce-element{
-  //     line-height: ($theforce-top-item-height/2) !important;
-  //   }
-  // }
   }
 
   .theforce-items{
@@ -462,7 +477,7 @@ body .theforce{
   }
 
   .ink{
-    background: darken($theforce-top-bg, 10%);
+    background: theforce-shade($theforce-top-bg, 15%);
   }
 }
 
@@ -481,6 +496,15 @@ body .theforce{
   @include flex-direction(column);
   @include transition(width 300ms);
   @include transition-delay(300ms);
+
+  a{
+    color:$theforce-side-primary;
+    @include transition(color 300ms);
+
+    &:hover{
+      color: theforce-color($theforce-side-primary, 10%);
+    }
+  }
 
   #theforce-side-top{
     @include flex(auto);
@@ -501,7 +525,7 @@ body .theforce{
       @include transition(background 300ms);
 
       &:hover{
-        background: $theforce-primary-color;
+        background: theforce-shade($theforce-side-bg, 20%);
       }
     }
   }
@@ -647,7 +671,6 @@ body.theforce-enabled{
       @include transition(color 300ms);
 
       &.active{
-        color: $theforce-primary-color !important;
         cursor: default;
       }
     }
@@ -680,8 +703,13 @@ body.theforce-enabled{
 #theforce-top{
 
   .theforce-label{
-    float:left;
-    line-height:$theforce-top-item-height;
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    text-align: center;
+    color: darken($theforce-top-bg, 20%);
+    z-index: 50;
   }
 
   .theforce-item{
@@ -693,17 +721,33 @@ body.theforce-enabled{
     margin-left: -1px;
     white-space: nowrap;
 
+    &:hover{
+      z-index:10;
+    }
+
     &:first-child{
       margin-left:0;
     }
 
     .theforce-element{
-      display:inline-block;
+      // display:inline-block;
+      float:left;
+      display:block;
       padding-left: $theforce-top-item-padding;
       padding-right: $theforce-top-item-padding;
       color: $theforce-top-color;
+      text-shadow: 0 1px 0 theforce-shade($theforce-top-bg, 10%);
       font-size:$theforce-top-font-size;
       line-height:$theforce-top-item-height;
+
+      &:hover{
+        z-index:10;
+
+        .theforce-text{
+          opacity:1;
+          @include transition-delay(1000ms);
+        }
+      }
     }
 
     a.theforce-element{
@@ -711,25 +755,27 @@ body.theforce-enabled{
       &:hover{
         color: $theforce-top-color-alt;
       }
+
+      &.active{
+        color: $theforce-top-primary !important;
+      }
     }
 
     .theforce-text{
-      // display:none;
       opacity:0;
       position:absolute;
-      // top:$theforce-top-item-height - 10;
       top: 50%;
       left:100%;
       margin-top: -$theforce-top-font-size/1.2;
       font-size: 11px;
       line-height: $theforce-top-font-size;
       background: $theforce-top-color;
-      // color: #fff;
       color:$theforce-top-bg;
       border-radius: 0 3px 3px 0;
       padding: 4px 6px;
       box-shadow: 0 2px 2px rgba(#000, .2);
       pointer-events: none;
+      text-shadow:none;
       @include transition(opacity 300ms 0ms);
 
       &:before{
@@ -743,14 +789,6 @@ body.theforce-enabled{
         border-style: solid;
         border-width: ($theforce-top-font-size/2+4) 5px ($theforce-top-font-size/2+4) 0;
         border-color: transparent $theforce-top-color transparent transparent;
-      }
-    }
-
-    &:hover{
-
-      .theforce-text{
-        opacity:1;
-        @include transition-delay(1000ms);
       }
     }
   }
@@ -770,14 +808,18 @@ body.theforce-enabled{
       }
     }
   }
+
+  .theforce-elements{
+    float:left;
+  }
 }
 
 #theforce-side{
 
   .theforce-label{
     padding:8px 0 0;
-    color: darken($theforce-side-color, 20%);
-    text-shadow: 0 1px 0 darken($theforce-side-bg, 40%);
+    color: theforce-color($theforce-side-bg, 15%);
+    text-shadow: 0 1px 0 theforce-shade($theforce-side-bg, 10%);
   }
 
   .theforce-icon{
@@ -801,25 +843,25 @@ body.theforce-enabled{
     border-style: solid none;
     color: $theforce-side-color;
     min-height: $theforce-side-item-height;
-    // width: $theforce-side-width-active;
     margin-top: -1px;
 
     .theforce-element{
       padding-left: $theforce-side-item-padding+$theforce-side-item-padding;
       color: $theforce-side-color;
+      text-shadow: 0 1px 0 theforce-shade($theforce-side-bg, 10%);
       font-size:$theforce-side-font-size;
       line-height:$theforce-side-item-height;
       @include transition(padding 300ms 0ms);
-
-      // .theforce-element{
-      //   padding-left:0;
-      // }
     }
 
     a.theforce-element{
 
       &:hover{
         color: $theforce-side-color-alt;
+      }
+
+      &.active{
+        color: $theforce-side-primary !important;
       }
     }
   }
@@ -961,6 +1003,25 @@ body.theforce-side-active{
 
 #theforce-top{
 
+  .theforce-dropdown-content{
+
+    .theforce-dropdown-loader{
+
+      img{
+        background:theforce-shade($theforce-top-bg, 20%);
+        box-shadow: 0 3px 6px theforce-shade($theforce-top-bg, 30%);
+      }
+    }
+  }
+
+  .theforce-dropdown-trigger{
+
+    .fa-angle-down{
+      @include transform(rotate(0deg));
+      @include transition(transform 300ms);
+    }
+  }
+
   .theforce-dropdown-content {
     position: absolute;
     top: 100%;
@@ -969,8 +1030,8 @@ body.theforce-side-active{
     min-width: 160px;
     list-style: outside none none;
     text-align: left;
-    background-color: lighten($theforce-top-bg, 3%);
-    border: 1px solid #DDD;
+    background-color: theforce-shade($theforce-top-bg, 3%);
+    border: 1px solid theforce-shade($theforce-top-bg, 10%);
     border-radius: 0px;
     background-clip: padding-box;
     margin: -6px 0px 0px 6px;
@@ -988,6 +1049,14 @@ body.theforce-side-active{
     border-left-color: darken($theforce-top-bg, 10%);
     border-right-color: darken($theforce-top-bg, 10%);
     z-index: 15;
+
+    > .theforce-dropdown-trigger{
+      color: $theforce-top-primary !important;
+
+      .fa-angle-down{
+        @include transform(rotate(-180deg));
+      }
+    }
 
     > .theforce-dropdown-content{
       display:block;
@@ -1007,6 +1076,17 @@ body.theforce-side-active{
 }
 
 #theforce-side{
+
+  .theforce-dropdown-content{
+
+    .theforce-dropdown-loader{
+
+      img{
+        background:$theforce-side-color-alt;
+        box-shadow: 0 3px 6px $theforce-side-color;
+      }
+    }
+  }
 
   .theforce-dropdown-trigger{
 
@@ -1030,6 +1110,7 @@ body.theforce-side-active{
     z-index: 15;
 
     > .theforce-dropdown-trigger{
+      color: $theforce-side-primary !important;
 
       .fa-angle-down{
         @include transform(rotate(0deg));
@@ -1054,6 +1135,10 @@ body.theforce-side-active{
     margin:0;
     padding:0;
     border:none;
+
+    li{
+      position: relative;
+    }
 
     h3{
       margin:0;
@@ -1100,10 +1185,10 @@ body.theforce-side-active{
           margin: ($theforce-dropdown-padding*-1);
           padding: $theforce-dropdown-padding;
 
-          &:hover{
-            background:$theforce-primary-color;
-            color:#fff;
-          }
+          // &:hover{
+          //   background:$theforce-primary-color;
+          //   color:#fff;
+          // }
         }
       }
     }
@@ -1118,10 +1203,10 @@ body.theforce-side-active{
           margin: ($theforce-dropdown-padding/2*-1) ($theforce-dropdown-padding*-1);
           padding: $theforce-dropdown-padding/2 $theforce-dropdown-padding;
 
-          &:hover{
-            background:$theforce-primary-color;
-            color:#fff;
-          }
+          // &:hover{
+          //   background:$theforce-primary-color;
+          //   color:#fff;
+          // }
         }
       }
     }
@@ -1141,8 +1226,10 @@ body.theforce-side-active{
 
     a{
       color: $theforce-top-color;
+      @include transition(color 300ms, background 300ms);
 
       &:hover{
+        background:$theforce-top-primary;
         color: $theforce-top-color-alt;
       }
     }
@@ -1178,8 +1265,10 @@ body.theforce-side-active{
 
     a{
       color: $theforce-side-color;
+      @include transition(color 300ms, background 300ms);
 
       &:hover{
+        background:$theforce-side-primary;
         color: $theforce-side-color-alt;
       }
     }
@@ -1217,6 +1306,34 @@ body.theforce-side-active{
   }
 }
 
+#theforce-top{
+
+  .theforce-tabs,
+  .theforce-actions{
+    float:left;
+    display:block;
+    border-left-color:darken($theforce-top-bg, 10%);
+    border-right-color:darken($theforce-top-bg, 10%);
+  }
+
+  .theforce-tabs-secondary{
+    background: darken($theforce-top-bg, 5%);
+    margin-top:18px;
+    border-radius: 2px;
+    // margin-right:15px;
+    height:($theforce-top-item-height - 36px);
+
+    > li{
+      margin-top:-18px;
+
+      > a.theforce-element{
+        padding-left: ($theforce-top-item-padding - 5px);
+        padding-right: ($theforce-top-item-padding - 5px);
+      }
+    }
+  }
+}
+
 #theforce-side{
 
   .theforce-tabs-secondary{
@@ -1224,7 +1341,7 @@ body.theforce-side-active{
     border-radius: 2px;
     margin: 4px;
 
-    > li{
+    li.theforce-item{
       margin: 0 -4px;
     }
   }

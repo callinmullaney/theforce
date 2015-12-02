@@ -35,6 +35,7 @@ theforceAdminUI.attach = function(context, settings){
 
   self.itemsInit(settings);
   self.itemsSort();
+  self.themeSelect();
 }
 
 theforceAdminUI.itemsInit = function(settings){
@@ -110,6 +111,23 @@ theforceAdminUI.itemsSort = function(){
       });
     });
   }
+}
+
+theforceAdminUI.themeSelect = function(){
+  $('#theforce-theme-select a').once('theforce').click(function(e){
+    var $this, value, items = ['top-bg','top-primary','side-bg','side-primary'];
+    e.preventDefault();
+    $this = $(this);
+
+    $('#theforce-theme-select a').removeClass('active');
+    $this.addClass('active');
+
+    $.each(items, function( index, key ) {
+      value = $this.attr('data-' + key);
+      $('#edit-theforce-' + key).val(value);
+      $('.form-item-theforce-' + key + ' i').css({color:value});
+    });
+  });
 }
 
 theforceAdminUI.loading = function(){
