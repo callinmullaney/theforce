@@ -388,6 +388,10 @@ $theforce-dropdown-size: 13px !default;
       @include flex(0 0 auto);
     }
 
+    .fa-l{
+      display:none;
+    }
+
     .more-link{
       position: relative;
       text-align: center;
@@ -506,6 +510,11 @@ body .theforce{
     }
   }
 
+  table td,
+  table th{
+    color: $theforce-side-color;
+  }
+
   #theforce-side-top{
     @include flex(auto);
   }
@@ -527,6 +536,13 @@ body .theforce{
       &:hover{
         background: theforce-shade($theforce-side-bg, 20%);
       }
+    }
+  }
+
+  .view{
+
+    .views-field-title{
+      white-space: normal;
     }
   }
 
@@ -1008,8 +1024,8 @@ body.theforce-side-active{
     .theforce-dropdown-loader{
 
       img{
-        background:theforce-shade($theforce-top-bg, 20%);
-        box-shadow: 0 3px 6px theforce-shade($theforce-top-bg, 30%);
+        background:theforce-shade($theforce-top-bg, 10%);
+        box-shadow: 0 3px 6px theforce-shade($theforce-top-bg, 5%);
       }
     }
   }
@@ -1082,8 +1098,8 @@ body.theforce-side-active{
     .theforce-dropdown-loader{
 
       img{
-        background:$theforce-side-color-alt;
-        box-shadow: 0 3px 6px $theforce-side-color;
+        background:theforce-shade($theforce-side-bg, 10%);
+        box-shadow: 0 3px 6px theforce-shade($theforce-side-bg, 5%);
       }
     }
   }
