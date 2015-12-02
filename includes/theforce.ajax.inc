@@ -155,12 +155,5 @@ function ajax_command_theforce_update($region, $location = null, $settings = nul
     $selector = "#theforce-$region-$location-content";
     $content = theforce_content_region($region, $location);
   }
-
   return ajax_command_replace($selector, drupal_render($content));
-
-  return array(
-    'command' => 'theforceUpdate',
-    'selector' => $selector,
-    'data' => drupal_render($content),
-  );
 }
