@@ -10,12 +10,16 @@ class theforceJediLocalTabs extends theforce {
   protected function localTabsRender(){
     $output = array();
 
+    if($this->isManagement){
+      return $output;
+    }
+
     $primary = menu_primary_local_tasks();
     $secondary = menu_secondary_local_tasks();
 
     // Remove tasks from the rest of the page output.
     $current = &drupal_static('menu_local_tasks');
-    unset($current['tabs']);
+    $current['tabs'] = array();
 
     if(empty($primary) && empty($secondary)){
       // Disable access of this plugin if no tabs exist.
@@ -33,7 +37,7 @@ class theforceJediLocalTabs extends theforce {
             $childOutput[$childKey] = $this->localTabsLinkRender($childData['#link']);
           }
           if(!empty($childOutput)){
-            $childOutput['#prefix'] = '<ul class="theforce-tabs-secondary">';
+            $childOutput['#prefix'] = '<ul class="theforce-tabs-secondary theforce-elements">';
             $childOutput['#suffix'] = '</ul>';
             $output[$key]['secondary'] = $childOutput;
           }
@@ -41,7 +45,7 @@ class theforceJediLocalTabs extends theforce {
       }
 
       if(!empty($output)){
-        $output['#prefix'] = '<div class="theforce-label">' . t('Tasks') . '</div><ul class="theforce-tabs theforce-elements">';
+        $output['#prefix'] = '<div class="theforce-label">' . t('Tasks') . '</div><ul class="theforce-tabs-primary theforce-elements">';
         $output['#suffix'] = '</ul>';
       }
     }
@@ -51,7 +55,9 @@ class theforceJediLocalTabs extends theforce {
   protected function localTabsLinkRender($link){
     $output = array();
     $handler = $this->handler;
+    $handler->info['id'] = 'theforceTab'.ucwords($link['title']);
     $attributes = array();
+    $attributes['class'][] = 'theforce-item';
     $icon = 'angle-right';
     if(function_exists('fawesome_match') && $match = fawesome_match($link['title'])){
       $icon = $match['icon'];
@@ -76,6 +82,7 @@ class theforceJediLocalTabs extends theforce {
     $output = array();
     if($tabs = $this->localTabsRender()){
       $output['tabs'] = $tabs;
+      $output['#attributes']['class'][] = 'theforce-tabs';
     }
     return $output;
   }

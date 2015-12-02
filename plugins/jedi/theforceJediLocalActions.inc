@@ -10,11 +10,15 @@ class theforceJediLocalActions extends theforce {
   protected function localActionsRender(){
     $output = array();
 
+    if($this->isManagement){
+      return $output;
+    }
+
     $actions = menu_local_actions();
 
     // Remove tasks from the rest of the page output.
     $current = &drupal_static('menu_local_tasks');
-    unset($current['actions']);
+    $current['actions'] = array();
 
     if(empty($actions)){
       $this->access = false;
@@ -28,7 +32,7 @@ class theforceJediLocalActions extends theforce {
       }
 
       if(!empty($output)){
-        $output['#prefix'] = '<div class="theforce-label">' . t('Actions') . '</div><ul class="theforce-actions theforce-elements">';
+        $output['#prefix'] = '<div class="theforce-label">' . t('Actions') . '</div><ul class="theforce-elements">';
         $output['#suffix'] = '</ul>';
       }
     }
@@ -38,7 +42,9 @@ class theforceJediLocalActions extends theforce {
   protected function localActionsLinkRender($link){
     $output = array();
     $handler = $this->handler;
+    $handler->info['id'] = 'theforceAction'.ucwords($link['title']);
     $attributes = array();
+    $attributes['class'][] = 'theforce-item';
     $icon = 'angle-right';
     if(function_exists('fawesome_match') && $match = fawesome_match($link['title'])){
       $icon = $match['icon'];
@@ -63,6 +69,7 @@ class theforceJediLocalActions extends theforce {
     $output = array();
     if($actions = $this->localActionsRender()){
       $output['actions'] = $actions;
+      $output['#attributes']['class'][] = 'theforce-actions';
     }
     return $output;
   }
