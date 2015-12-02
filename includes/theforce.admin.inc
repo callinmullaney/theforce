@@ -62,6 +62,7 @@ function theforce_admin_form($form, &$form_state) {
     $themes[] = array('Cobalt', array('#273035','#0997c3','#273035','#0997c3'));
     $themes[] = array('Midnight', array('#2B2B2B','#0997c3','#2B2B2B','#0997c3'));
     $themes[] = array('Albino', array('#ECECEC','#0997c3','#ECECEC','#0997c3'));
+    $themes[] = array('Invert', array('#ECECEC','#0997c3','#273035','#0997c3'));
 
     foreach($themes as $theme){
       $item_class = $theme[1][0] == $top_bg && $theme[1][1] == $top_primary && $theme[1][2] == $side_bg && $theme[1][3] == $side_primary ? 'active' : '';
