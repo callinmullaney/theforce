@@ -465,9 +465,40 @@ function theforce_setting_set($key, $value){
 function theforce_settings_definition() {
   $defaults = &drupal_static(__FUNCTION__, array());
   if(empty($defaults)){
-    $defaults = array('menu' => '');
+    $defaults = array(
+      'menu' => '',
+      'top_bg' => '#2E383E',
+      'top_primary' => '#0997c3',
+      'side_bg' => '#273035',
+      'side_primary' => '#0997c3',
+    );
   }
   return $defaults;
+}
+
+/**
+ * Implements hook_sonar_var().
+ */
+function theforce_sonar_var(){
+  $settings = theforce_settings();
+  $defaults = array(
+    'group' => CSS_DEFAULT,
+    'every_page' => FALSE,
+  );
+  return array(
+    'theforce-top-bg' => array(
+      'value' => $settings['top_bg'],
+    ) + $defaults,
+    'theforce-top-primary' => array(
+      'value' => $settings['top_primary'],
+    ) + $defaults,
+    'theforce-side-bg' => array(
+      'value' => $settings['side_bg'],
+    ) + $defaults,
+    'theforce-side-primary' => array(
+      'value' => $settings['side_primary'],
+    ) + $defaults,
+  );
 }
 
 /**
