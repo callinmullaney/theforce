@@ -126,7 +126,6 @@ function theforce_views_default_theforce_content($type) {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  $handler->display->display_options['fields']['title']['element_type'] = 'strong';
   /* Field: Content: Published */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'node';
@@ -227,7 +226,6 @@ function theforce_views_default_theforce_content($type) {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  $handler->display->display_options['fields']['title']['element_type'] = 'strong';
   /* Field: Content: Published */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'node';
@@ -296,7 +294,7 @@ function theforce_views_default_theforce_assets($type) {
   $view->description = '';
   $view->tag = 'theforce';
   $view->base_table = 'asset';
-  $view->human_name = 'THE FORCE | ASSET | Manage ' . $type->title;
+  $view->human_name = 'THE FORCE | ASSET | Manage ' . $type->plural;
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
