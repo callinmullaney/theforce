@@ -1,0 +1,119 @@
+////////////////////////////////////////////////////////////////////////////////
+/// View Plugin Styling
+////////////////////////////////////////////////////////////////////////////////
+
+.theforce .view{
+
+  .inline li{
+    display:inline-block;
+    padding-right:8px;
+
+    &:last-child{
+      padding-right:0;
+    }
+  }
+
+  th,
+  td{
+    position: relative;
+  }
+
+  th,
+  th a,
+  label{
+    text-transform: uppercase;
+    font-size:10px;
+    line-height:10px;
+    font-weight:400;
+    color: lighten($theforce-top-color, 10%);
+  }
+
+  td,
+  td i{
+    font-size:12px;
+  }
+
+  input{
+    border:none;
+    box-shadow:none;
+    margin:0;
+    height:auto;
+    font-size: 11px;
+    line-height: 20px;
+    padding:0 5px;
+    width:100%;
+    background: theforce-color($theforce-top-bg, 5%);
+  }
+
+  .form-submit{
+    margin:12px 0 0;
+    padding:0 10px;
+    background:$theforce-top-primary;
+    border: none;
+    border-radius: 0;
+    color: #fff;
+    font-size:11px;
+    font-weight:600;
+    line-height: 20px;
+    text-transform: uppercase;
+  }
+
+  .views-exposed-form{
+    padding: 0 0 10px 0;
+    margin: 0 0 10px 0;
+    border-bottom: 1px solid darken($theforce-top-bg, 5%);
+
+    label{
+      // color: $theforce-top-bg;
+      padding-bottom:2px;
+    }
+
+    .form-item{
+      margin:0;
+    }
+  }
+
+  .views-exposed-widgets{
+    @include display(flex);
+    @include flex-direction(row);
+  }
+
+  .views-exposed-widget{
+    @include flex(1 1 auto);
+    padding: 0 10px 0 0;
+
+    &:last-child{
+      padding-right:0;
+    }
+    // float:left;
+  }
+
+  .views-submit-button{
+    @include flex(0 0 auto);
+  }
+
+  .fa-l{
+    display:none;
+  }
+
+  .more-link{
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size:12px;
+    border-top: 1px solid darken($theforce-top-bg, 5%);
+    padding: 10px 0 10px 0;
+    margin: 10px 0 -10px 0;
+  }
+}
+
+
+//////////////////////////////////
+/// Top Specific Styling
+/////////////////////////////////
+
+
+//////////////////////////////////
+/// Side Specific Styling
+/////////////////////////////////

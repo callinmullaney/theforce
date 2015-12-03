@@ -1,0 +1,67 @@
+////////////////////////////////////////////////////////////////////////////////
+/// Badge Styling
+////////////////////////////////////////////////////////////////////////////////
+
+.theforce-badge{
+  display:inline-block;
+  font-style: normal;
+  color: #FFF;
+  font-size: 9px;
+  padding: 4px;
+  min-width: 18px;
+  font-weight: 400;
+  line-height: 18px;
+  vertical-align: baseline;
+  white-space: nowrap;
+  text-align: center;
+  border-radius: 50%;
+  background: $theforce-top-color;
+
+  &.green{
+    background: $theforce-green-color;
+  }
+  &.purple{
+    background: $theforce-purple-color;
+  }
+  &.red{
+    background: $theforce-red-color;
+  }
+  &.yellow{
+    background: $theforce-yellow-color;
+  }
+  &.sky{
+    background: $theforce-sky-color;
+  }
+  &.blue{
+    background: $theforce-blue-color;
+  }
+}
+
+
+//////////////////////////////////
+/// Top Specific Styling
+/////////////////////////////////
+#theforce-top{
+
+  .theforce-badge{
+    position: absolute;
+    top: $theforce-top-height/4;
+    right: 0px;
+    z-index:3;
+  }
+}
+
+
+//////////////////////////////////
+/// Side Specific Styling
+/////////////////////////////////
+#theforce-side{
+
+  .theforce-badge{
+    position: absolute;
+    top: 50%;
+    margin-top: -10px;
+    right: 10px;
+    z-index:3;
+  }
+}

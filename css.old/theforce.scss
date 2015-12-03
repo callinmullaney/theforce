@@ -1,0 +1,1559 @@
+////////////////////////////////////////////////////////////////////////////////
+/// Variables
+////////////////////////////////////////////////////////////////////////////////
+
+@function theforce-color($color, $percent: 10%) {
+  @if (lightness($color) > 50) {
+    @return darken($color, $percent); // Lighter backgorund, return dark color
+  } @else {
+    @return lighten($color, $percent); // Darker background, return light color
+  }
+}
+
+@function theforce-shade($color, $percent: 10%) {
+  @if (lightness($color) > 50) {
+    @return lighten($color, $percent); // Lighter backgorund, return dark color
+  } @else {
+    @return darken($color, $percent); // Darker background, return light color
+  }
+}
+
+$theforce-bg: #444444 !default;
+$theforce-color: #3E3E3E;
+$theforce-font-family: 'Open Sans', "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+
+$theforce-overlay-bg: #F2F2F2 !default;
+$theforce-overlay-color: #595959;
+$theforce-overlay-color-alt: darken($theforce-overlay-color, 20%) !default;
+$theforce-overlay-font-size:12px !default;
+
+$theforce-top-bg: #F2F2F2 !default;
+$theforce-top-color: theforce-color($theforce-top-bg, 45%);
+$theforce-top-color-alt: theforce-color($theforce-top-bg, 65%) !default;
+$theforce-top-item-height: 66px !default;
+$theforce-top-item-padding: 16px !default;
+$theforce-top-font-size:12px !default;
+$theforce-top-primary: #0997c3 !default;
+
+
+$theforce-side-bg: #2C2E2F !default;
+$theforce-side-bg-alt: theforce-shade($theforce-side-bg, 5%);
+$theforce-side-width: 80px !default;
+$theforce-side-width-active: 335px !default;
+$theforce-side-color: theforce-color($theforce-side-bg, 45%) !default;
+$theforce-side-color-alt: theforce-color($theforce-side-bg, 65%) !default;
+$theforce-side-item-height: 40px !default;
+$theforce-side-item-padding: 14px !default;
+$theforce-side-font-size:12px !default;
+$theforce-side-primary: #0997c3 !default;
+
+$theforce-primary-color: #0080BA !default;
+$theforce-green-color: #8BC832 !default;
+$theforce-purple-color: #7D30BF !default;
+$theforce-red-color: #D70000 !default;
+$theforce-yellow-color: #FDD117 !default;
+$theforce-sky-color: #37BAEC !default;
+$theforce-blue-color: #005FCA !default;
+
+// $theforce-ink-color: #CDCDCD !default;
+
+$theforce-dropdown-padding: 10px !default;
+$theforce-dropdown-size: 13px !default;
+
+////////////////////////////////////////////////////////////////////////////////
+/// Global Styling
+////////////////////////////////////////////////////////////////////////////////
+
+.theforce{
+  font-family: $theforce-font-family;
+  color: $theforce-color;
+
+  div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+  }
+
+  article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block;
+  }
+
+  ol, ul {
+    list-style: none;
+  }
+
+  blockquote, q {
+    quotes: none;
+  }
+
+  blockquote {
+    &:before, &:after {
+      content: '';
+      content: none;
+    }
+  }
+
+  q {
+    &:before, &:after {
+      content: '';
+      content: none;
+    }
+  }
+
+  .tabledrag-toggle-weight-wrapper{
+    // display:none;
+    float:right;
+    font-size:8px;
+    text-transform: uppercase;
+  }
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border:none;
+    background:none;
+
+    thead{
+      background:none;
+    }
+
+    th,
+    td{
+      border:none;
+      padding:5px;
+      background:none;
+
+      &.active{
+        background:none;
+        padding:5px;
+
+        img{
+          position:static;
+        }
+      }
+    }
+
+    tr,
+    tr.odd,
+    tr.even{
+      border:none;
+      background: none;
+
+      td.active{
+        background:none;
+      }
+
+      td:last-child,
+      td.menu-operations{
+        border:none;
+        text-align: right;
+      }
+    }
+
+    a.tabledrag-handle{
+      cursor: move;
+      float: left;
+      height: 1.7em;
+      margin-left: -1em;
+      overflow: hidden;
+      text-decoration: none;
+
+      .handle {
+        background: transparent url("/misc/draggable.png") no-repeat scroll 6px 9px;
+        height: 13px;
+        margin: -0.4em 0.5em;
+        padding: 0.42em 0.5em;
+        width: 13px;
+      }
+    }
+
+    input{
+      margin:0;
+    }
+  }
+
+  fieldset{
+    margin-bottom:10px;
+
+    .fieldset-legend{
+      // position: relative;
+      margin:0;
+      padding:0;
+    }
+
+    .fieldset-wrapper{
+      padding:20px 0 0 0;
+    }
+  }
+
+  .messages{
+    padding:10px 10px 10px 35px;
+  }
+
+  .form-item{
+    margin-bottom:10px;
+  }
+
+  .form-actions{
+    padding-top:10px;
+
+    a{
+      margin-right:1em;
+    }
+  }
+
+  a{
+    text-decoration: none;
+    text-shadow:none;
+
+    &:hover{
+      text-decoration: none;
+      text-shadow:none;
+    }
+
+    &:focus{
+      outline: none;
+    }
+  }
+
+  ul{
+    margin:0;
+    padding:0;
+  }
+
+  li{
+    margin:0;
+    padding:0;
+  }
+
+  div.indentation{
+    float: left;
+    height: 1.7em;
+    width: 20px;
+  }
+
+  span.ink-wrap{
+    display: block !important;
+    position: absolute !important;
+    overflow: hidden !important;
+    left:0 !important;
+    top:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+    pointer-events:none !important;
+    z-index:1 !important;
+
+    .ink {
+      display: block;
+      position: absolute;
+      // background: $theforce-ink-color;
+      border-radius: 100%;
+      @include transform(scale(0));
+
+      &.animate{
+        @include animation(ripple 500ms linear);
+      }
+    }
+  }
+
+  .theforce-grid{
+    margin:0;
+    padding:0;
+
+    li{
+      display:block;
+      margin:0;
+      padding:0;
+      list-style-type: none;
+    }
+
+    a{
+      display:block;
+      text-align: center;
+      padding:10px;
+      font-size:10px;
+      text-transform: uppercase;
+    }
+
+    i{
+      display:block;
+      font-size:30px;
+    }
+  }
+
+  img + span{
+    margin-left: 5px;
+  }
+
+  .view{
+
+    .inline li{
+      display:inline-block;
+      padding-right:8px;
+
+      &:last-child{
+        padding-right:0;
+      }
+    }
+
+    th,
+    td{
+      position: relative;
+    }
+
+    th,
+    th a,
+    label{
+      text-transform: uppercase;
+      font-size:10px;
+      line-height:10px;
+      font-weight:400;
+      color: lighten($theforce-top-color, 10%);
+    }
+
+    td,
+    td i{
+      font-size:12px;
+    }
+
+    input{
+      border:none;
+      box-shadow:none;
+      margin:0;
+      height:auto;
+      font-size: 11px;
+      line-height: 20px;
+      padding:0 5px;
+      width:100%;
+      background: theforce-color($theforce-top-bg, 5%);
+    }
+
+    .form-submit{
+      margin:12px 0 0;
+      padding:0 10px;
+      background:$theforce-top-primary;
+      border: none;
+      border-radius: 0;
+      color: #fff;
+      font-size:11px;
+      font-weight:600;
+      line-height: 20px;
+      text-transform: uppercase;
+    }
+
+    .views-exposed-form{
+      padding: 0 0 10px 0;
+      margin: 0 0 10px 0;
+      border-bottom: 1px solid darken($theforce-top-bg, 5%);
+
+      label{
+        // color: $theforce-top-bg;
+        padding-bottom:2px;
+      }
+
+      .form-item{
+        margin:0;
+      }
+    }
+
+    .views-exposed-widgets{
+      @include display(flex);
+      @include flex-direction(row);
+    }
+
+    .views-exposed-widget{
+      @include flex(1 1 auto);
+      padding: 0 10px 0 0;
+
+      &:last-child{
+        padding-right:0;
+      }
+      // float:left;
+    }
+
+    .views-submit-button{
+      @include flex(0 0 auto);
+    }
+
+    .fa-l{
+      display:none;
+    }
+
+    .more-link{
+      position: relative;
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size:12px;
+      border-top: 1px solid darken($theforce-top-bg, 5%);
+      padding: 10px 0 10px 0;
+      margin: 10px 0 -10px 0;
+    }
+  }
+}
+
+// Some themes, like Adminimal... like to change this. We just need to add
+// a deeper selection method to stop this from happening.
+body .theforce{
+
+  *{
+    box-sizing: border-box;
+
+    &.handle{
+      box-sizing: content-box;
+    }
+  }
+}
+
+#theforce-top{
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
+  min-height: 0px;
+  background-color: $theforce-top-bg;
+  // border-bottom: 1px solid darken($theforce-top-bg, 10%);
+  box-shadow: 0 1px 3px rgba(#000, .2);
+  font-size:$theforce-top-font-size;
+  z-index:100;
+  @include clearfix();
+  @include transition(left 300ms);
+  @include transition-delay(300ms);
+
+  a{
+    color:$theforce-top-primary;
+    @include transition(color 300ms);
+
+    &:hover{
+      color: theforce-color($theforce-top-primary, 10%);
+    }
+  }
+
+  table td,
+  table th{
+    color: $theforce-top-color;
+  }
+
+  &.mini{
+    overflow-x: auto;
+    white-space: nowrap;
+
+    .theforce-location{
+      position:relative;
+    }
+
+    .theforce-items{
+      position: absolute;
+      top:0;
+      left:0;
+      z-index: 1000;
+    }
+  }
+
+  .theforce-items{
+    // display:inline-block;
+    float:left;
+  }
+
+  #theforce-top-left{
+    float:left;
+  }
+
+  #theforce-top-right{
+    float:right;
+  }
+
+  .theforce-item .theforce-element.theforce-node-create i{
+    font-size: $theforce-top-font-size+28;
+  }
+
+  .ink{
+    background: theforce-shade($theforce-top-bg, 15%);
+  }
+}
+
+#theforce-side{
+  position: fixed;
+  top:0;
+  left:0;
+  bottom:0;
+  width:0;
+  background: $theforce-side-bg;
+  // overflow-x: visible;
+  // overflow-y: auto;
+  // -webkit-overflow-scrolling: touch;
+  z-index:120;
+  @include display(flex);
+  @include flex-direction(column);
+  @include transition(width 300ms);
+  @include transition-delay(300ms);
+
+  a{
+    color:$theforce-side-primary;
+    @include transition(color 300ms);
+
+    &:hover{
+      color: theforce-color($theforce-side-primary, 10%);
+    }
+  }
+
+  table td,
+  table th{
+    color: $theforce-side-color;
+  }
+
+  #theforce-side-top{
+    @include flex(auto);
+  }
+
+  .theforce-grid{
+    margin: -5px;
+
+    li{
+      display:block;
+      width:50%;
+      float:left;
+    }
+
+    a{
+      background: $theforce-side-bg-alt;
+      margin:5px;
+      @include transition(background 300ms);
+
+      &:hover{
+        background: theforce-shade($theforce-side-bg, 20%);
+      }
+    }
+  }
+
+  .view{
+
+    .views-field-title{
+      white-space: normal;
+    }
+  }
+
+  .ink{
+    background: darken($theforce-side-bg, 10%);
+  }
+}
+
+body.theforce-side-content{
+
+  #theforce-side{
+    width: $theforce-side-width !important;
+  }
+}
+
+body.theforce-side-active{
+
+  #theforce-side{
+    width: $theforce-side-width-active !important;
+    @include transition-delay(0ms);
+  }
+
+  #theforce-wrap,
+  #theforce-top{
+    left: $theforce-side-width-active !important;
+    @include transition-delay(0ms);
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// Body & Wrap Styling
+////////////////////////////////////////////////////////////////////////////////
+
+html, body{
+  width:100%;
+  height:100%;
+}
+
+#theforce-wrap{
+  background: $theforce-bg;
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  overflow:none;
+  z-index:0;
+  @include perspective(1500px);
+  @include transition(left 300ms);
+  @include transition-delay(300ms);
+
+  &:after{
+    display:block;
+    content:"";
+    position:absolute;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    background: rgba(#000, .5);
+    box-shadow: inset 0 10px 10px rgba(#000, .3);
+    z-index:100;
+    visibility: hidden;
+    opacity:0;
+    @include transition(opacity 300ms);
+  }
+}
+
+#theforce-content{
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  height:100%;
+  width:100%;
+  overflow:auto;
+  background:#fff;
+  @include transform(rotate(0deg));
+  -webkit-overflow-scrolling: touch;
+  @include perspective(1000px);
+  @include transition(transform 500ms ease 0ms);
+}
+
+body.theforce-inset{
+
+  #theforce-content{
+    @include transform-style(preserve-3d);
+    @include transform(translate3d(0px, 0px, -200px) rotate(0deg));
+    overflow: hidden;
+  }
+
+  #theforce-wrap:after{
+    opacity:1;
+    visibility: visible;
+  }
+}
+
+body.theforce-enabled{
+
+  &.theforce-top-content{
+
+    #theforce-wrap{
+      top: $theforce-top-item-height;
+    }
+  }
+
+  &.theforce-side-content{
+    // margin-left: $theforce-side-width;
+
+    #theforce-wrap,
+    #theforce-top{
+      left: $theforce-side-width;
+    }
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// Item Styling
+////////////////////////////////////////////////////////////////////////////////
+
+.theforce{
+
+  .theforce-item{
+    display:block;
+    border-color: transparent;
+    position:relative;
+
+    &:hover{
+      z-index: 100;
+    }
+
+    .theforce-element{
+      display:block;
+      position: relative;
+      z-index:3;
+    }
+
+    a.theforce-element{
+      @include transition(color 300ms);
+
+      &.active{
+        cursor: default;
+      }
+    }
+
+    i{
+      font-size: $theforce-side-font-size + 3;
+      line-height: $theforce-side-font-size;
+      vertical-align: middle;
+      text-align: center;
+    }
+  }
+
+  .theforce-label{
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+
+  .theforce-icon{
+    padding-right: 2px;
+  }
+
+  .theforce-text{
+    white-space: nowrap;
+    vertical-align: middle;
+    display: inline-block;
+  }
+}
+
+#theforce-top{
+
+  .theforce-label{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    text-align: center;
+    color: darken($theforce-top-bg, 20%);
+    z-index: 50;
+  }
+
+  .theforce-item{
+    float:left;
+    border-width: 0 1px;
+    border-style: none solid;
+    color: $theforce-top-color;
+    height: $theforce-top-item-height;
+    margin-left: -1px;
+    white-space: nowrap;
+
+    &:hover{
+      z-index:10;
+    }
+
+    &:first-child{
+      margin-left:0;
+    }
+
+    .theforce-element{
+      // display:inline-block;
+      float:left;
+      display:block;
+      padding-left: $theforce-top-item-padding;
+      padding-right: $theforce-top-item-padding;
+      color: $theforce-top-color;
+      text-shadow: 0 1px 0 theforce-shade($theforce-top-bg, 10%);
+      font-size:$theforce-top-font-size;
+      line-height:$theforce-top-item-height;
+
+      &:hover{
+        z-index:10;
+
+        .theforce-text{
+          opacity:1;
+          @include transition-delay(1000ms);
+        }
+      }
+    }
+
+    a.theforce-element{
+
+      &:hover{
+        color: $theforce-top-color-alt;
+      }
+
+      &.active{
+        color: $theforce-top-primary !important;
+      }
+    }
+
+    .theforce-text{
+      opacity:0;
+      position:absolute;
+      top: 50%;
+      left:100%;
+      margin-top: -$theforce-top-font-size/1.2;
+      font-size: 11px;
+      line-height: $theforce-top-font-size;
+      background: $theforce-top-color;
+      color:$theforce-top-bg;
+      border-radius: 0 3px 3px 0;
+      padding: 4px 6px;
+      box-shadow: 0 2px 2px rgba(#000, .2);
+      pointer-events: none;
+      text-shadow:none;
+      @include transition(opacity 300ms 0ms);
+
+      &:before{
+        display:block;
+        content:"";
+        position: absolute;
+        top:0;
+        left:-5px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: ($theforce-top-font-size/2+4) 5px ($theforce-top-font-size/2+4) 0;
+        border-color: transparent $theforce-top-color transparent transparent;
+      }
+    }
+  }
+
+  #theforce-top-right{
+
+    .theforce-text{
+      left:auto;
+      right: 100%;
+      border-radius: 3px 0 0 3px;
+
+      &:before{
+        left:auto;
+        right:-5px;
+        border-width: ($theforce-top-font-size/2+4) 0 ($theforce-top-font-size/2+4) 5px;
+        border-color: transparent transparent transparent $theforce-top-color;
+      }
+    }
+  }
+
+  .theforce-elements{
+    float:left;
+  }
+}
+
+#theforce-side{
+
+  .theforce-label{
+    padding:8px 0 0;
+    color: theforce-color($theforce-side-bg, 15%);
+    text-shadow: 0 1px 0 theforce-shade($theforce-side-bg, 10%);
+  }
+
+  .theforce-icon{
+    font-size: $theforce-side-font-size + 6;
+    width: $theforce-side-font-size*2;
+    text-align: center;
+    padding: 0;
+    @include transition(font-size 300ms);
+  }
+
+  .theforce-text{
+    max-width:0px;
+    overflow:hidden;
+    opacity:0;
+    @include transition(max-width 300ms, opacity 300ms);
+    @include transition-delay(0ms);
+  }
+
+  .theforce-item{
+    border-width: 1px 0;
+    border-style: solid none;
+    color: $theforce-side-color;
+    min-height: $theforce-side-item-height;
+    margin-top: -1px;
+
+    .theforce-element{
+      padding-left: $theforce-side-item-padding+$theforce-side-item-padding;
+      color: $theforce-side-color;
+      text-shadow: 0 1px 0 theforce-shade($theforce-side-bg, 10%);
+      font-size:$theforce-side-font-size;
+      line-height:$theforce-side-item-height;
+      @include transition(padding 300ms 0ms);
+    }
+
+    a.theforce-element{
+
+      &:hover{
+        color: $theforce-side-color-alt;
+      }
+
+      &.active{
+        color: $theforce-side-primary !important;
+      }
+    }
+  }
+
+  .theforce-elements{
+    .theforce-icon{
+      padding-left:0;
+    }
+  }
+}
+
+body.theforce-side-active{
+
+  #theforce-side{
+
+    .theforce-element{
+      padding-left: $theforce-side-item-padding;
+      @include transition(padding 300ms 0ms);
+    }
+
+    .theforce-icon{
+      font-size: $theforce-side-font-size + 3;
+      // padding-left: 0;
+      // padding-right: 5px;
+      // min-width: 0px;
+      // @include transition(padding 300ms 0ms);
+    }
+
+    .theforce-text{
+      max-width: $theforce-side-width-active;
+      opacity:1;
+      @include transition-delay(300ms);
+    }
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// Badge Styling
+////////////////////////////////////////////////////////////////////////////////
+
+.theforce{
+
+  .theforce-badge{
+    display:inline-block;
+    font-style: normal;
+    color:#FFF;
+    font-size: 9px;
+    padding: 4px;
+    min-width: 18px;
+    font-weight: 400;
+    line-height: 1;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-align: center;
+    border-radius: 10px;
+    background: $theforce-top-color;
+
+    &.green{
+      background: $theforce-green-color;
+    }
+    &.purple{
+      background: $theforce-purple-color;
+    }
+    &.red{
+      background: $theforce-red-color;
+    }
+    &.yellow{
+      background: $theforce-yellow-color;
+    }
+    &.sky{
+      background: $theforce-sky-color;
+    }
+    &.blue{
+      background: $theforce-blue-color;
+    }
+  }
+}
+
+#theforce-top{
+
+  .theforce-badge{
+    position: absolute;
+    top: $theforce-top-item-height/4;
+    right: 2px;
+    z-index:3;
+  }
+}
+
+#theforce-side{
+
+  .theforce-badge{
+    position: absolute;
+    top: 50%;
+    margin-top: -10px;
+    right: $theforce-side-item-padding;
+    z-index:3;
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// Dropdown Styling
+////////////////////////////////////////////////////////////////////////////////
+
+.theforce{
+
+  .theforce-dropdown-content{
+    display: none;
+    font-size: $theforce-dropdown-size;
+
+    &.padded{
+      padding: $theforce-dropdown-padding;
+    }
+
+    p:last-child{
+      margin-bottom:0;
+    }
+
+    .theforce-dropdown-loader{
+      text-align: center;
+
+      img{
+        display:block;
+        width:30px;
+        margin:0 auto;
+        background:rgba(#000, .5);
+        border-radius:50%;
+        border: 5px solid #fff;
+        box-shadow: 0 3px 6px rgba(#000, .3);
+      }
+    }
+
+    table{
+      white-space: nowrap;
+    }
+  }
+}
+
+#theforce-top{
+
+  .theforce-dropdown-content{
+
+    .theforce-dropdown-loader{
+
+      img{
+        background:$theforce-top-primary;
+        box-shadow: 0 3px 6px darken($theforce-top-bg, 10%);
+      }
+    }
+  }
+
+  .theforce-dropdown-trigger{
+
+    .fa-angle-down{
+      @include transform(rotate(0deg));
+      @include transition(transform 300ms);
+    }
+  }
+
+  .theforce-dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0px;
+    float: left;
+    min-width: 160px;
+    list-style: outside none none;
+    text-align: left;
+    background-color: theforce-shade($theforce-top-bg, 3%);
+    border: 1px solid theforce-shade($theforce-top-bg, 10%);
+    border-radius: 0px;
+    background-clip: padding-box;
+    margin: -6px 0px 0px 6px;
+    z-index: 10;
+    box-shadow: 0px 2px 2px rgba(#000, 0.15);
+  }
+
+  #theforce-top-right .theforce-dropdown-content{
+    right: 0px;
+    left: auto;
+    margin: -6px 6px 0px 0px;
+  }
+
+  .open{
+    border-left-color: darken($theforce-top-bg, 10%);
+    border-right-color: darken($theforce-top-bg, 10%);
+    z-index: 15;
+
+    > .theforce-dropdown-trigger{
+      color: $theforce-top-primary !important;
+
+      .fa-angle-down{
+        @include transform(rotate(-180deg));
+      }
+    }
+
+    > .theforce-dropdown-content{
+      display:block;
+      @include animation(scaleInLeft 300ms linear);
+    }
+  }
+
+  #theforce-top-right{
+
+    .open{
+
+      > .theforce-dropdown-content{
+        @include animation(scaleInRight 300ms linear);
+      }
+    }
+  }
+}
+
+#theforce-side{
+
+  .theforce-dropdown-content{
+
+    .theforce-dropdown-loader{
+
+      img{
+        background:$theforce-side-primary;
+        box-shadow: 0 3px 6px darken($theforce-side-bg, 10%);
+      }
+    }
+  }
+
+  .theforce-dropdown-trigger{
+
+    .fa-angle-down{
+      @include transform(rotate(-90deg));
+      @include transition(transform 300ms);
+    }
+  }
+
+  .theforce-dropdown-content {
+    background: $theforce-side-bg-alt;
+
+    &.padded{
+      padding: $theforce-side-item-padding;
+    }
+  }
+
+  .open{
+    border-top-color: darken($theforce-side-bg, 5%);
+    border-bottom-color: darken($theforce-side-bg, 5%);
+    z-index: 15;
+
+    > .theforce-dropdown-trigger{
+      color: $theforce-side-primary !important;
+
+      .fa-angle-down{
+        @include transform(rotate(0deg));
+      }
+    }
+
+    > .theforce-dropdown-content{
+      display:block;
+      @include animation(scaleInLeft 300ms linear);
+    }
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// List Styling
+////////////////////////////////////////////////////////////////////////////////
+
+.theforce{
+
+  .item-list{
+    margin:0;
+    padding:0;
+    border:none;
+
+    li{
+      position: relative;
+    }
+
+    h3{
+      margin:0;
+      padding:0;
+      background:none;
+      text-transform: uppercase;
+      padding: $theforce-dropdown-padding;
+      white-space: nowrap;
+    }
+
+    a{
+      white-space: nowrap;
+    }
+  }
+
+  .theforce-menu{
+    margin:0;
+    padding:0;
+
+    > li{
+      list-style-type: none;
+    }
+  }
+
+  .theforce-list{
+    margin:0;
+    padding:0;
+
+    > li{
+      list-style-type: none;
+    }
+
+    &.full{
+
+      > li{
+        padding: $theforce-dropdown-padding;
+
+        &:last-child{
+          border-bottom: none;
+        }
+
+        a{
+          display:block;
+          margin: ($theforce-dropdown-padding*-1);
+          padding: $theforce-dropdown-padding;
+
+          // &:hover{
+          //   background:$theforce-primary-color;
+          //   color:#fff;
+          // }
+        }
+      }
+    }
+
+    &.mini{
+
+      > li{
+        padding: $theforce-dropdown-padding/2 $theforce-dropdown-padding;
+
+        a{
+          display:block;
+          margin: ($theforce-dropdown-padding/2*-1) ($theforce-dropdown-padding*-1);
+          padding: $theforce-dropdown-padding/2 $theforce-dropdown-padding;
+
+          // &:hover{
+          //   background:$theforce-primary-color;
+          //   color:#fff;
+          // }
+        }
+      }
+    }
+  }
+}
+
+#theforce-top{
+
+  .item-list{
+
+    h3{
+      color: $theforce-top-color;
+      font-size: $theforce-top-font-size;
+      background: darken($theforce-top-bg, 4%);
+      border-bottom: 1px solid darken($theforce-top-bg, 8%);
+    }
+
+    a{
+      color: $theforce-top-color;
+      @include transition(color 300ms, background 300ms);
+
+      &:hover{
+        background:$theforce-top-primary;
+        color: $theforce-top-color-alt;
+      }
+    }
+  }
+
+  .theforce-list{
+
+    > li{
+      font-size: $theforce-top-font-size;
+      line-height: $theforce-top-font-size+4;
+    }
+
+    &.full{
+
+      > li{
+        border-bottom: 1px solid darken($theforce-top-bg, 4%);
+      }
+    }
+  }
+}
+
+#theforce-side{
+
+  .item-list{
+
+    h3{
+      color: $theforce-side-color;
+      font-size: $theforce-side-font-size;
+      background: darken($theforce-side-bg, 4%);
+      padding-left: $theforce-side-item-padding;
+      padding-right: $theforce-side-item-padding;
+    }
+
+    a{
+      color: $theforce-side-color;
+      @include transition(color 300ms, background 300ms);
+
+      &:hover{
+        background:$theforce-side-primary;
+        color: $theforce-side-color-alt;
+      }
+    }
+  }
+
+  .theforce-list{
+
+    > li{
+      font-size: $theforce-side-font-size;
+      line-height: $theforce-side-font-size+4;
+    }
+
+    &.full{
+
+      > li{
+        border-top: 1px solid darken($theforce-side-bg-alt, 2%);
+        padding-left: $theforce-side-item-padding;
+        padding-right: $theforce-side-item-padding;
+      }
+    }
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// Tabs/Actions
+////////////////////////////////////////////////////////////////////////////////
+
+
+.theforce-tabs,
+.theforce-actions{
+
+  li{
+    position: relative;
+  }
+}
+
+#theforce-top{
+
+  .theforce-tabs,
+  .theforce-actions{
+    float:left;
+    display:block;
+    border-left-color:darken($theforce-top-bg, 10%);
+    border-right-color:darken($theforce-top-bg, 10%);
+  }
+
+  .theforce-tabs-secondary{
+    background: darken($theforce-top-bg, 5%);
+    margin-top:18px;
+    border-radius: 2px;
+    // margin-right:15px;
+    height:($theforce-top-item-height - 36px);
+
+    > li{
+      margin-top:-18px;
+
+      > a.theforce-element{
+        padding-left: ($theforce-top-item-padding - 5px);
+        padding-right: ($theforce-top-item-padding - 5px);
+      }
+    }
+  }
+}
+
+#theforce-side{
+
+  .theforce-tabs-secondary{
+    background: darken($theforce-side-bg-alt, 3%);
+    border-radius: 2px;
+    margin: 4px;
+
+    li.theforce-item{
+      margin: 0 -4px;
+    }
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// Overlay
+////////////////////////////////////////////////////////////////////////////////
+
+#theforce-overlay{
+  position:absolute;
+  top:0;
+  right:0;
+  left:0;
+  bottom:0;
+  box-shadow: 0 0 0 rgba(#000, .3);
+  padding:30px;
+  z-index:200;
+  @include transition(background 500ms, box-shadow 500ms);
+
+  &.animate{
+
+    #theforce-overlay-inner{
+      opacity:1;
+      @include transform(scale(1));
+      box-shadow: 0 10px 10px rgba(#000, .3);
+    }
+  }
+
+  .sticky-header{
+    left:0 !important;
+  }
+}
+
+#theforce-overlay-inner{
+  margin:0 auto;
+  max-width:800px;
+  max-height:100%;
+  background:$theforce-overlay-bg;
+  border-top:1px solid lighten($theforce-overlay-bg, 10%);
+  opacity:0;
+  box-shadow: 0 0 0 rgba(#000, .3);
+  padding: 30px;
+  font-size:$theforce-overlay-font-size;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  @include transform(scale(1.2));
+  @include transform-origin(center bottom);
+  @include transition(opacity 500ms, transform 500ms, box-shadow 500ms);
+
+  .theforce-overlay-title{
+    text-transform: uppercase;
+    font-size:14px;
+    line-height:14px;
+    padding-bottom:10px;
+    font-weight:600;
+    text-align: center;
+  }
+
+  .theforce-overlay-description{
+    font-size:13px;
+    line-height:13px;
+    padding-bottom:20px;
+    text-align: center;
+  }
+
+  a{
+    color: $theforce-primary-color;
+    @include transition(color 300ms);
+
+    &:hover{
+      color: lighten($theforce-primary-color, 5%);
+    }
+  }
+
+  .form-actions{
+    margin-bottom:0;
+
+    input{
+      margin-bottom:0;
+    }
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// Side Content
+////////////////////////////////////////////////////////////////////////////////
+
+#theforce-side-content{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  overflow-y:auto;
+  background:$theforce-side-bg;
+  z-index:200;
+  box-shadow: 0 1px 1px rgba(#000, .2), inset 0 1px 3px -1px rgba(#000, .2);
+  padding:10px;
+  width: $theforce-side-width-active;
+  opacity:0;
+  box-sizing: border-box;
+  @include clearfix();
+  @include transition(opacity 300ms);
+
+  .theforce-side-title{
+    text-transform: uppercase;
+    font-size:14px;
+    line-height:14px;
+    padding-bottom:10px;
+    font-weight:600;
+    text-align: center;
+    color: $theforce-side-color-alt;
+  }
+
+  .theforce-side-description{
+    font-size:13px;
+    line-height:13px;
+    padding-bottom:20px;
+    text-align: center;
+    color: $theforce-side-color;
+  }
+
+  &.animate{
+    opacity:1;
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// Loader
+////////////////////////////////////////////////////////////////////////////////
+
+.theforce-ui-loader{
+  // @include align-content(center);
+  position: fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background:rgba(#000, .2);
+  z-index:9999;
+  text-align: center;
+  display:none;
+  opacity:0;
+  @include transition(opacity 300ms);
+
+  &.show{
+    @include display(flex);
+    @include align-items(center);
+  }
+
+  &.animate{
+    opacity:1;
+  }
+
+  img{
+    display:block;
+    width:50px;
+    margin:0 auto;
+    background:rgba(#000, .5);
+    padding:20px;
+    border-radius:50%;
+    border: 5px solid #fff;
+    box-shadow: 0 3px 6px rgba(#000, .3);
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// Animations
+////////////////////////////////////////////////////////////////////////////////
+
+@include keyframes(ripple) {
+  from {
+    opacity: 1;
+    @include transform(scale(0));
+  }
+  to {
+    opacity: 0;
+    @include transform(scale(2.5));
+  }
+}
+
+@include keyframes(scaleInLeft) {
+  from {
+    @include transform-origin(left top);
+    @include transform(scale(.5));
+    opacity: 0;
+  }
+  to {
+    @include transform(scale(1));
+    opacity: 1;
+  }
+}
+
+@include keyframes(scaleInRight) {
+  from {
+    @include transform-origin(right top);
+    @include transform(scale(.5));
+    opacity: 0;
+  }
+  to {
+    @include transform(scale(1));
+    opacity: 1;
+  }
+}
+

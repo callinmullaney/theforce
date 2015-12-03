@@ -1,0 +1,19 @@
+////////////////////////////////////////////////////////////////////////////////
+/// Functions
+////////////////////////////////////////////////////////////////////////////////
+
+@function theforce-color($color, $percent: 10%) {
+  @if (lightness($color) > 50) {
+    @return darken($color, $percent); // Lighter backgorund, return dark color
+  } @else {
+    @return lighten($color, $percent); // Darker background, return light color
+  }
+}
+
+@function theforce-shade($color, $percent: 10%) {
+  @if (lightness($color) > 50) {
+    @return lighten($color, $percent); // Lighter backgorund, return dark color
+  } @else {
+    @return darken($color, $percent); // Darker background, return light color
+  }
+}

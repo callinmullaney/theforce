@@ -1,0 +1,45 @@
+////////////////////////////////////////////////////////////////////////////////
+/// Variables
+////////////////////////////////////////////////////////////////////////////////
+
+$theforce-bg: #444444 !default;
+$theforce-color: #3E3E3E !default;
+$theforce-font-family: 'Open Sans', "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif !default;
+
+$theforce-overlay-bg: #F2F2F2 !default;
+$theforce-overlay-color: #595959 !default;
+$theforce-overlay-color-alt: darken($theforce-overlay-color, 20%) !default;
+$theforce-overlay-font-size:12px !default;
+
+$theforce-top-bg: #F2F2F2 !default;
+$theforce-top-color: theforce-color($theforce-top-bg, 45%) !default;
+$theforce-top-color-alt: theforce-color($theforce-top-bg, 65%) !default;
+$theforce-top-height: 66px !default;
+$theforce-top-item-padding: 16px !default;
+$theforce-top-font-size:12px !default;
+$theforce-top-primary: #0997c3 !default;
+
+
+$theforce-side-bg: #2C2E2F !default;
+$theforce-side-bg-alt: theforce-shade($theforce-side-bg, 5%) !default;
+$theforce-side-height: 40px !default;
+$theforce-side-width: 80px !default;
+$theforce-side-width-active: 335px !default;
+$theforce-side-color: theforce-color($theforce-side-bg, 45%) !default;
+$theforce-side-color-alt: theforce-color($theforce-side-bg, 65%) !default;
+$theforce-side-item-padding: 14px !default;
+$theforce-side-font-size:12px !default;
+$theforce-side-primary: #0997c3 !default;
+
+$theforce-primary-color: #0080BA !default;
+$theforce-green-color: #8BC832 !default;
+$theforce-purple-color: #7D30BF !default;
+$theforce-red-color: #D70000 !default;
+$theforce-yellow-color: #FDD117 !default;
+$theforce-sky-color: #37BAEC !default;
+$theforce-blue-color: #005FCA !default;
+
+// $theforce-ink-color: #CDCDCD !default;
+
+$theforce-dropdown-padding: 10px !default;
+$theforce-dropdown-size: 13px !default;

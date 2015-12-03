@@ -1,0 +1,38 @@
+////////////////////////////////////////////////////////////////////////////////
+/// Animations
+////////////////////////////////////////////////////////////////////////////////
+
+@include keyframes(ripple) {
+  from {
+    opacity: 1;
+    @include transform(scale(0));
+  }
+  to {
+    opacity: 0;
+    @include transform(scale(2.5));
+  }
+}
+
+@include keyframes(scaleInLeft) {
+  from {
+    @include transform-origin(left top);
+    @include transform(scale(.5));
+    opacity: 0;
+  }
+  to {
+    @include transform(scale(1));
+    opacity: 1;
+  }
+}
+
+@include keyframes(scaleInRight) {
+  from {
+    @include transform-origin(right top);
+    @include transform(scale(.5));
+    opacity: 0;
+  }
+  to {
+    @include transform(scale(1));
+    opacity: 1;
+  }
+}

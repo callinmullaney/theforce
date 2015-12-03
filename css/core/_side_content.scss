@@ -1,0 +1,43 @@
+////////////////////////////////////////////////////////////////////////////////
+/// Side Content
+////////////////////////////////////////////////////////////////////////////////
+
+#theforce-side-content{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  overflow-y:auto;
+  background:$theforce-side-bg;
+  z-index:200;
+  box-shadow: 0 1px 1px rgba(#000, .2), inset 0 1px 3px -1px rgba(#000, .2);
+  padding:10px;
+  width: $theforce-side-width-active;
+  opacity:0;
+  box-sizing: border-box;
+  @include clearfix();
+  @include transition(opacity 300ms);
+
+  .theforce-side-title{
+    text-transform: uppercase;
+    font-size:14px;
+    line-height:14px;
+    padding-bottom:10px;
+    font-weight:600;
+    text-align: center;
+    color: $theforce-side-color-alt;
+  }
+
+  .theforce-side-description{
+    font-size:13px;
+    line-height:13px;
+    padding-bottom:20px;
+    text-align: center;
+    color: $theforce-side-color;
+  }
+
+  &.animate{
+    opacity:1;
+  }
+}

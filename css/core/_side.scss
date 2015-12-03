@@ -1,0 +1,166 @@
+////////////////////////////////////////////////////////////////////////////////
+/// Side Bar Core Styling
+////////////////////////////////////////////////////////////////////////////////
+
+#theforce-side{
+  position: fixed;
+  top:0;
+  left:0;
+  bottom:0;
+  width:0;
+  background: $theforce-side-bg;
+  // overflow-x: visible;
+  // overflow-y: auto;
+  // -webkit-overflow-scrolling: touch;
+  z-index:120;
+  @include display(flex);
+  @include flex-direction(column);
+  @include transition(width 300ms);
+  @include transition-delay(300ms);
+
+  a{
+    color:$theforce-side-primary;
+    @include transition(color 300ms);
+
+    &:hover{
+      color: theforce-color($theforce-side-primary, 10%);
+    }
+  }
+
+  table td,
+  table th{
+    color: $theforce-side-color;
+  }
+
+  #theforce-side-top{
+    @include flex(auto);
+  }
+
+  .theforce-grid{
+    margin: -5px;
+
+    li{
+      display:block;
+      width:50%;
+      float:left;
+    }
+
+    a{
+      background: $theforce-side-bg-alt;
+      margin:5px;
+      @include transition(background 300ms);
+
+      &:hover{
+        background: theforce-shade($theforce-side-bg, 20%);
+      }
+    }
+  }
+
+  .view{
+    .views-field-title{
+      white-space: normal;
+    }
+  }
+
+  .ink{
+    background: darken($theforce-side-bg, 10%);
+  }
+
+  .theforce-label{
+    padding:8px 0 0;
+    color: theforce-color($theforce-side-bg, 15%);
+    text-shadow: 0 1px 0 theforce-shade($theforce-side-bg, 10%);
+  }
+
+  .theforce-icon{
+    font-size: $theforce-side-font-size + 6;
+    line-height: $theforce-side-font-size;
+    width: $theforce-side-font-size*2;
+    text-align: center;
+    padding: 0;
+    vertical-align: middle;
+    @include transition(font-size 300ms);
+  }
+
+  .theforce-text{
+    max-width:0px;
+    overflow:hidden;
+    opacity:0;
+    @include transition(max-width 300ms, opacity 300ms);
+    @include transition-delay(0ms);
+  }
+
+  .theforce-item{
+    border-width: 1px 0;
+    border-style: solid none;
+    color: $theforce-side-color;
+    min-height: $theforce-side-height;
+    margin-top: -1px;
+
+    .theforce-element{
+      padding-left: ($theforce-side-width - ($theforce-side-font-size*2)) / 2;
+      color: $theforce-side-color;
+      text-shadow: 0 1px 0 theforce-shade($theforce-side-bg, 10%);
+      font-size:$theforce-side-font-size;
+      line-height:$theforce-side-height;
+      @include transition(padding 300ms 0ms);
+    }
+
+    a.theforce-element{
+
+      &:hover{
+        color: $theforce-side-color-alt;
+      }
+
+      &.active{
+        color: $theforce-side-primary !important;
+      }
+    }
+  }
+
+  .theforce-elements{
+    .theforce-icon{
+      padding-left:0;
+    }
+  }
+}
+
+body.theforce-side-content{
+
+  #theforce-side{
+    width: $theforce-side-width !important;
+  }
+}
+
+body.theforce-side-active{
+
+  #theforce-wrap,
+  #theforce-top{
+    left: $theforce-side-width-active !important;
+    @include transition-delay(0ms);
+  }
+
+  #theforce-side{
+    width: $theforce-side-width-active !important;
+    @include transition-delay(0ms);
+
+    .theforce-element{
+      padding-left: $theforce-side-item-padding;
+      @include transition(padding 300ms 0ms);
+    }
+
+    .theforce-icon{
+      font-size: $theforce-side-font-size + 3;
+      // padding-left: 0;
+      // padding-right: 5px;
+      // min-width: 0px;
+      // @include transition(padding 300ms 0ms);
+    }
+
+    .theforce-text{
+      max-width: $theforce-side-width-active;
+      opacity:1;
+      @include transition-delay(300ms);
+    }
+  }
+}

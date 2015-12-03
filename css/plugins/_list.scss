@@ -1,0 +1,174 @@
+////////////////////////////////////////////////////////////////////////////////
+/// List Styling
+////////////////////////////////////////////////////////////////////////////////
+
+.theforce{
+
+  .item-list{
+    margin:0;
+    padding:0;
+    border:none;
+
+    li{
+      position: relative;
+    }
+
+    h3{
+      margin:0;
+      padding:0;
+      background:none;
+      text-transform: uppercase;
+      padding: $theforce-dropdown-padding;
+      white-space: nowrap;
+    }
+
+    a{
+      white-space: nowrap;
+    }
+  }
+
+  .theforce-menu{
+    margin:0;
+    padding:0;
+
+    > li{
+      list-style-type: none;
+    }
+  }
+
+  .theforce-list{
+    margin:0;
+    padding:0;
+
+    > li{
+      list-style-type: none;
+    }
+
+    &.full{
+
+      > li{
+        padding: $theforce-dropdown-padding;
+
+        &:last-child{
+          border-bottom: none;
+        }
+
+        a{
+          display:block;
+          margin: ($theforce-dropdown-padding*-1);
+          padding: $theforce-dropdown-padding;
+
+          // &:hover{
+          //   background:$theforce-primary-color;
+          //   color:#fff;
+          // }
+        }
+      }
+    }
+
+    &.mini{
+
+      > li{
+        padding: $theforce-dropdown-padding/2 $theforce-dropdown-padding;
+
+        a{
+          display:block;
+          margin: ($theforce-dropdown-padding/2*-1) ($theforce-dropdown-padding*-1);
+          padding: $theforce-dropdown-padding/2 $theforce-dropdown-padding;
+
+          // &:hover{
+          //   background:$theforce-primary-color;
+          //   color:#fff;
+          // }
+        }
+      }
+    }
+  }
+}
+
+
+//////////////////////////////////
+/// Top Specific Styling
+/////////////////////////////////
+#theforce-top{
+
+  .item-list{
+
+    h3{
+      color: $theforce-top-color;
+      font-size: $theforce-top-font-size;
+      background: darken($theforce-top-bg, 4%);
+      border-bottom: 1px solid darken($theforce-top-bg, 8%);
+    }
+
+    a{
+      color: $theforce-top-color;
+      @include transition(color 300ms, background 300ms);
+
+      &:hover{
+        background:$theforce-top-primary;
+        color: $theforce-top-color-alt;
+      }
+    }
+  }
+
+  .theforce-list{
+
+    > li{
+      font-size: $theforce-top-font-size;
+      line-height: $theforce-top-font-size+4;
+    }
+
+    &.full{
+
+      > li{
+        border-bottom: 1px solid darken($theforce-top-bg, 4%);
+      }
+    }
+  }
+}
+
+
+//////////////////////////////////
+/// Side Specific Styling
+/////////////////////////////////
+#theforce-side{
+
+  .item-list{
+
+    h3{
+      color: $theforce-side-color;
+      font-size: $theforce-side-font-size;
+      background: darken($theforce-side-bg, 4%);
+      padding-left: $theforce-side-item-padding;
+      padding-right: $theforce-side-item-padding;
+    }
+
+    a{
+      color: $theforce-side-color;
+      @include transition(color 300ms, background 300ms);
+
+      &:hover{
+        background:$theforce-side-primary;
+        color: $theforce-side-color-alt;
+      }
+    }
+  }
+
+  .theforce-list{
+
+    > li{
+      font-size: $theforce-side-font-size;
+      line-height: $theforce-side-font-size+4;
+    }
+
+    &.full{
+
+      > li{
+        border-top: 1px solid darken($theforce-side-bg-alt, 2%);
+        padding-left: $theforce-side-item-padding;
+        padding-right: $theforce-side-item-padding;
+      }
+    }
+  }
+}

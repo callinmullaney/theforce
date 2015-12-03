@@ -1,0 +1,186 @@
+////////////////////////////////////////////////////////////////////////////////
+/// Top Bar Core Styling
+////////////////////////////////////////////////////////////////////////////////
+
+#theforce-top{
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
+  min-height: 0px;
+  background-color: $theforce-top-bg;
+  // border-bottom: 1px solid darken($theforce-top-bg, 10%);
+  box-shadow: 0 1px 3px rgba(#000, .2);
+  font-size:$theforce-top-font-size;
+  z-index:100;
+  @include clearfix();
+  @include transition(left 300ms);
+  @include transition-delay(300ms);
+
+  a{
+    color:$theforce-top-primary;
+    @include transition(color 300ms);
+
+    &:hover{
+      color: theforce-color($theforce-top-primary, 10%);
+    }
+  }
+
+  table td,
+  table th{
+    color: $theforce-top-color;
+  }
+
+  &.mini{
+    overflow-x: auto;
+    white-space: nowrap;
+
+    .theforce-location{
+      position:relative;
+    }
+
+    .theforce-items{
+      position: absolute;
+      top:0;
+      left:0;
+      z-index: 1000;
+    }
+  }
+
+  .theforce-text{
+    opacity:0;
+    position:absolute;
+    top: 50%;
+    left:100%;
+    margin-top: -$theforce-top-font-size/1.2;
+    font-size: 11px;
+    line-height: $theforce-top-font-size;
+    background: $theforce-top-color;
+    color:$theforce-top-bg;
+    border-radius: 0 3px 3px 0;
+    padding: 4px 6px;
+    box-shadow: 0 2px 2px rgba(#000, .2);
+    pointer-events: none;
+    text-shadow:none;
+    @include transition(opacity 300ms 0ms);
+
+    &:before{
+      display:block;
+      content:"";
+      position: absolute;
+      top:0;
+      left:-5px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: ($theforce-top-font-size/2+4) 5px ($theforce-top-font-size/2+4) 0;
+      border-color: transparent $theforce-top-color transparent transparent;
+    }
+  }
+
+  .theforce-items{
+    // display:inline-block;
+    float:left;
+  }
+
+  #theforce-top-left{
+    float:left;
+  }
+
+  #theforce-top-right{
+    float:right;
+  }
+
+  .theforce-item .theforce-element.theforce-node-create i{
+    font-size: $theforce-top-font-size+28;
+  }
+
+  .ink{
+    background: theforce-shade($theforce-top-bg, 15%);
+  }
+
+  .theforce-label{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    text-align: center;
+    color: darken($theforce-top-bg, 20%);
+    z-index: 50;
+  }
+
+  .theforce-item{
+    float:left;
+    border-width: 0 1px;
+    border-style: none solid;
+    color: $theforce-top-color;
+    height: $theforce-top-height;
+    margin-left: -1px;
+    white-space: nowrap;
+
+    &:hover{
+      z-index:10;
+    }
+
+    &:first-child{
+      margin-left:0;
+    }
+
+    .theforce-element{
+      // display:inline-block;
+      float:left;
+      display:block;
+      padding-left: $theforce-top-item-padding;
+      padding-right: $theforce-top-item-padding;
+      color: $theforce-top-color;
+      text-shadow: 0 1px 0 theforce-shade($theforce-top-bg, 10%);
+      font-size:$theforce-top-font-size;
+      line-height:$theforce-top-height;
+
+      &:hover{
+        z-index:10;
+
+        .theforce-text{
+          opacity:1;
+          @include transition-delay(1000ms);
+        }
+      }
+    }
+
+    a.theforce-element{
+
+      &:hover{
+        color: $theforce-top-color-alt;
+      }
+
+      &.active{
+        color: $theforce-top-primary !important;
+      }
+    }
+
+    .theforce-icon{
+      font-size: $theforce-top-font-size + 3;
+      line-height: $theforce-top-height;
+    }
+  }
+
+  #theforce-top-right{
+
+    .theforce-text{
+      left:auto;
+      right: 100%;
+      border-radius: 3px 0 0 3px;
+
+      &:before{
+        left:auto;
+        right:-5px;
+        border-width: ($theforce-top-font-size/2+4) 0 ($theforce-top-font-size/2+4) 5px;
+        border-color: transparent transparent transparent $theforce-top-color;
+      }
+    }
+  }
+
+  .theforce-elements{
+    float:left;
+  }
+}
