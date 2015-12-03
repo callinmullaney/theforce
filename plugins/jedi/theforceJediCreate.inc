@@ -16,10 +16,13 @@ class theforceJediCreate extends theforceSide {
    */
   public function valuesDefinition(){
     return array(
+      'nodeEnabled' => 1,
       'nodeCreateInclude' => array(),
       'nodeCreateExclude' => array(),
+      'assetEnabled' => 0,
       'assetCreateInclude' => array(),
       'assetCreateExclude' => array(),
+      'userEnabled' => 0,
     ) + parent::valuesDefinition();
   }
 
@@ -33,7 +36,26 @@ class theforceJediCreate extends theforceSide {
       $options[$type] = $data->name;
     }
 
-    $form['nodeCreateInclude'] = array(
+    $form['nodeEnabled'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Enable Content Creation'),
+      '#default_value' => $this->values['nodeEnabled'],
+    );
+
+    $form['node'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Content Types'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#parents' => array('theforceJediCreate'),
+      '#states' => array(
+        'visible' => array(
+          'input[name="theforceJediCreate[nodeEnabled]"]' => array('checked' => TRUE),
+        ),
+      ),
+    );
+
+    $form['node']['nodeCreateInclude'] = array(
       '#type' => 'checkboxes',
       '#title' => t('Include Content Types'),
       '#description' => t('If nothing is selected, all content types will be included.'),
@@ -41,7 +63,7 @@ class theforceJediCreate extends theforceSide {
       '#options' => $options,
     );
 
-    $form['nodeCreateExclude'] = array(
+    $form['node']['nodeCreateExclude'] = array(
       '#type' => 'checkboxes',
       '#title' => t('Exclude Content Types'),
       '#description' => t('If nothing is selected, no content types will be excluded.'),
@@ -55,7 +77,26 @@ class theforceJediCreate extends theforceSide {
         $options[$type->type] = $type->title;
       }
 
-      $form['assetCreateInclude'] = array(
+      $form['assetEnabled'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Enable Asset Creation'),
+        '#default_value' => $this->values['assetEnabled'],
+      );
+
+      $form['asset'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Asset Types'),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+        '#parents' => array('theforceJediCreate'),
+        '#states' => array(
+          'visible' => array(
+            'input[name="theforceJediCreate[assetEnabled]"]' => array('checked' => TRUE),
+          ),
+        ),
+      );
+
+      $form['asset']['assetCreateInclude'] = array(
         '#type' => 'checkboxes',
         '#title' => t('Include Asset Types'),
         '#description' => t('If nothing is selected, all content types will be included.'),
@@ -63,7 +104,7 @@ class theforceJediCreate extends theforceSide {
         '#options' => $options,
       );
 
-      $form['assetCreateExclude'] = array(
+      $form['asset']['assetCreateExclude'] = array(
         '#type' => 'checkboxes',
         '#title' => t('Exclude Asset Types'),
         '#description' => t('If nothing is selected, no content types will be excluded.'),
@@ -71,6 +112,12 @@ class theforceJediCreate extends theforceSide {
         '#options' => $options,
       );
     }
+
+    $form['userEnabled'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Enable User Creation'),
+      '#default_value' => $this->values['userEnabled'],
+    );
 
     return $form;
   }
@@ -96,9 +143,17 @@ class theforceJediCreate extends theforceSide {
    * @return [type]
    */
   protected function side(){
-    $items = $this->getItems('node', 'node/add');
-    if(module_exists('asset')){
+    if($this->values['nodeEnabled']){
+      $items = $this->getItems('node', 'node/add');
+    }
+    if(module_exists('asset') && $this->values['assetEnabled']){
       $items += $this->getItems('asset', 'admin/content/assets/add');
+    }
+    if($this->values['userEnabled']){
+      $item = menu_get_item('admin/people/create');
+      if(!empty($item['access'])){
+        $items['user_account'] = $this->prepareItem('user', 'User Account', 'admin/people/create');
+      }
     }
     ksort($items);
 
@@ -122,6 +177,7 @@ class theforceJediCreate extends theforceSide {
 
     $items = array();
     foreach($content as $key => $data){
+      $key = preg_replace('/[0-9]+/', '', $key) . '_' . $data['mlid'];
       $parts = explode('/', $data['link_path']);
       $bundle = str_replace('-','_',end($parts));
       if($include){
@@ -140,9 +196,14 @@ class theforceJediCreate extends theforceSide {
       else{
         $icon = !empty($data['options']['fawesome']) ? $data['options']['fawesome'] : 'square-o';
       }
-      $items[$key] = l('<i class="'. $this->iconPrefix . ' ' . $this->iconPrefix . '-' . $icon . '"></i> ' . $data['title'], $data['link_path'], array('html' => true));
+
+      $items[$key] = $this->prepareItem($icon, $data['title'], $data['link_path']);
     }
     return $items;
+  }
+
+  protected function prepareItem($icon, $title, $url){
+    return l('<i class="'. $this->iconPrefix . ' ' . $this->iconPrefix . '-' . $icon . '"></i> ' . $title, $url, array('html' => true));
   }
 
 }
