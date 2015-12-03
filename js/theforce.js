@@ -11,42 +11,44 @@ var theForce = {
 
 theForce.attach = function(context, settings) {
   var self = this;
-  self.$body = $('body');
+  if(settings.theforce){
+    self.$body = $('body');
 
-  if(!self.once){
-    self.once = 1;
-    // Set background color to reflect body background color.
-    $('#theforce-content').css('backgroundColor', $('body').css('backgroundColor'));
-    self.$loader = $('.theforce-ui-loader');
-  }
-
-  // Bind Ajax behaviors to all items showing the class.
-  $('.use-theforce:not(.used-theforce)').addClass('used-theforce').each(function () {
-    var element_settings = {};
-    var progress = $(this).data('progress') || 'theforce';
-    // Clicked links look better with the throbber than the progress bar.
-    element_settings.progress = { 'type': progress };
-    var base = $(this).attr('id') || 'use-theforce-' + (self.forceUses++);
-
-    // For anchor tags, these will go to the target of the anchor rather
-    // than the usual location.
-    if ($(this).attr('href')) {
-      element_settings.theforce = 1;
-      element_settings.url = $(this).attr('href') + '/ajax?destination=' + encodeURIComponent(settings.theforce.basePath);
-      element_settings.event = 'click.theforce';
-      element_settings.once = $(this).data('once') || 0;
-      element_settings.base = base;
-      element_settings.effect = 'fade';
-      element_settings.speed = 600;
+    if(!self.once){
+      self.once = 1;
+      // Set background color to reflect body background color.
+      $('#theforce-content').css('backgroundColor', $('body').css('backgroundColor'));
+      self.$loader = $('.theforce-ui-loader');
     }
-    Drupal.ajax[base] = new Drupal.ajax(base, this, element_settings);
-  });
 
-  self.side(context, settings);
-  self.dropdown(context, settings);
-  self.menu(context, settings);
-  // self.fitH('#theforce-top', context, settings);
-  self.ink(context, settings);
+    // Bind Ajax behaviors to all items showing the class.
+    $('.use-theforce:not(.used-theforce)').addClass('used-theforce').each(function () {
+      var element_settings = {};
+      var progress = $(this).data('progress') || 'theforce';
+      // Clicked links look better with the throbber than the progress bar.
+      element_settings.progress = { 'type': progress };
+      var base = $(this).attr('id') || 'use-theforce-' + (self.forceUses++);
+
+      // For anchor tags, these will go to the target of the anchor rather
+      // than the usual location.
+      if ($(this).attr('href')) {
+        element_settings.theforce = 1;
+        element_settings.url = $(this).attr('href') + '/ajax?destination=' + encodeURIComponent(settings.theforce.basePath);
+        element_settings.event = 'click.theforce';
+        element_settings.once = $(this).data('once') || 0;
+        element_settings.base = base;
+        element_settings.effect = 'fade';
+        element_settings.speed = 600;
+      }
+      Drupal.ajax[base] = new Drupal.ajax(base, this, element_settings);
+    });
+
+    self.side(context, settings);
+    self.dropdown(context, settings);
+    self.menu(context, settings);
+    // self.fitH('#theforce-top', context, settings);
+    self.ink(context, settings);
+  }
 };
 
 
@@ -363,7 +365,7 @@ theforceOverlay.open = function(html, settings) {
       self.$overlay.addClass('animate');
     }, 20);
   }
-  self.$overlay.html('<div id="theforce-overlay-inner" class="theforce-percist">' + html + '</div>');
+  self.$overlay.html('<div id="theforce-overlay-inner" class="theforce-percist"><div class="theforce-overlay-content">' + html + '</div></div>');
   Drupal.attachBehaviors(self.$side, settings);
 }
 
