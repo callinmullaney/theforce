@@ -21,14 +21,9 @@ function theforce_admin_form($form, &$form_state) {
     '#type' => 'vertical_tabs',
     '#weight' => - 10,
     '#tree' => true,
-    // '#prefix' => '<h2>'.t('The Force is what gives a Jedi his power. It\'s an energy field created by all living things. It surrounds us and penetrates us; it binds the galaxy together.').'</h2>',
-
     '#prefix' => '
       <div id="theforce-settings-header">
-        <div id="viewport" >
-          <div id="world" >
-          </div>
-        </div>
+        <div id="viewport" ></div>
         <div class="bg"></div>
         <div class="shine"></div>
         <div class="image"></div>
@@ -62,7 +57,7 @@ function theforce_admin_form($form, &$form_state) {
     $themes[] = array('Cobalt', array('#273035','#0997c3','#273035','#0997c3'));
     $themes[] = array('Midnight', array('#2B2B2B','#0997c3','#2B2B2B','#0997c3'));
     $themes[] = array('Albino', array('#ECECEC','#0997c3','#ECECEC','#0997c3'));
-    $themes[] = array('Invert', array('#ECECEC','#0997c3','#273035','#0997c3'));
+    $themes[] = array('Invert', array('#F1F3F4','#0997c3','#273035','#0997c3'));
 
     foreach($themes as $theme){
       $item_class = $theme[1][0] == $top_bg && $theme[1][1] == $top_primary && $theme[1][2] == $side_bg && $theme[1][3] == $side_primary ? 'active' : '';
@@ -111,128 +106,59 @@ function theforce_admin_form($form, &$form_state) {
   }
 
   //////////////////////////////////////////////////////////////////////////////
-  /// Core
-  //////////////////////////////////////////////////////////////////////////////
-
-  $form['theforce']['core'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Core'),
-    '#parents' => array('theforce'),
-  );
-
-  $available_menus = menu_get_menus();
-  array_unshift($available_menus, '- Disable -');
-  $form['theforce']['core']['menu'] = array(
-    '#type' => 'select',
-    '#title' => t('Menu') ,
-    '#options' => $available_menus,
-    '#default_value' => $settings['menu'],
-    '#description' => t('Menu to make available via the Force'),
-  );
-
-  //////////////////////////////////////////////////////////////////////////////
   /// Top Bar
   //////////////////////////////////////////////////////////////////////////////
 
-  // $top_id = 'theforce-form-top';
-  // $form['theforce']['top'] = array(
-  //   '#type' => 'fieldset',
-  //   '#title' => t('Top Bar'),
-  //   '#tree' => true,
-  //   '#element_validate' => array('theforce_plugin_form_top_validate'),
-  // );
+  $form['theforce']['top'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Top Bar'),
+    '#parents' => array('theforce'),
+  );
 
-  // $form['theforce']['top']['container'] = array(
-  //   '#type' => 'container',
-  //   '#id' => $top_id,
-  // );
+  $form['theforce']['top']['top_icon_only'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show Icons Only'),
+    '#description' => t('Hide text labels and only show icons. The labels will show when hovering over an icon for a moment.'),
+    '#default_value' => $settings['top_icon_only'],
+  );
 
-  // $plugins = ctools_get_plugins('theforce', 'top');
+  $form['theforce']['top']['top_height'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Height'),
+    '#description' => t('Value should be entered in pixels. Example: 66px'),
+    '#default_value' => $settings['top_height'],
+  );
 
-  // if(isset($form_state['values']['theforce']['top'])){
-  //   $settings['top'] = drupal_array_merge_deep($settings['top'], $form_state['values']['theforce']['top']);
-  //   dsm($settings['top']);
-  //   dsm($form_state['values']['theforce']['top']);
-  // }
-  // $active = theforce_admin_get_active_plugins($settings['top']);
+  //////////////////////////////////////////////////////////////////////////////
+  /// Side Bar
+  //////////////////////////////////////////////////////////////////////////////
 
-  // foreach(array('left' => 'Left','right' => 'Right') as $region => $name){
-  //   $element = array(
-  //     '#type' => 'fieldset',
-  //     '#title' => t($name . ' Section'),
-  //     '#theme' => 'theforce_plugin_form',
-  //     '#parents' => array('theforce','top',$region),
-  //   );
-  //   foreach($plugins as $id => $plugin){
-  //     $default = $settings['top'][$region][$id];
-  //     if(!$default['status'] && in_array($id, $active)){
-  //       continue;
-  //     }
-  //     $element[$id]['title'] = array(
-  //       '#type' => 'markup',
-  //       '#markup' => t($plugin['title']),
-  //     );
-  //     $element[$id]['status'] = array(
-  //       '#type' => 'checkbox',
-  //       '#default_value' => $default['status'],
-  //       '#ajax' => array(
-  //         'callback' => 'theforce_plugin_form_top_ajax',
-  //         'wrapper' => $top_id,
-  //         'method' => 'replace',
-  //         'effect' => 'fade',
-  //       ),
-  //     );
-  //     $element[$id]['weight'] = array(
-  //       '#type' => 'weight',
-  //       '#title' => t('Weight'),
-  //       '#default_value' => $default['weight'],
-  //       '#delta' => count($plugins),
-  //       '#title_display' => 'invisible',
-  //       '#attributes' => array(
-  //         'id' => $id . '-top-weight',
-  //       ),
-  //     );
-  //   }
-  //   uasort($element, 'drupal_sort_weight');
-  //   $form['theforce']['top']['container'][$region] = $element;
-  // }
+  $form['theforce']['side'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Side Bar'),
+    '#parents' => array('theforce'),
+  );
 
+  $form['theforce']['side']['side_position'] = array(
+    '#type' => 'select',
+    '#title' => t('Position'),
+    '#options' => array('left' => t('Left'), 'right' => t('Right')),
+    '#default_value' => $settings['side_position'],
+  );
 
+  $form['theforce']['side']['side_width'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Width'),
+    '#description' => t('Value should be entered in pixels. Example: 80px'),
+    '#default_value' => $settings['side_width'],
+  );
 
-  // /**
-  //  * Right
-  //  */
-  // $element = array(
-  //   '#type' => 'fieldset',
-  //   '#title' => t('Right Section'),
-  //   '#theme' => 'theforce_plugin_form',
-  //   '#parents' => array('theforce','top','right'),
-  // );
-
-  // foreach($plugins as $id => $plugin){
-  //   $default = $settings['top']['right'][$id];
-  //   if(!$default['status'] && in_array($id, $active)){
-  //     continue;
-  //   }
-  //   $element[$id]['title'] = array(
-  //     '#type' => 'markup',
-  //     '#markup' => t($plugin['title']),
-  //   );
-  //   $element[$id]['status'] = array(
-  //     '#type' => 'checkbox',
-  //     '#default_value' => $default['status'],
-  //   );
-  //   $element[$id]['weight'] = array(
-  //     '#type' => 'weight',
-  //     '#title' => t('Weight'),
-  //     '#default_value' => $default['weight'],
-  //     '#delta' => count($plugins),
-  //     '#title_display' => 'invisible',
-  //   );
-  // }
-  // uasort($element, 'drupal_sort_weight');
-
-  // $form['theforce']['top']['container']['right'] = $element;
+  $form['theforce']['side']['side_width_active'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Width When Active'),
+    '#description' => t('Value should be entered in pixels. Example: 335px'),
+    '#default_value' => $settings['side_width_active'],
+  );
 
   //////////////////////////////////////////////////////////////////////////////
   /// Tools
@@ -241,21 +167,6 @@ function theforce_admin_form($form, &$form_state) {
   $form['theforce']['tools'] = array(
     '#type' => 'fieldset',
     '#title' => t('Tools'),
-  );
-
-  $title = t('Create Menu');
-  $description = t('A quick way to create a menu for the Force to use.');
-  if(isset($available_menus['theforce'])){
-    $title .= ' <small>(' . t('already exists') . ')</small>';
-  }
-  $form['theforce']['tools']['menu'] = array(
-    '#type' => 'submit',
-    '#prefix' => '<label>' . $title . '</label><div class="description">' . $description . '</div>',
-    '#value' => t('Create Menu'),
-    '#disabled' => isset($available_menus['theforce']),
-    '#submit' => array(
-      'theforce_admin_form_tools_menu_submit'
-    ),
   );
 
   $title = t('Create Profile Image Field');
@@ -301,73 +212,6 @@ function theforce_admin_form_validate($form, &$form_state){
   unset($values['theforce__active_tab'], $values['tools']);
 
   cache_clear_all('sonar', 'cache', TRUE);
-}
-
-// /**
-//  * Validate and cleanup plugins.
-//  */
-// function theforce_plugin_form_top_ajax($form, $form_state){
-//   return $form['theforce']['top']['container'];
-// }
-
-// /**
-//  * Filter current plugins into groups of active/available.
-//  */
-// function theforce_admin_get_active_plugins($regions){
-//   // dsm($regions);
-//   $active = array();
-//   foreach($regions as $region => $plugins){
-//     foreach($plugins as $id => $plugin){
-//       if($plugin['status']){
-//         $active[] = $id;
-//       }
-//     }
-//   }
-//   // dsm($active);
-//   return $active;
-// }
-
-// /**
-//  * Validate and cleanup plugins.
-//  */
-// function theforce_plugin_form_top_validate($form, &$form_state){
-//   $plugins = ctools_get_plugins('theforce', 'top');
-//   $enabled = array();
-//   foreach($form_state['values']['theforce']['top'] as $key => $values){
-//     foreach($values as $id => $plugin){
-//       if(!$plugin['status']){
-//         unset($form_state['values']['theforce']['top'][$key][$id]);
-//       }
-//       else{
-//         if(in_array($id, $enabled)){
-//           form_set_error(implode('][', array('theforce','top')), t('You cannot add any plugin to the top bar more than once. Plugin %name needs to removed from one of the regions.', array('%name' => $plugins[$id]['title'])));
-//         }
-//         $enabled[] = $id;
-//       }
-//     }
-//     if(empty($form_state['values']['theforce']['top'][$key])){
-//       unset($form_state['values']['theforce']['top'][$key]);
-//     }
-//   }
-//   if(empty($form_state['values']['theforce']['top'])){
-//     unset($form_state['values']['theforce']['top']);
-//   }
-// }
-
-/**
- * Create a default menu
- */
-function theforce_admin_form_tools_menu_submit(&$form, &$form_state) {
-  $available_menus = menu_get_menus();
-  if (!isset($available_menus['theforce'])) {
-    $menu = array(
-      'menu_name' => 'theforce',
-      'title' => 'The Force',
-      'description' => 'Links used within the Force to grant users untold power.'
-    );
-    menu_save($menu);
-    theforce_setting_set('menu', 'theforce');
-  }
 }
 
 /**

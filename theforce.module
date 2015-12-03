@@ -287,11 +287,9 @@ function theforce_page_build(&$page) {
         $page['page_bottom']['theforce_' . $region] = $content;
       }
     }
-    if(theforce_is_management()){
-      $page['page_bottom']['theforce_loader'] = array(
-        '#markup' => '<div class="theforce-ui-loader"><img src="' . url(drupal_get_path('module', 'theforce')) . '/images/loader.svg" /></div>',
-      );
-    }
+    $page['page_bottom']['theforce_loader'] = array(
+      '#markup' => '<div class="theforce-ui-loader"><img src="' . url(drupal_get_path('module', 'theforce')) . '/images/loader.svg" /></div>',
+    );
   }
 }
 
@@ -403,7 +401,12 @@ function theforce_preprocess_html(&$vars) {
       }
     }
     if($vars['theforce']){
+      $settings = theforce_settings();
       $vars['classes_array'][] = 'theforce-enabled';
+      $vars['classes_array'][] = 'theforce-side-' . $settings['side_position'];
+      if($settings['top_icon_only']){
+        $vars['classes_array'][] = 'theforce-top-icon-only';
+      }
       if(theforce_is_management()){
         $vars['classes_array'][] = 'theforce-side-active';
       }
@@ -471,6 +474,11 @@ function theforce_settings_definition() {
       'top_primary' => '#0997c3',
       'side_bg' => '#273035',
       'side_primary' => '#0997c3',
+      'top_icon_only' => 1,
+      'top_height' => '66px',
+      'side_position' => 'left',
+      'side_width' => '80px',
+      'side_width_active' => '335px',
     );
   }
   return $defaults;
@@ -497,6 +505,15 @@ function theforce_sonar_var(){
     ) + $defaults,
     'theforce-side-primary' => array(
       'value' => $settings['side_primary'],
+    ) + $defaults,
+    'theforce-top-height' => array(
+      'value' => $settings['top_height'],
+    ) + $defaults,
+    'theforce-side-width' => array(
+      'value' => $settings['side_width'],
+    ) + $defaults,
+    'theforce-side-width-active' => array(
+      'value' => $settings['side_width_active'],
     ) + $defaults,
   );
 }
