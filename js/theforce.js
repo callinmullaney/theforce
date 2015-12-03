@@ -3,8 +3,10 @@
 var theForce = {
   once: 0,
   $dropdown: null,
+  $loader: null,
   forceUses: 0,
-  sideActive: 0
+  sideActive: 0,
+  transEndEventNames: 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd'
 }
 
 theForce.attach = function(context, settings) {
@@ -15,6 +17,7 @@ theForce.attach = function(context, settings) {
     self.once = 1;
     // Set background color to reflect body background color.
     $('#theforce-content').css('backgroundColor', $('body').css('backgroundColor'));
+    self.$loader = $('.theforce-ui-loader');
   }
 
   // Bind Ajax behaviors to all items showing the class.
@@ -238,6 +241,21 @@ theForce.ink = function(context, settings) {
   });
 }
 
+theForce.loading = function(){
+  var self = this;
+  self.$loader.addClass('show');
+  setTimeout(function(){
+    self.$loader.addClass('animate');
+  },10);
+}
+
+theForce.success = function(){
+  var self = this;
+  self.$loader.removeClass('animate').one(self.transEndEventNames, function(){
+    self.$loader.removeClass('show');
+  });
+}
+
 Drupal.behaviors.theforce = theForce;
 
 
@@ -429,8 +447,22 @@ theforceSide.close = function(html) {
 /**
  * Extend the default Drupal.ajax.prototype.beforeSend;
  */
+Drupal.ajax.prototype.beforeSendOriginal = Drupal.ajax.prototype.beforeSend;
+Drupal.ajax.prototype.beforeSend = function (xmlhttprequest, options){
+  this.beforeSendOriginal(xmlhttprequest, options);
+  if (this.progress.type == 'theforce') {
+    theForce.loading();
+  }
+}
+
+/**
+ * Extend the default Drupal.ajax.prototype.beforeSend;
+ */
 var successOriginal = Drupal.ajax.prototype.success;
 Drupal.ajax.prototype.success = function (response, status){
+  if (this.progress.type == 'theforce') {
+    theForce.success();
+  }
   // Unbind events if once is set.
   if (this.theforce && this.once) {
     delete Drupal.ajax[this.base];

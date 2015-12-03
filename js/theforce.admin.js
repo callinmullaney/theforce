@@ -6,7 +6,6 @@ Drupal.behaviors.theforceAdmin = {
     var self = this;
     if(!this.once){
       this.once = 1;
-      clouds();
     }
   }
 }
@@ -18,9 +17,7 @@ Drupal.behaviors.theforceAdmin = {
 
 var theforceAdminUI = {
   once: 0,
-  $items: {},
-  $loader: null,
-  transEndEventNames: 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd'
+  $items: {}
 };
 
 theforceAdminUI.attach = function(context, settings){
@@ -28,7 +25,6 @@ theforceAdminUI.attach = function(context, settings){
 
   if(!self.once){
     self.once = 1;
-    self.$loader = $('.theforce-ui-loader');
   }
 
   self.$items = $('.theforce .theforce-ui-item:not(.theforce-processed)');
@@ -100,10 +96,10 @@ theforceAdminUI.itemsSort = function(){
               dataType: 'json',
               data: {weights: JSON.stringify(order)},
               beforeSend: function (xmlhttprequest, options) {
-                self.loading();
+                Drupal.behaviors.theforce.loading();
               },
               success: function(response, status) {
-                self.success();
+                Drupal.behaviors.theforce.success();
               }
             });
           }
@@ -130,220 +126,6 @@ theforceAdminUI.themeSelect = function(){
   });
 }
 
-theforceAdminUI.loading = function(){
-  var self = this;
-  self.$loader.addClass('show');
-  setTimeout(function(){
-    self.$loader.addClass('animate');
-  },10);
-}
-
-theforceAdminUI.success = function(){
-  var self = this;
-  self.$loader.removeClass('animate').one(self.transEndEventNames, function(){
-    self.$loader.removeClass('show');
-  });
-}
-
 Drupal.behaviors.theforceAdminUI = theforceAdminUI;
-
-
-
-
-/**
- * Extend the default Drupal.ajax.prototype.beforeSend;
- */
-Drupal.ajax.prototype.beforeSendOriginal = Drupal.ajax.prototype.beforeSend;
-Drupal.ajax.prototype.beforeSend = function (xmlhttprequest, options){
-  this.beforeSendOriginal(xmlhttprequest, options);
-  if (this.progress.type == 'theforce') {
-    theforceAdminUI.loading();
-  }
-}
-
-/**
- * Extend the default Drupal.ajax.prototype.beforeSend;
- */
-var successOriginal = Drupal.ajax.prototype.success;
-Drupal.ajax.prototype.success = function (response, status){
-  if (this.progress.type == 'theforce') {
-    theforceAdminUI.success();
-  }
-  successOriginal.call(this, response, status);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var clouds = function () {
-
-  (function() {
-    var lastTime = 0;
-    var vendors = ['ms', 'moz', 'webkit', 'o'];
-    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-      window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-      window.cancelRequestAnimationFrame = window[vendors[x]+
-        'CancelRequestAnimationFrame'];
-    }
-
-    if (!window.requestAnimationFrame)
-      window.requestAnimationFrame = function(callback, element) {
-        var currTime = new Date().getTime();
-        var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-        var id = window.setTimeout(function() { callback(currTime + timeToCall); },
-          timeToCall);
-        lastTime = currTime + timeToCall;
-        return id;
-      };
-
-    if (!window.cancelAnimationFrame)
-      window.cancelAnimationFrame = function(id) {
-        clearTimeout(id);
-      };
-  }())
-
-  var layers = [],
-    objects = [],
-
-    world = document.getElementById( 'world' ),
-    viewport = document.getElementById( 'viewport' ),
-
-    d = 0,
-    p = 400,
-    worldXAngle = 0,
-    worldYAngle = 0;
-
-  viewport.style.webkitPerspective = p;
-  viewport.style.MozPerspective = p;
-  viewport.style.oPerspective = p;
-
-  generate();
-
-  function createCloud() {
-
-    var div = document.createElement( 'div'  );
-    div.className = 'cloudBase';
-    var x = 500 - ( Math.random() * 1000 );
-    var y = 500 - ( Math.random() * 1000 );
-    var z = 500 - ( Math.random() * 1000 );
-    var t = 'translateX( ' + x + 'px ) translateY( ' + y + 'px ) translateZ( ' + z + 'px )';
-    div.style.webkitTransform = t;
-    div.style.MozTransform = t;
-    div.style.oTransform = t;
-    world.appendChild( div );
-
-    for( var j = 0; j < 2 + Math.round( Math.random() * 10 ); j++ ) {
-      var cloud = document.createElement( 'img' );
-      cloud.style.opacity = 0;
-      var r = Math.random();
-      var src = Drupal.settings.basePath + Drupal.settings.pathPrefix + Drupal.settings.theforce.modulePath + '/images/settings.cloud.png';
-      ( function( img ) { img.addEventListener( 'load', function() {
-        img.style.opacity = .8;
-      } ) } )( cloud );
-      cloud.setAttribute( 'src', src );
-      cloud.className = 'cloudLayer';
-
-      var x = 500 - ( Math.random() * 1000 );
-      var y = 500 - ( Math.random() * 1000 );
-      var z = 100 - ( Math.random() * 200 );
-      var a = Math.random() * 360;
-      var s = .25 + Math.random();
-      x *= .2; y *= .2;
-      cloud.data = {
-        x: x,
-        y: y,
-        z: z,
-        a: a,
-        s: s,
-        speed: .1 * Math.random()
-      };
-      var t = 'translateX( ' + x + 'px ) translateY( ' + y + 'px ) translateZ( ' + z + 'px ) rotateZ( ' + a + 'deg ) scale( ' + s + ' )';
-      cloud.style.webkitTransform = t;
-      cloud.style.MozTransform = t;
-      cloud.style.oTransform = t;
-
-      div.appendChild( cloud );
-      layers.push( cloud );
-    }
-
-    return div;
-  }
-
-  // window.addEventListener( 'mousewheel', onContainerMouseWheel );
-  // window.addEventListener( 'DOMMouseScroll', onContainerMouseWheel );
-
-  window.addEventListener( 'mousemove', function( e ) {
-    worldYAngle = -( .5 - ( e.clientX / window.innerWidth ) ) * 20;
-    worldXAngle = ( .5 - ( e.clientY / window.innerHeight ) ) * 20;
-    updateView();
-  } );
-
-  function generate() {
-    objects = [];
-    if ( world.hasChildNodes() ) {
-      while ( world.childNodes.length >= 1 ) {
-        world.removeChild( world.firstChild );
-      }
-    }
-    for( var j = 0; j < 5; j++ ) {
-      objects.push( createCloud() );
-    }
-  }
-
-  function updateView() {
-    var t = 'translateZ( ' + d + 'px ) rotateX( ' + worldXAngle + 'deg) rotateY( ' + worldYAngle + 'deg)';
-    world.style.webkitTransform = t;
-    world.style.MozTransform = t;
-    world.style.oTransform = t;
-  }
-
-  function onContainerMouseWheel( event ) {
-
-    event = event ? event : window.event;
-    d = d - ( event.detail ? event.detail * -5 : event.wheelDelta / 8 );
-    updateView();
-
-  }
-
-  function update (){
-
-    for( var j = 0; j < layers.length; j++ ) {
-      var layer = layers[ j ];
-      layer.data.a += layer.data.speed;
-      var t = 'translateX( ' + layer.data.x + 'px ) translateY( ' + layer.data.y + 'px ) translateZ( ' + layer.data.z + 'px ) rotateY( ' + ( - worldYAngle ) + 'deg ) rotateX( ' + ( - worldXAngle ) + 'deg ) rotateZ( ' + layer.data.a + 'deg ) scale( ' + layer.data.s + ')';
-      layer.style.webkitTransform = t;
-      layer.style.MozTransform = t;
-      layer.style.oTransform = t;
-    }
-
-    requestAnimationFrame( update );
-
-  }
-
-  update();
-
-}
 
 })(jQuery);
