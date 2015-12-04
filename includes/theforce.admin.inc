@@ -125,7 +125,7 @@ function theforce_admin_form($form, &$form_state) {
   $form['theforce']['top']['top_height'] = array(
     '#type' => 'textfield',
     '#title' => t('Height'),
-    '#description' => t('Value should be entered in pixels. Example: 66px'),
+    '#description' => t('Value should be entered in pixels. Example: 60px'),
     '#default_value' => $settings['top_height'],
   );
 

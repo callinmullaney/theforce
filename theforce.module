@@ -475,7 +475,7 @@ function theforce_settings_definition() {
       'side_bg' => '#273035',
       'side_primary' => '#0997c3',
       'top_icon_only' => 1,
-      'top_height' => '66px',
+      'top_height' => '60px',
       'side_position' => 'left',
       'side_width' => '80px',
       'side_width_active' => '335px',

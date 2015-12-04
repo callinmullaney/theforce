@@ -211,8 +211,8 @@ div.theforce{
 .theforce-ui-item{
 
   &:hover{
-    border-color:darken($theforce-top-bg, 10%) !important;
-    border-style: dotted !important;
+    // border-color:darken($theforce-top-bg, 10%) !important;
+    // border-style: dotted !important;
 
     .theforce-ui-ops{
       opacity:1 !important;
@@ -230,28 +230,7 @@ div.theforce{
   }
 }
 
-#theforce-side{
-
-  .theforce-ui-item{
-
-    &:hover{
-      border-color:darken($theforce-side-bg, 10%) !important;
-    }
-  }
-}
-
 #theforce-top{
-
-  .theforce-text{
-    display:none;
-  }
-
-  .theforce-label{
-    position:static;
-    line-height:$theforce-top-height;
-    padding-left: $theforce-top-item-padding;
-    padding-right: $theforce-top-item-padding;
-  }
 
   .theforce-ui-ops{
     position:absolute;
@@ -308,6 +287,14 @@ div.theforce{
 }
 
 #theforce-side{
+
+  .theforce-ui-item{
+
+    &:hover{
+      // border-color:darken($theforce-side-bg, 10%) !important;
+    }
+  }
+
   .theforce-ui-ops{
     position:absolute;
     top: 9px;

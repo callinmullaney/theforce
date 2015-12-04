@@ -14,11 +14,10 @@ $theforce-overlay-font-size:12px !default;
 $theforce-top-bg: #F2F2F2 !default;
 $theforce-top-color: theforce-color($theforce-top-bg, 45%) !default;
 $theforce-top-color-alt: theforce-color($theforce-top-bg, 65%) !default;
-$theforce-top-height: 66px !default;
+$theforce-top-height: 60px !default;
 $theforce-top-item-padding: 16px !default;
 $theforce-top-font-size:12px !default;
 $theforce-top-primary: #0997c3 !default;
-
 
 $theforce-side-bg: #2C2E2F !default;
 $theforce-side-bg-alt: theforce-shade($theforce-side-bg, 5%) !default;
