@@ -45,7 +45,7 @@ theForce.attach = function(context, settings) {
 
     self.side(context, settings);
     self.dropdown(context, settings);
-    self.menu(context, settings);
+    // self.menu(context, settings);
     // self.fitH('#theforce-top', context, settings);
     self.ink(context, settings);
   }
@@ -419,7 +419,7 @@ theforceSide.open = function(html, settings) {
 
     setTimeout(function(){
       theforceInset.open();
-      $('body').addClass('has-theforce-side-content');
+      $('body').addClass('has-theforce-side-content').trigger('theforce-side:show');
       self.$side.addClass('animate');
     }, 20);
   }
