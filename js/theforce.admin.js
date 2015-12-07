@@ -25,6 +25,7 @@ theforceAdminUI.attach = function(context, settings){
 
   if(!self.once){
     self.once = 1;
+    Drupal.behaviors.theforce.regionSide.lock();
   }
 
   self.$items = $('.theforce .theforce-ui-item:not(.theforce-processed)');

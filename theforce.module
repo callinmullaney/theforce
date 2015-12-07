@@ -226,6 +226,10 @@ function theforce_library(){
     'website' => 'https://github.com/jacerider/theforce',
     'version' => '7.x-1.x-dev',
     'js' => array(
+      "$path/js/theforce.transition-events.js" => array(
+        'group' => JS_DEFAULT,
+        'every_page' => true
+      ),
       "$path/js/theforce.js" => array(
         'group' => JS_DEFAULT,
         'every_page' => true
@@ -323,10 +327,12 @@ function theforce_content($region){
     }
     if(!empty($content) || theforce_region_show($region) || theforce_is_management()){
       $path = drupal_get_path('module', 'theforce');
+      $settings = theforce_settings();
       $js_settings = array(
         'basePath' => current_path(),
         'modulePath' => $path,
         'isManagement' => theforce_is_management(),
+        'sideWidthActive' => $settings['side_width_active'],
       );
       $content = array(
         '#theme' => 'theforce',
