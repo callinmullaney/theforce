@@ -63,7 +63,7 @@ html, body{
     td{
       border:none;
       padding:5px;
-      background:none;
+      background:none !important;
 
       &.active{
         background:none;
@@ -73,13 +73,17 @@ html, body{
           position:static;
         }
       }
+
+      a{
+        padding:0 !important;
+      }
     }
 
     tr,
     tr.odd,
     tr.even{
       border:none;
-      background: none;
+      background: none !important;
 
       td.active{
         background:none;
@@ -139,7 +143,7 @@ html, body{
 
 // Some themes, like Adminimal... like to change this. We just need to add
 // a deeper selection method to stop this from happening.
-body .theforce{
+body.theforce-enabled .theforce{
 
   *{
     box-sizing: border-box;

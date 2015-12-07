@@ -10,7 +10,7 @@
   margin: -25px 5px 0 0;
   top: 12.5px;
   border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(#000, .3);
+  box-shadow: 0 2px 3px rgba(#000, .25);
 }
 
 
@@ -33,8 +33,46 @@
 
 #theforce-side{
 
+  #theforce-jedi-user {
+    text-align: center;
+
+    a {
+      padding: 0;
+    }
+
+    img {
+      max-width: 80%;
+      height: auto;
+      @include transition(max-width 300ms, height 300ms);
+    }
+
+    span,
+    i { 
+      opacity: 0;
+      @include transition(opacity 300ms);
+    }
+  }
+
   img.theforce-avatar{
+    display: block;
+    margin: 0 auto 0.5rem;
     border:2px solid theforce-shade($theforce-side-bg, 10%);
     background:theforce-shade($theforce-side-bg, 10%);
+  }
+}
+
+.theforce-side-active {
+  #theforce-side {
+    #theforce-jedi-user {
+
+      img {
+        max-width: 100%;
+      }
+
+      span,
+      i { 
+        opacity: 1;
+      }
+    }
   }
 }

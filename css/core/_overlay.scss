@@ -62,6 +62,11 @@
     text-align: center;
   }
 
+  .form-item label,
+  .form-item label.option{
+    font-size:$theforce-overlay-font-size;
+  }
+
   a{
     color: $theforce-primary-color;
     @include transition(color 300ms);

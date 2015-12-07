@@ -45,19 +45,6 @@
     background: theforce-color($theforce-top-bg, 5%);
   }
 
-  .form-submit{
-    margin:12px 0 0;
-    padding:0 10px;
-    background:$theforce-top-primary;
-    border: none;
-    border-radius: 0;
-    color: #fff;
-    font-size:11px;
-    font-weight:600;
-    line-height: 20px;
-    text-transform: uppercase;
-  }
-
   .views-exposed-form{
     padding: 0 0 10px 0;
     margin: 0 0 10px 0;
@@ -65,11 +52,27 @@
 
     label{
       // color: $theforce-top-bg;
-      padding-bottom:2px;
+      padding:0 0 2px;
+      margin:0;
+      font-size:10px;
+      line-height: 12px;
     }
 
     .form-item{
       margin:0;
+    }
+
+    .form-submit{
+      margin:14px 0 0;
+      padding:0 10px;
+      background:$theforce-top-primary;
+      border: none;
+      border-radius: 0;
+      color: #fff;
+      font-size:11px;
+      font-weight:600;
+      line-height: 20px;
+      text-transform: uppercase;
     }
   }
 
@@ -81,6 +84,7 @@
   .views-exposed-widget{
     @include flex(1 1 auto);
     padding: 0 10px 0 0;
+    float:none;
 
     &:last-child{
       padding-right:0;

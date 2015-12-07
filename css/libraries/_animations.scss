@@ -52,3 +52,21 @@
     opacity: 1;
   }
 }
+
+@include keyframes(expandDown) {
+  0% {
+    height:auto;
+    max-height:0%;
+    opacity: 0;
+    overflow:hidden;
+  }
+  50% {
+    height:auto;
+    max-height:100%;
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+    overflow:visible;
+  }
+}

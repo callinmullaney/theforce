@@ -125,7 +125,7 @@
       .theforce-text{
         @include animation(expandIn 600ms linear);
         width:auto;
-        max-width:100%;
+        max-width:1000px;
         opacity:1;
       }
 

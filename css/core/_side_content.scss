@@ -11,13 +11,32 @@
   overflow-y:auto;
   background:$theforce-side-bg;
   z-index:200;
-  box-shadow: 0 1px 1px rgba(#000, .2), inset 0 1px 3px -1px rgba(#000, .2);
+  // box-shadow: 0 1px 1px rgba(#000, .2), inset 0 1px 3px -1px rgba(#000, .2);
   padding:10px;
-  width: $theforce-side-width-active;
+  // width: $theforce-side-width-active;
+  width: 100%;
   opacity:0;
   box-sizing: border-box;
   @include clearfix();
-  @include transition(opacity 300ms);
+  @include transition(opacity 300ms 300ms);
+  // @include transform(translate3d(($theforce-side-width-active - $theforce-side-width) * -1, 0, 0));
+  // @include transform(translate3d($theforce-side-width-active*-1, 0, 0));
+
+  .theforce-side-content-inner{
+    @include transition(opacity 300ms);
+    opacity:0;
+  }
+
+  .theforce-side-close{
+    display:block;
+    position: absolute;
+    top:5px;
+    right:10px;
+    font-size:25px;
+    line-height:22px;
+    font-weight:200;
+    color: theforce-color($theforce-side-bg, 20%);
+  }
 
   .theforce-side-title{
     text-transform: uppercase;
@@ -39,5 +58,12 @@
 
   &.animate{
     opacity:1;
+    @include transform(translate3d(0, 0, 0));
+    @include transition-delay(0ms);
+
+    .theforce-side-content-inner{
+      @include transition-delay(300ms);
+      opacity:1;
+    }
   }
 }

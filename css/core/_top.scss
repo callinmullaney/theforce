@@ -7,7 +7,7 @@
   top:0;
   left:0;
   right:0;
-  min-height: 0px;
+  // min-height: 0px;
   // border-bottom: 1px solid darken($theforce-top-bg, 10%);
   font-size:$theforce-top-font-size;
   @include clearfix();
@@ -42,22 +42,6 @@
   table td,
   table th{
     color: $theforce-top-color;
-  }
-
-  &.mini{
-    overflow-x: auto;
-    white-space: nowrap;
-
-    .theforce-location{
-      position:relative;
-    }
-
-    .theforce-items{
-      position: absolute;
-      top:0;
-      left:0;
-      z-index: 1000;
-    }
   }
 
   .theforce-items{
@@ -96,7 +80,7 @@
   }
 
   .theforce-icon{
-    font-size: $theforce-top-font-size + 3;
+    font-size: $theforce-top-font-size + 6;
     line-height: $theforce-top-height;
   }
 
@@ -173,7 +157,7 @@
 // Hide icons if body class is set
 .theforce-top-icon-only {
 
-  #theforce-top {
+  #theforce-top:not(.open) {
 
     .theforce-text{
       opacity:0;
