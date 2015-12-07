@@ -1,0 +1,100 @@
+////////////////////////////////////////////////////////////////////////////////
+/// Mini/Mobile Styling
+////////////////////////////////////////////////////////////////////////////////
+
+.theforce-mini-location{
+  display:none;
+}
+
+.theforce-mini{
+
+  .theforce-location{
+    display:none;
+  }
+
+  .theforce-mini-location{
+    display:block;
+  }
+}
+
+
+
+
+//////////////////////////////////
+/// Top Specific Styling
+/////////////////////////////////
+
+#theforce-top.theforce-mini.open{
+  background: theforce-color($theforce-top-bg, 3%);
+  bottom:0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  .theforce-location{
+    display:block;
+    clear:both;
+    float:none !important;
+
+    .theforce-items{
+      float:none;
+    }
+
+    .theforce-item{
+      float:none;
+    }
+
+    .theforce-elements{
+      float:none;
+    }
+
+    .theforce-element{
+      float:none;
+    }
+
+    .theforce-dropdown-content{
+      position: relative;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      float:none;
+    }
+  }
+
+  .theforce-location:not(.theforce-mini-location){
+    margin:10px;
+    background: $theforce-top-bg;
+    box-shadow: 0 1px 2px rgba(#000, .1);
+
+    .theforce-item{
+      margin:0;
+    }
+  }
+
+  .theforce-mini-location{
+    padding:0;
+    margin:0;
+
+    .theforce-item{
+      background:theforce-shade($theforce-top-bg, 3%);
+      box-shadow: inset 0px 2px 2px theforce-shade($theforce-top-bg, 5%);
+    }
+  }
+}
+
+
+//////////////////////////////////
+/// Side Specific Styling
+/////////////////////////////////
+
+#theforce-side{
+
+}
+
+body.theforce-side-active.theforce-mini-open{
+
+  // #theforce-side,
+  // #theforce-side-content{
+  //   width:100% !important;
+  // }
+}

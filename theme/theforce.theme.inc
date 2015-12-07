@@ -6,8 +6,23 @@
 function template_preprocess_theforce(&$vars){
   $region = $vars['region'];
   $vars['attributes_array']['id'] = 'theforce-' . $region;
-  // $vars['classes_array'][] = 'theforce';
+  $vars['classes_array'][] = 'theforce-region';
   $vars['location_attributes_array'] = array();
+
+  array_unshift($vars['locations'], 'mini');
+  $vars['location_attributes_array']['mini']['class'][] = 'theforce-mini-location';
+  $vars['content'] = array(
+    'mini' => array(
+      '#theme' => 'theforce_location',
+      '#content' => array(
+        array(
+          '#theme' => 'theforce_item',
+          '#content' => array('#markup' => '<div class="theforce-elements"><a href="" class="theforce-element theforce-mini-toggle"><i class="theforce-icon fa fa-bars"></i></a></div>'),
+        ),
+      ),
+    )
+  ) + $vars['content'];
+
   foreach($vars['locations'] as $location){
     $vars['location_attributes_array'][$location]['id'] = 'theforce-' . $region . '-' . $location;
     $vars['location_attributes_array'][$location]['class'][] = 'theforce-location';
