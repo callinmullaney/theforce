@@ -121,8 +121,10 @@ theforceAdminUI.themeSelect = function(){
 
     $.each(items, function( index, key ) {
       value = $this.attr('data-' + key);
-      $('#edit-theforce-' + key).val(value);
-      $('.form-item-theforce-' + key + ' i').css({color:value});
+      if(value){
+        $('#edit-theforce-' + key).val(value);
+        $('.form-item-theforce-' + key + ' i').css({color:value});
+      }
     });
   });
 }

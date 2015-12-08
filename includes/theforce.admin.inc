@@ -37,73 +37,14 @@ function theforce_admin_form($form, &$form_state) {
 
   $form['#id'] = 'theforce-settings-wrapper';
 
-  //////////////////////////////////////////////////////////////////////////////
-  /// Theme
-  //////////////////////////////////////////////////////////////////////////////
+  $themes = array();
+  $themes[] = array('Cobalt', array('#273035','#0997c3'));
+  $themes[] = array('Midnight', array('#2B2B2B','#0997c3'));
+  $themes[] = array('Albino', array('#F1F3F4','#0997c3'));
 
-  if(module_exists('sonar')){
-    $form['theforce']['theme'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Theme'),
-      '#parents' => array('theforce'),
-    );
-
-    $top_bg = $settings['top_bg'];
-    $top_primary = $settings['top_primary'];
-    $side_bg = $settings['side_bg'];
-    $side_primary = $settings['side_primary'];
-
-    $themes = $items = array();
-    $themes[] = array('Cobalt', array('#273035','#0997c3','#273035','#0997c3'));
-    $themes[] = array('Midnight', array('#2B2B2B','#0997c3','#2B2B2B','#0997c3'));
-    $themes[] = array('Albino', array('#ECECEC','#0997c3','#ECECEC','#0997c3'));
-    $themes[] = array('Invert', array('#F1F3F4','#0997c3','#273035','#0997c3'));
-
-    foreach($themes as $theme){
-      $item_class = $theme[1][0] == $top_bg && $theme[1][1] == $top_primary && $theme[1][2] == $side_bg && $theme[1][3] == $side_primary ? 'active' : '';
-      $item = '<a data-top-bg="' . $theme[1][0] . '" data-top-primary="' . $theme[1][1] . '" data-side-bg="' . $theme[1][2] . '" data-side-primary="' . $theme[1][3] . '" class="' . $item_class . '">';
-      $item .= '<i class="fa fa-square" style="color:'.$theme[1][0].'"></i> ';
-      $item .= '<i class="fa fa-square" style="color:'.$theme[1][1].'"></i> ';
-      $item .= '<i class="fa fa-square" style="color:'.$theme[1][2].'"></i> ';
-      $item .= '<i class="fa fa-square" style="color:'.$theme[1][3].'"></i> ';
-      $item .= $theme[0];
-      $item .= '</a>';
-      $items[] = $item;
-    }
-    $form['theforce']['theme']['themes'] = array(
-      '#theme' => 'item_list',
-      '#items' => $items,
-      '#attributes' => array('id' => 'theforce-theme-select'),
-    );
-
-    $form['theforce']['theme']['top_bg'] = array(
-      '#type'          => 'textfield',
-      '#title'         => t('Top Background Color'),
-      '#field_prefix'  => 'Hex or Color Name <i class="fa fa-square" style="color:'.$top_bg.';"></i>',
-      '#default_value' => $top_bg,
-    );
-
-    $form['theforce']['theme']['top_primary'] = array(
-      '#type'          => 'textfield',
-      '#title'         => t('Top Primary Color'),
-      '#field_prefix'  => 'Hex or Color Name <i class="fa fa-square" style="color:'.$top_primary.';"></i>',
-      '#default_value' => $top_primary,
-    );
-
-    $form['theforce']['theme']['side_bg'] = array(
-      '#type'          => 'textfield',
-      '#title'         => t('Side Background Color'),
-      '#field_prefix'  => 'Hex or Color Name <i class="fa fa-square" style="color:'.$side_bg.';"></i>',
-      '#default_value' => $side_bg,
-    );
-
-    $form['theforce']['theme']['side_primary'] = array(
-      '#type'          => 'textfield',
-      '#title'         => t('Side Primary Color'),
-      '#field_prefix'  => 'Hex or Color Name <i class="fa fa-square" style="color:'.$side_primary.';"></i>',
-      '#default_value' => $side_primary,
-    );
-  }
+  $style = array();
+  $styles['outset'] = t('Outset');
+  $styles['inset'] = t('Inset');
 
   //////////////////////////////////////////////////////////////////////////////
   /// Top Bar
@@ -113,6 +54,48 @@ function theforce_admin_form($form, &$form_state) {
     '#type' => 'fieldset',
     '#title' => t('Top Bar'),
     '#parents' => array('theforce'),
+  );
+
+  if(module_exists('sonar')){
+    $top_bg = $settings['top_bg'];
+    $top_primary = $settings['top_primary'];
+    $items = array();
+
+    foreach($themes as $theme){
+      $item_class = $theme[1][0] == $top_bg && $theme[1][1] == $top_primary ? 'active' : '';
+      $item = '<a data-top-bg="' . $theme[1][0] . '" data-top-primary="' . $theme[1][1] . '" class="' . $item_class . '">';
+      $item .= '<i class="fa fa-square" style="color:'.$theme[1][0].'"></i> ';
+      $item .= '<i class="fa fa-square" style="color:'.$theme[1][1].'"></i> ';
+      $item .= $theme[0];
+      $item .= '</a>';
+      $items[] = $item;
+    }
+    $form['theforce']['top']['themes'] = array(
+      '#theme' => 'item_list',
+      '#items' => $items,
+      '#attributes' => array('id' => 'theforce-theme-select'),
+    );
+
+    $form['theforce']['top']['top_bg'] = array(
+      '#type'          => 'textfield',
+      '#title'         => t('Top Background Color'),
+      '#field_prefix'  => 'Hex or Color Name <i class="fa fa-square" style="color:'.$top_bg.';"></i>',
+      '#default_value' => $top_bg,
+    );
+
+    $form['theforce']['top']['top_primary'] = array(
+      '#type'          => 'textfield',
+      '#title'         => t('Top Primary Color'),
+      '#field_prefix'  => 'Hex or Color Name <i class="fa fa-square" style="color:'.$top_primary.';"></i>',
+      '#default_value' => $top_primary,
+    );
+  }
+
+  $form['theforce']['top']['top_style'] = array(
+    '#type' => 'select',
+    '#title' => t('Style'),
+    '#options' => $styles,
+    '#default_value' => $settings['top_style'],
   );
 
   $form['theforce']['top']['top_icon_only'] = array(
@@ -137,6 +120,48 @@ function theforce_admin_form($form, &$form_state) {
     '#type' => 'fieldset',
     '#title' => t('Side Bar'),
     '#parents' => array('theforce'),
+  );
+
+  if(module_exists('sonar')){
+    $side_bg = $settings['side_bg'];
+    $side_primary = $settings['side_primary'];
+    $items = array();
+
+    foreach($themes as $theme){
+      $item_class = $theme[1][0] == $side_bg && $theme[1][1] == $side_primary ? 'active' : '';
+      $item = '<a data-side-bg="' . $theme[1][0] . '" data-side-primary="' . $theme[1][1] . '" class="' . $item_class . '">';
+      $item .= '<i class="fa fa-square" style="color:'.$theme[1][0].'"></i> ';
+      $item .= '<i class="fa fa-square" style="color:'.$theme[1][1].'"></i> ';
+      $item .= $theme[0];
+      $item .= '</a>';
+      $items[] = $item;
+    }
+    $form['theforce']['side']['themes'] = array(
+      '#theme' => 'item_list',
+      '#items' => $items,
+      '#attributes' => array('id' => 'theforce-theme-select'),
+    );
+
+    $form['theforce']['side']['side_bg'] = array(
+      '#type'          => 'textfield',
+      '#title'         => t('Side Background Color'),
+      '#field_prefix'  => 'Hex or Color Name <i class="fa fa-square" style="color:'.$side_bg.';"></i>',
+      '#default_value' => $side_bg,
+    );
+
+    $form['theforce']['side']['side_primary'] = array(
+      '#type'          => 'textfield',
+      '#title'         => t('Side Primary Color'),
+      '#field_prefix'  => 'Hex or Color Name <i class="fa fa-square" style="color:'.$side_primary.';"></i>',
+      '#default_value' => $side_primary,
+    );
+  }
+
+  $form['theforce']['top']['side_style'] = array(
+    '#type' => 'select',
+    '#title' => t('Style'),
+    '#options' => $styles,
+    '#default_value' => $settings['side_style'],
   );
 
   $form['theforce']['side']['side_position'] = array(

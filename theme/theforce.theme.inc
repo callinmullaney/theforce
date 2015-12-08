@@ -5,9 +5,13 @@
  */
 function template_preprocess_theforce(&$vars){
   $region = $vars['region'];
+  $settings = theforce_settings();
   $vars['attributes_array']['id'] = 'theforce-' . $region;
-  $vars['classes_array'][] = 'theforce-region';
   $vars['location_attributes_array'] = array();
+  $vars['classes_array'][] = 'theforce-region';
+  if(isset($settings[$region . '_style'])){
+    $vars['classes_array'][] = 'theforce-style-' . $settings[$region . '_style'];
+  }
 
   array_unshift($vars['locations'], 'mini');
   $vars['location_attributes_array']['mini']['class'][] = 'theforce-mini-location';
