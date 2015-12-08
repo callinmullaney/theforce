@@ -7,20 +7,11 @@
   top:0;
   bottom:0;
   width:0;
-  // overflow-x: visible;
-  // overflow-y: auto;
-  // -webkit-overflow-scrolling: touch;
+  background-color: $theforce-side-bg;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   @include display(flex);
   @include flex-direction(column);
-  @include transition(width 300ms);
-  @include transition-delay(300ms);
-
-  // FOR OUTSET STYLE
-  z-index:120;
-  background: $theforce-side-bg;
-
-  // FOR INSET STYLE
-  // @include linear-gradient($theforce-side-bg, darken($theforce-side-bg, 12%), $fallback: $theforce-side-bg);
 
   a{
     color:$theforce-side-primary;
@@ -52,10 +43,10 @@
     a{
       background: $theforce-side-bg-alt;
       margin:5px;
-      @include transition(background 300ms);
+      @include transition(background 200ms);
 
       &:hover{
-        background: theforce-shade($theforce-side-bg, 20%);
+        background: rgba(255,255,255,0.2);
       }
     }
   }
@@ -71,7 +62,8 @@
   }
 
   .theforce-label{
-    padding:8px 0 0;
+    padding:0;
+    line-height: $theforce-side-height;
     color: theforce-color($theforce-side-bg, 15%);
     text-shadow: 0 1px 0 theforce-shade($theforce-side-bg, 10%);
   }
@@ -86,20 +78,31 @@
   }
 
   .theforce-text{
-    max-width:0px;
-    overflow:hidden;
-    opacity:0;
-    @include transition(max-width 300ms, opacity 300ms);
+    max-width: 0;
+    overflow: hidden;
+    opacity: 0;
+    @include transition(max-width 200ms, opacity 200ms);
     @include transition-delay(0ms);
   }
 
   .theforce-item{
-    border-width: 1px 0;
-    border-style: solid none;
-    border-color: $theforce-side-bg;
+    border-top: 1px solid rgba(255,255,255, 0);
+    border-right: 1px solid rgba(255,255,255, 0);
+    border-left: 1px solid rgba(255,255,255, 0);
+    border-bottom: 1px solid rgba(255,255,255, 0.05);
     color: $theforce-side-color;
     min-height: $theforce-side-height;
-    margin-top: -1px;
+    @include transition(border 200ms);
+
+    &:first-child .theforce-element,
+    &:first-child .theforce-label {
+      min-height: $theforce-top-height;
+      line-height: $theforce-top-height;
+
+      i.theforce-icon {
+        line-height: $theforce-top-height !important;
+      }
+    }
 
     .theforce-element{
       padding-left: ($theforce-side-width - ($theforce-side-font-size*2)) / 2;
@@ -107,14 +110,14 @@
       text-shadow: 0 1px 0 theforce-shade($theforce-side-bg, 10%);
       font-size:$theforce-side-font-size;
       line-height:$theforce-side-height;
-      @include transition(padding 300ms 0ms, background-color 300ms);
+      @include transition(padding 200ms 0ms, background-color 300ms);
     }
 
     a.theforce-element{
       position:relative;
 
       &:hover{
-        background:darken($theforce-side-bg, 2%);
+        background: rgba(255,255,255, 0.025);
         color: $theforce-side-color-alt;
       }
 
@@ -134,22 +137,40 @@
 // Left Sidebar Position
 body.theforce-side-left {
   #theforce-wrap {
-    @include transition(left 300ms);
-    @include transition-delay(300ms);
+    @include transition(left 200ms);
+    @include transition-delay(200ms);
+    border-left: 1px inset $theforce-side-bg !important;
   }
   #theforce-side{
+    @include transition(width 200ms);
+    @include transition-delay(200ms);
     left:0;
+  }
+  #theforce-top{
+    @include transition(left 200ms);
+    @include transition-delay(200ms);
+    border-right: none !important;
+    border-left: 1px inset $theforce-side-bg !important;
   }
 }
 
 // Right Sidebar Position
 body.theforce-side-right {
   #theforce-wrap {
-    @include transition(right 300ms);
-    @include transition-delay(300ms);
+    @include transition(right 200ms);
+    @include transition-delay(200ms);
+    border-right: 1px inset $theforce-side-bg;
   }
   #theforce-side{
+    @include transition(width 200ms);
+    @include transition-delay(200ms);
     right:0;
+  }
+  #theforce-top{
+    @include transition(right 200ms);
+    @include transition-delay(200ms);
+    border-left: none !important;
+    border-right: 1px inset $theforce-side-bg !important;
   }
 }
 
@@ -187,9 +208,9 @@ body.theforce-side-active{
     }
 
     .theforce-text{
-      max-width: $theforce-side-width-active;
+      max-width: 100%;
       opacity:1;
-      @include transition-delay(300ms);
+      @include transition-delay(200ms);
     }
   }
 }

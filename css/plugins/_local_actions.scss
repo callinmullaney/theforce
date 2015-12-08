@@ -23,6 +23,11 @@
     display:block;
     border-left-color:darken($theforce-top-bg, 10%);
     border-right-color:darken($theforce-top-bg, 10%);
+
+    .theforce-label {
+      display: block;
+      float: left;
+    }
   }
 
   .theforce-tabs-secondary{

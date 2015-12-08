@@ -1,0 +1,41 @@
+////////////////////////////////////////////////////////////////////////////////
+/// TheForce Outset Styling
+////////////////////////////////////////////////////////////////////////////////
+
+#theforce-wrap.theforce-style-outset{
+  z-index:0;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.33);
+  @include perspective(1500px);
+  
+  #theforce-content{
+    @include perspective(1000px);
+    @include transition(transform 500ms 0ms);
+  }
+}
+
+body.theforce-inset{
+
+  #theforce-wrap.theforce-style-outset{
+	#theforce-content{
+	  @include transform-style(preserve-3d);
+	  @include transform(translate3d(0px, 0px, -200px) rotate(0deg));
+    }
+  }
+}
+
+////////////////
+// Top
+////////////////
+#theforce-top.theforce-style-outset{
+  background-color: $theforce-top-bg;
+  z-index:100;
+  box-shadow: 0 1px 6px rgba(#000, .33);
+}
+
+////////////////
+// Side
+////////////////
+#theforce-side.theforce-style-outset{
+  z-index:120;
+  background: $theforce-side-bg;
+}

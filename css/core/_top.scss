@@ -7,28 +7,12 @@
   top:0;
   left:0;
   right:0;
-  // min-height: 0px;
-  // border-bottom: 1px solid darken($theforce-top-bg, 10%);
   font-size:$theforce-top-font-size;
-  @include clearfix();
-
-  // FOR OUTSET STYLE
   background-color: $theforce-top-bg;
-  z-index:100;
-  box-shadow: 0 1px 3px rgba(#000, .2);
-
-  // FOR INSET STYLE
-  // &:after {
-  //   content: "";
-  //   display: block;
-  //   position: absolute;
-  //   bottom: 0;
-  //   width: 100%;
-  //   min-height: 12px;
-  //   background: transparent;
-  //   @include linear-gradient(rgba(0,0,0,0), darken($theforce-top-bg, 10%));
-  //   border-bottom: 1px solid darken($theforce-top-bg, 12%);
-  // }
+  border-style: inset !important;
+  border-top: none !important;
+  border-bottom: 1px solid darken($theforce-top-bg, 3%) !important;
+  @include clearfix();
 
   a{
     color:$theforce-top-primary;
@@ -66,13 +50,11 @@
   }
 
   .theforce-label{
-    position:absolute;
-    top:0;
-    left:0;
-    right:0;
+    line-height: $theforce-top-height;
     text-align: center;
-    color: darken($theforce-top-bg, 20%);
+    color: $theforce-top-color-alt;
     z-index: 50;
+    padding: 0 0 0 $theforce-top-item-padding;
   }
 
   .theforce-text{
@@ -86,9 +68,6 @@
 
   .theforce-item{
     float:left;
-    border-width: 0 1px;
-    border-style: none solid;
-    border-color: $theforce-top-bg;
     margin-left: -1px;
     color: $theforce-top-color;
     height: $theforce-top-height;
@@ -155,9 +134,9 @@
 }
 
 // Hide icons if body class is set
-.theforce-top-icon-only {
+.theforce-top-icon-only:not(.theforce-top-mini-open) {
 
-  #theforce-top:not(.open) {
+  #theforce-top {
 
     .theforce-text{
       opacity:0;
@@ -192,7 +171,7 @@
           text-shadow:none;
           z-index:100;
           @include transition(opacity 300ms 0ms, max-width 0ms 0ms);
-          @include transition-delay(1000ms);
+          @include transition-delay(300ms);
 
           &:before{
             display:block;
@@ -211,22 +190,5 @@
 
 
     }
-  }
-}
-
-//Change the background gradient direction based off sidebar position
-body.theforce-side-left {
-  #theforce-top {
-    @include transition(left 300ms);
-    @include transition-delay(300ms);
-    // @include linear-gradient(to right, $theforce-top-bg, darken($theforce-top-bg, 8%), $fallback: $theforce-top-bg);
-  }
-}
-
-body.theforce-side-right {
-  #theforce-top {
-    @include transition(right 300ms);
-    @include transition-delay(300ms);
-    // @include linear-gradient(to right, darken($theforce-top-bg, 8%), $theforce-top-bg, $fallback: $theforce-top-bg);
   }
 }
