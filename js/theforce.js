@@ -5,7 +5,9 @@ var theForce = {
   $body: null,
   $loader: null,
   once: 1,
-  region: {}
+  region: {},
+  forceUses: 0,
+  miniWidth: 600
 }
 
 theForce.attach = function (context, settings) {
@@ -16,17 +18,19 @@ theForce.attach = function (context, settings) {
       self.$body = $('body');
       self.$window = $(window);
       self.$loader = $('.theforce-ui-loader');
+      // Set background color to reflect body background color.
+      $('#theforce-content').css('backgroundColor', $('body').css('backgroundColor'));
     }
 
     // Get our regions
-    $('.theforce-region').once('theforce-region-processed').each(function(){
+    $('.theforce-region').once('theforce-region').each(function(){
       var $this = $(this);
       var id = $this.attr('id').replace('theforce-', '');
       self.region[id] = $this;
       var method = 'region' + (id.charAt(0).toUpperCase() + id.slice(1));
       if(self[method].init){
         self[method].$element = $this;
-        self[method].init();
+        self[method].init(settings);
       }
     });
 
@@ -36,8 +40,11 @@ theForce.attach = function (context, settings) {
     self.inkBind(context, settings);
     // Dropdown dropdown
     self.dropdown.init(context, settings);
-    // Mini initialization
-    self.mini.init(context, settings);
+    // Only perform when NOT in management mode
+    if(!settings.theforce.isManagement){
+      // Mini initialization
+      self.mini.init(settings);
+    }
     // A flag used to allow child methods to do things only once as the above
     // methods are called for each ajax call.
     self.once = 0;
@@ -49,19 +56,96 @@ theForce.attach = function (context, settings) {
  */
  theForce.mini = {};
 
- theForce.mini.init = function () {
-  console.log('init mini');
+ theForce.mini.init = function (settings) {
+  var self = this;
+
+  for (var id in theForce.region){
+    var method = 'region' + (id.charAt(0).toUpperCase() + id.slice(1));
+    if(theForce[method].mini){
+      theForce[method].mini(settings);
+    }
+    $('a.theforce-mini-toggle', theForce[method].$element).once('theforce-mini').on('click', {region:id}, function(e){
+      e.preventDefault();
+      var region = e.data.region;
+      // theForce[method].$element.toggleClass('open');
+      theForce.$body.toggleClass('theforce-' + region + '-mini-open');
+    });
+    if(theForce[method].miniWatch){
+      theForce[method].miniWatch();
+    }
+  }
+
+  theForce.$window.on('resize.theforce-mini', function() {
+    for (var id in theForce.region){
+      var method = 'region' + (id.charAt(0).toUpperCase() + id.slice(1));
+      if(theForce[method].miniWatch){
+        theForce[method].miniWatch();
+      }
+    }
+  });
  }
 
 /**
  * Prepare the top region.
  */
 theForce.regionTop = {
-  $element: null
+  $element: null,
+  $items: null,
+  width: 0,
 };
 
-theForce.regionTop.init = function () {
+theForce.regionTop.init = function (settings) {
   var self = this;
+  self.$items = $('.theforce-item', self.$element);
+}
+
+theForce.regionTop.mini = function (settings) {
+  var self = this, $largest;
+
+  if(self.$element.once('theforce-mini').length){
+    if(settings.theforce.topIconOnly){
+      theForce.$body.removeClass('theforce-top-icon-only');
+      self.$items.each(function(){
+        var $item = $(this), itemWidth = $item.outerWidth();
+        if(itemWidth > self.width){
+          self.width = itemWidth;
+          $largest = $item;
+        }
+      });
+      theForce.$body.addClass('theforce-top-icon-only');
+    }
+
+    self.$items.each(function(){
+      var $item = $(this);
+      if(!$largest || $item[0] != $largest[0]){
+        self.width += $item.outerWidth();
+        self.width += parseInt($item.css("marginLeft"));
+        self.width += parseInt($item.css("marginRight"));
+      }
+    });
+
+    if(theForce.region.side.length){
+      self.width += parseInt(settings.theforce.sideWidth);
+    }
+
+    theForce.$body.on('theforce-side:open.theforce-top-mini', function(e){
+      self.width += (parseInt(settings.theforce.sideWidthActive) - parseInt(settings.theforce.sideWidth));
+      self.miniWatch();
+    });
+
+    theForce.$body.on('theforce-side:closeEnd.theforce-top-mini', function(e){
+      self.width -= (parseInt(settings.theforce.sideWidthActive) - parseInt(settings.theforce.sideWidth));
+      self.miniWatch();
+    });
+  }
+}
+
+theForce.regionTop.miniWatch = function () {
+  var self = this;
+  theForce.$body.removeClass('theforce-top-mini');
+  if(theForce.$window.width() < theForce.miniWidth || self.width > theForce.$window.width()){
+    theForce.$body.addClass('theforce-top-mini');
+  }
 }
 
 /**
@@ -75,7 +159,7 @@ theForce.regionSide = {
   timeout: null
 };
 
-theForce.regionSide.init = function () {
+theForce.regionSide.init = function (settings) {
   var self = this;
   self.$element.on('mouseenter', function (e) {
     if(!self.locked){
@@ -96,7 +180,8 @@ theForce.regionSide.open = function () {
   if(!self.active){
     self.active = 1;
     theForce.$body.addClass('theforce-side-active').trigger('theforce-side:open');
-    self.$element.afterTransition(function (e) {
+    self.$element.on('allTransitionEnd', function(e){
+      self.$element.off('allTransitionEnd');
       theForce.$body.trigger('theforce-side:openEnd');
     });
   }
@@ -108,7 +193,8 @@ theForce.regionSide.close = function () {
     self.active = 0;
     self.unlock();
     theForce.$body.removeClass('theforce-side-active').trigger('theforce-side:close');
-    self.$element.afterTransition(function (e) {
+    self.$element.on('allTransitionEnd', function(e){
+      self.$element.off('allTransitionEnd');
       theForce.$body.trigger('theforce-side:closeEnd');
     });
   }
@@ -122,10 +208,23 @@ theForce.regionSide.unlock = function () {
   this.locked = 0;
 }
 
+theForce.regionSide.mini = function (settings) {
+  var self = this;
+}
+
+theForce.regionSide.miniWatch = function () {
+  var self = this;
+  theForce.$body.removeClass('theforce-side-mini');
+  if(theForce.$window.width() < theForce.miniWidth){
+    theForce.$body.addClass('theforce-side-mini');
+  }
+}
+
 /**
  * Setup ajax binding for all links using use-theforce.
  */
 theForce.linkAjaxBind = function (context, settings) {
+  var self = this;
   $('.use-theforce:not(.used-theforce)', context).addClass('used-theforce').each(function () {
     var element_settings = {};
     var progress = $(this).data('progress') || 'theforce';
@@ -144,6 +243,11 @@ theForce.linkAjaxBind = function (context, settings) {
       element_settings.speed = 600;
     }
     Drupal.ajax[base] = new Drupal.ajax(base, this, element_settings);
+  });
+  // Side close buttons
+  $('.theforce-side-close:not(.used-theforce)', context).addClass('used-thefoce').on('click', function(e){
+    e.preventDefault();
+    theForce.side.close();
   });
 }
 
@@ -250,7 +354,7 @@ theForce.overlay = {
 };
 
 theForce.overlay.build = function () {
-  self = this;
+  var self = this;
   self.$element = $('<div id="theforce-overlay" class="theforce"></div>').appendTo($('#theforce-wrap'));
 
   theForce.$window.on('click.theforce-overlay', function(e){
@@ -267,9 +371,8 @@ theForce.overlay.build = function () {
 }
 
 theForce.overlay.open = function (html, settings) {
-  self = this;
+  var self = this;
   settings = settings || Drupal.settings;
-  self.close();
   if(!self.$element){
     self.build();
   }
@@ -278,12 +381,13 @@ theForce.overlay.open = function (html, settings) {
 }
 
 theForce.overlay.close = function () {
-  self = this;
+  var self = this;
   if(self.$element){
     theForce.shade.close();
     theForce.$body.removeClass('has-theforce-overlay');
     theForce.$window.off('click.theforce-overlay');
-    self.$element.removeClass('animate').afterTransition(function (e) {
+    self.$element.removeClass('animate').on('allTransitionEnd', function(e){
+      self.$element.off('allTransitionEnd');
       self.$element.remove();
       self.$element = null;
     });
@@ -313,11 +417,12 @@ Drupal.ajax.prototype.commands.theforceOverlayClose = function (ajax, response, 
  */
 
 theForce.side = {
+  $wrapper: null,
   $element: null
 };
 
 theForce.side.build = function () {
-  self = this;
+  var self = this;
   self.$wrapper = $('#theforce-side');
   self.$element = $('<div id="theforce-side-content" class="theforce-percist"></div>').appendTo(self.$wrapper);
 
@@ -334,7 +439,7 @@ theForce.side.build = function () {
 }
 
 theForce.side.open = function (html, settings) {
-  self = this;
+  var self = this;
   settings = settings || Drupal.settings;
   if(!self.$element){
     self.build();
@@ -346,18 +451,18 @@ theForce.side.open = function (html, settings) {
 }
 
 theForce.side.close = function () {
-  self = this;
+  var self = this;
+  me = this;
   if(self.$element){
-    self.$element.removeClass('animate').afterTransition(function (e) {
-      if(self.$element){
-        self.$element.remove();
-        self.$element = null;
-      }
+    self.$element.removeClass('animate').on('allTransitionEnd', function(e){
+      self.$element.off('allTransitionEnd');
+      self.$element.remove();
+      self.$element = null;
     });
     theForce.regionSide.unlock();
     theForce.regionSide.close();
     theForce.shade.close();
-    theForce.$window.off('click' + '.theforce-side-content');
+    theForce.$window.off('click.theforce-side-content');
   }
 }
 
@@ -412,7 +517,8 @@ theForce.loader.show = function(){
 
 theForce.loader.hide = function(){
   var self = this;
-  theForce.$loader.removeClass('animate').afterTransition(function (e) {
+  theForce.$loader.removeClass('animate').on('allTransitionEnd', function(e){
+    theForce.$loader.off('allTransitionEnd');
     theForce.$loader.removeClass('show');
   });
 }
@@ -421,6 +527,53 @@ Drupal.behaviors.theforce = theForce;
 
 
 
+
+
+/**
+ * Redirect content area
+ */
+Drupal.ajax.prototype.commands.theforceRedirect = function (ajax, response, status) {
+  var $element = $('<div />');
+  var element_settings = {};
+  element_settings.progress = { 'type': 'theforce' };
+  var base = 'theforce-redirect';
+  // For anchor tags, these will go to the target of the anchor rather
+  // than the usual location.
+  element_settings.theforce = 1;
+  element_settings.url = response.url;
+  element_settings.event = 'onload';
+  element_settings.base = base;
+  element_settings.effect = 'fade';
+  element_settings.speed = 600;
+  Drupal.ajax[base] = new Drupal.ajax(base, $element, element_settings);
+  $element.trigger('onload');
+  $element.remove();
+};
+
+
+/**
+ * Reload content area
+ */
+Drupal.ajax.prototype.commands.theforceReload = function (ajax, response, status) {
+  var $element = $('#theforce-content');
+  var element_settings = {};
+  element_settings.progress = { 'type': 'theforce' };
+  var base = 'theforce-reload';
+  // For anchor tags, these will go to the target of the anchor rather
+  // than the usual location.
+  element_settings.theforce = 1;
+  element_settings.url = window.location.protocol + '//'
+    + window.location.hostname + '/'
+    + window.location.pathname + '/'
+    + '?theforce=1'
+    + window.location.hash.replace('#','','g');
+  element_settings.event = 'onload';
+  element_settings.base = base;
+  element_settings.effect = 'fade';
+  element_settings.speed = 600;
+  Drupal.ajax[base] = new Drupal.ajax(base, $element, element_settings);
+  $element.trigger('onload');
+};
 
 
 
