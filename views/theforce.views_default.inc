@@ -35,6 +35,7 @@ function theforce_views_default_theforce_content($type) {
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Manage ' . $type->name;
+  $handler->display->display_options['css_class'] = 'theforce-table';
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
@@ -126,6 +127,8 @@ function theforce_views_default_theforce_content($type) {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '<div class="theforce-table-title">[title]</div>';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
@@ -234,6 +237,8 @@ function theforce_views_default_theforce_content($type) {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '<div class="theforce-table-title">[title]</div>';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
@@ -320,6 +325,7 @@ function theforce_views_default_theforce_assets($type) {
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Manage ' . $type->title;
+  $handler->display->display_options['css_class'] = 'theforce-table';
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'none';
@@ -382,6 +388,8 @@ function theforce_views_default_theforce_assets($type) {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'asset';
   $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '<div class="theforce-table-title">[title]</div>';
   $handler->display->display_options['fields']['title']['label'] = !empty($type->data['title_label']) ? $type->data['title_label'] : 'Title';
   if(!empty($type->data['allow_status'])){
     /* Field: Asset: Published */
@@ -462,6 +470,8 @@ function theforce_views_default_theforce_assets($type) {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'asset';
   $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '<div class="theforce-table-title">[title]</div>';
   $handler->display->display_options['fields']['title']['label'] = !empty($type->data['title_label']) ? $type->data['title_label'] : 'Title';
   if(!empty($type->data['allow_status'])){
     /* Field: Asset: Published */
