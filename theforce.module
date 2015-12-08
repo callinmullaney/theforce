@@ -226,7 +226,7 @@ function theforce_library(){
     'website' => 'https://github.com/jacerider/theforce',
     'version' => '7.x-1.x-dev',
     'js' => array(
-      "$path/js/theforce.transition-events.js" => array(
+      "$path/js/theforce.transition-last.js" => array(
         'group' => JS_DEFAULT,
         'every_page' => true
       ),
@@ -332,6 +332,8 @@ function theforce_content($region){
         'basePath' => current_path(),
         'modulePath' => $path,
         'isManagement' => theforce_is_management(),
+        'topIconOnly' => $settings['top_icon_only'],
+        'sideWidth' => $settings['side_width'],
         'sideWidthActive' => $settings['side_width_active'],
       );
       $content = array(
@@ -421,6 +423,16 @@ function theforce_preprocess_html(&$vars) {
 }
 
 /**
+ * Implements hook_process_page().
+ */
+function theforce_process_page(&$vars){
+  if(isset($_GET['theforce'])){
+    // We don't want messages displayed in ajax refresh.
+    unset($vars['messages']);
+  }
+}
+
+/**
  * Implements hook_process_html().
  */
 function theforce_process_html(&$vars){
@@ -454,7 +466,11 @@ function theforce_user_insert(&$edit, $account, $category){
  * Get settings.
  */
 function theforce_settings(){
-  return drupal_array_merge_deep(theforce_settings_definition(), variable_get('theforce', array()));
+  $settings = &drupal_static(__FUNCTION__);
+  if(!isset($settings)){
+    $settings = drupal_array_merge_deep(theforce_settings_definition(), variable_get('theforce', array()));
+  }
+  return $settings;
 }
 
 /**
@@ -482,9 +498,11 @@ function theforce_settings_definition() {
       'side_primary' => '#0997c3',
       'top_icon_only' => 1,
       'top_height' => '60px',
+      'top_style' => 'outset',
       'side_position' => 'left',
       'side_width' => '80px',
       'side_width_active' => '335px',
+      'side_style' => 'outset',
     );
   }
   return $defaults;
