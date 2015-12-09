@@ -171,14 +171,22 @@ body.theforce-side-mini{
 
   #theforce-side{
     z-index:100 !important;
+
+    .theforce-location{
+      pointer-events:none;
+    }
   }
 
   &.theforce-side-active #theforce-side{
     width:100% !important;
+
+    .theforce-location{
+      pointer-events:auto;
+    }
   }
 }
 
-// When mini mode has been enabled on the top bar.
+// When mini mode has been enabled on the top bar but is not open.
 body.theforce-side-mini:not(.theforce-top-mini-open){
 
   #theforce-side{
