@@ -27,6 +27,21 @@
     color: $theforce-side-color;
   }
 
+  .theforce-side-close{
+    display:block;
+    position: absolute;
+    top:-1000px;
+    right:5px;
+    font-weight:200;
+    z-index:150;
+    padding:5px;
+    font-size:40px;
+    line-height:30px;
+    color: theforce-color($theforce-side-bg, 20%);
+    opacity:0;
+    @include transition(opacity 300ms);
+  }
+
   #theforce-side-top{
     @include flex(auto);
   }
@@ -139,7 +154,8 @@ body.theforce-side-left {
   #theforce-wrap {
     @include transition(left 200ms);
     @include transition-delay(200ms);
-    border-left: 1px inset $theforce-side-bg !important;
+    // Does not work with mini view. Not sure why we need this anyways.
+    // border-left: 1px inset $theforce-side-bg !important;
   }
   #theforce-side{
     @include transition(width 200ms);
@@ -149,8 +165,9 @@ body.theforce-side-left {
   #theforce-top{
     @include transition(left 200ms);
     @include transition-delay(200ms);
-    border-right: none !important;
-    border-left: 1px inset $theforce-side-bg !important;
+    // border-right: none !important;
+    // Does not work with mini view. Not sure why we need this anyways.
+    // border-left: 1px inset $theforce-side-bg !important;
   }
 }
 
@@ -159,7 +176,8 @@ body.theforce-side-right {
   #theforce-wrap {
     @include transition(right 200ms);
     @include transition-delay(200ms);
-    border-right: 1px inset $theforce-side-bg;
+    // Does not work with mini view. Not sure why we need this anyways.
+    // border-right: 1px inset $theforce-side-bg;
   }
   #theforce-side{
     @include transition(width 200ms);
@@ -169,8 +187,9 @@ body.theforce-side-right {
   #theforce-top{
     @include transition(right 200ms);
     @include transition-delay(200ms);
-    border-left: none !important;
-    border-right: 1px inset $theforce-side-bg !important;
+    // border-left: none !important;
+    // Does not work with mini view. Not sure why we need this anyways.
+    // border-right: 1px inset $theforce-side-bg !important;
   }
 }
 
@@ -198,6 +217,11 @@ body.theforce-side-active{
   #theforce-side{
     width: $theforce-side-width-active !important;
     @include transition-delay(0ms);
+
+    .theforce-side-close{
+      top:0px;
+      opacity:1;
+    }
 
     .theforce-element{
       padding-left: $theforce-side-item-padding;

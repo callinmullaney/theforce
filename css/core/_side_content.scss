@@ -27,14 +27,15 @@
     opacity:0;
   }
 
-  .theforce-side-close{
+  .theforce-side-content-close{
     display:block;
     position: absolute;
-    top:5px;
-    right:10px;
-    font-size:25px;
-    line-height:22px;
+    top:0px;
+    right:5px;
     font-weight:200;
+    padding:5px;
+    font-size:40px;
+    line-height:30px;
     color: theforce-color($theforce-side-bg, 20%);
   }
 

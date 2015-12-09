@@ -9,9 +9,10 @@
   right:0;
   font-size:$theforce-top-font-size;
   background-color: $theforce-top-bg;
-  border-style: inset !important;
-  border-top: none !important;
-  border-bottom: 1px solid darken($theforce-top-bg, 3%) !important;
+  // Does not work with mini view. Not sure why we need this anyways.
+  // border-style: inset !important;
+  // border-top: none !important;
+  // border-bottom: 1px solid darken($theforce-top-bg, 3%) !important;
   @include clearfix();
 
   a{

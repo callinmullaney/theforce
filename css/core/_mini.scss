@@ -17,15 +17,6 @@ body.theforce-top-enabled{
   }
 }
 
-.theforce-mini{
-
-  // .theforce-location:not(.theforce-mini-location){
-  //   opacity: 0;
-  //   margin: 0;
-  //   @include filter(#{"blur(5px)"});
-  // }
-}
-
 
 
 
@@ -56,7 +47,6 @@ body.theforce-top-mini{
 
     .theforce-mini-location{
       display:block;
-      @include transition(opacity 400ms, margin 300ms, filter 600ms);
     }
   }
 }
@@ -101,6 +91,8 @@ body.theforce-top-mini-open #theforce-top{
       float:none;
       min-width:100%;
       overflow:auto;
+      box-shadow: none;
+      border-radius:0px;
       -webkit-overflow-scrolling: touch;
 
       .theforce-table{
@@ -135,8 +127,6 @@ body.theforce-top-mini-open #theforce-top{
     margin:$theforce-top-item-padding/1.5;
     background: $theforce-top-bg;
     box-shadow: 0 1px 2px rgba(#000, .1);
-    opacity: 1;
-    @include filter(#{"blur(0px)"});
 
     .theforce-item{
       margin:0;
@@ -150,6 +140,10 @@ body.theforce-top-mini-open #theforce-top{
     .theforce-item{
       background:theforce-shade($theforce-top-bg, 3%);
       box-shadow: inset 0px 2px 2px theforce-shade($theforce-top-bg, 5%);
+
+      a{
+        color:$theforce-top-primary;
+      }
     }
   }
 }
@@ -161,13 +155,18 @@ body.theforce-top-mini-open #theforce-top{
 
 body.theforce-side-mini{
 
-  &:not(.theforce-side-active){
-    #theforce-side,
-    #theforce-wrap,
-    #theforce-top{
-      // @include transition-duration(0ms);
-      // @include transition-delay(0ms);
-    }
+  // For speed... most animations are disabled in mini mode.
+  #theforce-side,
+  #theforce-wrap,
+  #theforce-top,
+  #theforce-side .theforce-item,
+  #theforce-side .theforce-element,
+  #theforce-side .theforce-icon,
+  #theforce-side .theforce-text,
+  #theforce-side-content,
+  .theforce-side-content-inner{
+    @include transition-duration(0ms);
+    @include transition-delay(0ms);
   }
 
   #theforce-side{
@@ -184,14 +183,10 @@ body.theforce-side-mini:not(.theforce-top-mini-open){
 
   #theforce-side{
     width:0px !important;
-    @include transition-duration(0ms);
-    @include transition-delay(0ms);
   }
 
   #theforce-wrap,
   #theforce-top{
     left:0 !important;
-    @include transition-duration(0ms);
-    @include transition-delay(0ms);
   }
 }
