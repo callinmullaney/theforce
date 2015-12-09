@@ -122,7 +122,7 @@ function ajax_command_theforce_side($html, $title = '', $description = '', $sett
   if($messages = theme('status_messages')){
     $html = $messages . $html;
   }
-  $html = '<div class="theforce-side-content-inner"><a class="theforce-side-close" href="#">&times;</a><div class="theforce-side-title">' . $title . '</div><div class="theforce-side-description">' . $description . '</div>' . $html . '</div>';
+  $html = '<div class="theforce-side-content-inner"><a class="theforce-side-content-close" href="#">&times;</a><div class="theforce-side-title">' . $title . '</div><div class="theforce-side-description">' . $description . '</div>' . $html . '</div>';
   return array(
     'command' => 'theforceSide',
     'data' => $html,

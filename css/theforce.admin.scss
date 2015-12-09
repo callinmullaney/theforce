@@ -288,6 +288,10 @@ div.theforce{
 
 #theforce-side{
 
+  .theforce-side-close{
+    display:none;
+  }
+
   .theforce-ui-item{
 
     &:hover{

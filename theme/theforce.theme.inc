@@ -13,6 +13,11 @@ function template_preprocess_theforce(&$vars){
     $vars['classes_array'][] = 'theforce-style-' . $settings[$region . '_style'];
   }
 
+  $vars['close'] = '';
+  if($region == 'side'){
+    $vars['close'] = '<a class="theforce-side-close" href="#">&times;</a>';
+  }
+
   array_unshift($vars['locations'], 'mini');
   $vars['location_attributes_array']['mini']['class'][] = 'theforce-mini-location';
   $vars['content'] = array(

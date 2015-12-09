@@ -35,7 +35,7 @@ theForce.attach = function (context, settings) {
     });
 
     // Ajax link bindings.
-    self.linkAjaxBind(context, settings);
+    self.linkBind(context, settings);
     // Ink link effect
     self.inkBind(context, settings);
     // Dropdown dropdown
@@ -161,6 +161,10 @@ theForce.regionSide = {
 
 theForce.regionSide.init = function (settings) {
   var self = this;
+  self.$element.on('touchstart', function (e) {
+    self.open();
+  });
+
   self.$element.on('mouseenter', function (e) {
     if(!self.locked){
       self.timeout = setTimeout(function(){
@@ -223,7 +227,7 @@ theForce.regionSide.miniWatch = function () {
 /**
  * Setup ajax binding for all links using use-theforce.
  */
-theForce.linkAjaxBind = function (context, settings) {
+theForce.linkBind = function (context, settings) {
   var self = this;
   $('.use-theforce:not(.used-theforce)', context).addClass('used-theforce').each(function () {
     var element_settings = {};
@@ -246,6 +250,11 @@ theForce.linkAjaxBind = function (context, settings) {
   });
   // Side close buttons
   $('.theforce-side-close:not(.used-theforce)', context).addClass('used-thefoce').on('click', function(e){
+    e.preventDefault();
+    theForce.regionSide.close();
+  });
+  // Side content close buttons
+  $('.theforce-side-content-close:not(.used-theforce)', context).addClass('used-thefoce').on('click', function(e){
     e.preventDefault();
     theForce.side.close();
   });
