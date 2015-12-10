@@ -165,6 +165,7 @@ body.theforce-side-mini{
   #theforce-side .theforce-text,
   #theforce-side-content,
   .theforce-side-content-inner{
+    // @include transition(none);
     @include transition-duration(0ms);
     @include transition-delay(0ms);
   }
