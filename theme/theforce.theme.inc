@@ -5,13 +5,9 @@
  */
 function template_preprocess_theforce(&$vars){
   $region = $vars['region'];
-  $settings = theforce_settings();
   $vars['attributes_array']['id'] = 'theforce-' . $region;
   $vars['location_attributes_array'] = array();
   $vars['classes_array'][] = 'theforce-region';
-  if(isset($settings[$region . '_style'])){
-    $vars['classes_array'][] = 'theforce-style-' . $settings[$region . '_style'];
-  }
 
   $vars['close'] = '';
   if($region == 'side'){

@@ -399,11 +399,15 @@ function theforce_content_region($region, $location){
 function theforce_preprocess_html(&$vars) {
   if (theforce_is_available()) {
     $vars['theforce'] = 0;
+    $settings = theforce_settings();
     foreach(theforce_regions() as $region => $locations){
       if(!empty($vars['page']['page_bottom']['theforce_' . $region])){
         $vars['theforce'] = 1;
         $vars['classes_array'][] = 'theforce-' . $region . '-enabled';
         if(!empty($vars['page']['page_bottom']['theforce_' . $region]['#content'])){
+          if(isset($settings[$region . '_style'])){
+            $vars['classes_array'][] = 'theforce-' . $region . '-style-' . $settings[$region . '_style'];
+          }
           $vars['classes_array'][] = 'theforce-' . $region . '-content';
         }
       }
