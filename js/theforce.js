@@ -331,7 +331,7 @@ theForce.inkBind = function(context, settings) {
     $parent = $(this).parent();
     //create .ink element if it doesn't exist
     if($parent.find(".ink").length == 0){
-      $parent.prepend("<span class='ink-wrap'><span class='ink'></span></span>");
+      $parent.prepend('<span class="ink-wrap"><span class="ink"></span></span>');
     }
 
     $ink = $parent.find(".ink");
@@ -351,7 +351,7 @@ theForce.inkBind = function(context, settings) {
     y = e.pageY - $parent.offset().top - $ink.height()/2;
 
     //set the position and add class .animate
-    $ink.css({top: y+'px', left: x+'px'}).addClass("animate");
+    $ink.css({top: y+'px', left: x+'px'}).addClass('animate');
   });
 }
 
