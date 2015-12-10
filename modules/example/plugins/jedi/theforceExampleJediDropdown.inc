@@ -4,6 +4,7 @@ $plugin = array(
   'title' => 'EXAMPLE | Dropdown',
   'configurable' => 1,
   'handler' => array(
+    'file' => 'theforceExampleJediDropdown.inc',
     'class' => 'theforceExampleJediDropdown',
   ),
 );

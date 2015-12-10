@@ -4,6 +4,7 @@ $plugin = array(
   'title' => 'EXAMPLE | Link',
   'configurable' => 1,
   'handler' => array(
+    'file' => 'theforceExampleJediLink.inc',
     'class' => 'theforceExampleJediLink',
   ),
 );

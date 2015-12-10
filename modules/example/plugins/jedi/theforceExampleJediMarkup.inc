@@ -4,6 +4,7 @@ $plugin = array(
   'title' => 'EXAMPLE | Markup',
   'configurable' => 1,
   'handler' => array(
+    'file' => 'theforceExampleJediMarkup.inc',
     'class' => 'theforceExampleJediMarkup',
   ),
 );

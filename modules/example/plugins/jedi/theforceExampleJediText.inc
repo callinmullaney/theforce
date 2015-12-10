@@ -4,6 +4,7 @@ $plugin = array(
   'title' => 'EXAMPLE | Text',
   'configurable' => 1,
   'handler' => array(
+    'file' => 'theforceExampleJediText.inc',
     'class' => 'theforceExampleJediText',
   ),
 );

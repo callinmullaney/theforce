@@ -4,6 +4,7 @@ $plugin = array(
   'title' => 'EXAMPLE | Menu',
   'configurable' => 0,
   'handler' => array(
+    'file' => 'theforceExampleJediMenu.inc',
     'class' => 'theforceExampleJediMenu',
   ),
 );
