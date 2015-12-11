@@ -45,7 +45,9 @@ class theforceJediLocalTabs extends theforce {
       }
 
       if(!empty($output)){
-        $output['#prefix'] = '<div class="theforce-label">' . t('Tasks') . '</div><ul class="theforce-tabs-primary theforce-elements">';
+        // Label for the Local Tabs group isnt necessary given the clear button labels
+        // $output['#prefix'] = '<div class="theforce-label">' . t('Tasks') . '</div><ul class="theforce-tabs-primary theforce-elements">';
+        $output['#prefix'] = '<ul class="theforce-tabs-primary theforce-elements">';
         $output['#suffix'] = '</ul>';
       }
     }

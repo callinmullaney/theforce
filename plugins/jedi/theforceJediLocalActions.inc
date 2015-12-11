@@ -32,7 +32,9 @@ class theforceJediLocalActions extends theforce {
       }
 
       if(!empty($output)){
-        $output['#prefix'] = '<div class="theforce-label">' . t('Actions') . '</div><ul class="theforce-elements">';
+        // Label for the Local Actions group isnt necessary given the clear button labels
+        // $output['#prefix'] = '<div class="theforce-label">' . t('Actions') . '</div><ul class="theforce-elements">';
+        $output['#prefix'] = '<ul class="theforce-elements">';
         $output['#suffix'] = '</ul>';
       }
     }
