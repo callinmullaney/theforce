@@ -20,9 +20,16 @@
 
 #theforce-top{
 
-  img.theforce-avatar{
-    border:2px solid theforce-shade($theforce-top-bg, 10%);
-    background:theforce-shade($theforce-top-bg, 10%);
+  #theforce-jedi-user {
+    
+    a {
+      z-index: 3;
+    }
+
+    img.theforce-avatar{
+      border:2px solid theforce-shade($theforce-top-bg, 10%);
+      background:theforce-shade($theforce-top-bg, 10%);
+    }
   }
 }
 
@@ -38,6 +45,7 @@
 
     a.theforce-dropdown-trigger {
       padding: 0;
+      z-index: 3;
     }
 
     img {

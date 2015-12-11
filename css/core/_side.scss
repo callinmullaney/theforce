@@ -40,6 +40,7 @@
     color: theforce-color($theforce-side-bg, 20%);
     opacity:0;
     @include transition(opacity 300ms);
+    @include transition-delay(200ms);
   }
 
   #theforce-side-top{
@@ -119,6 +120,10 @@
       }
     }
 
+    .theforce-item:last-child {
+      border-bottom: none;
+    }
+
     .theforce-element{
       padding-left: ($theforce-side-width - ($theforce-side-font-size*2)) / 2;
       color: $theforce-side-color;
@@ -155,7 +160,7 @@ body.theforce-side-left {
     @include transition(left 200ms);
     @include transition-delay(200ms);
     // Does not work with mini view. Not sure why we need this anyways.
-    // border-left: 1px inset $theforce-side-bg !important;
+    border-left: 1px solid darken($theforce-side-bg, 3%) !important;
   }
   #theforce-side{
     @include transition(width 200ms);
@@ -165,9 +170,10 @@ body.theforce-side-left {
   #theforce-top{
     @include transition(left 200ms);
     @include transition-delay(200ms);
-    // border-right: none !important;
+    border-right: none !important;
     // Does not work with mini view. Not sure why we need this anyways.
-    // border-left: 1px inset $theforce-side-bg !important;
+    border-left: 1px solid $theforce-side-bg !important;
+    border-bottom: 1px solid darken($theforce-top-bg, 3%) !important;
   }
 }
 
@@ -177,7 +183,7 @@ body.theforce-side-right {
     @include transition(right 200ms);
     @include transition-delay(200ms);
     // Does not work with mini view. Not sure why we need this anyways.
-    // border-right: 1px inset $theforce-side-bg;
+    border-right: 1px solid darken($theforce-side-bg, 3%) !important;
   }
   #theforce-side{
     @include transition(width 200ms);
@@ -187,9 +193,10 @@ body.theforce-side-right {
   #theforce-top{
     @include transition(right 200ms);
     @include transition-delay(200ms);
-    // border-left: none !important;
+    border-left: none !important;
     // Does not work with mini view. Not sure why we need this anyways.
-    // border-right: 1px inset $theforce-side-bg !important;
+    border-right: 1px solid $theforce-side-bg !important;
+    border-bottom: 1px solid darken($theforce-top-bg, 3%) !important;
   }
 }
 

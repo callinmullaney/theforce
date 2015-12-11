@@ -1,0 +1,85 @@
+////////////////////////////////////////////////////////////////////////////////
+/// TheForce Inset Styling
+////////////////////////////////////////////////////////////////////////////////
+.theforce-top-style-inset {
+  
+  #theforce-wrap{
+    box-shadow: 0 0 12px rgba(0,0,0,0.5);
+    z-index: 1;
+    
+    #theforce-content{
+      @include transition(transform 500ms 0ms, width 500ms 0ms, filter 300ms ease 0ms);
+    }
+  }
+
+  &.theforce-top-mini {
+  
+    #theforce-wrap{
+      z-index: 1;
+      background: $theforce-top-bg;
+    }
+  }
+}
+
+body.theforce-inset.theforce-top-style-inset{
+
+  #theforce-wrap {
+
+    #theforce-content{
+      @include filter(#{"blur(5px)"});
+    }
+  }
+}
+
+////////////////
+// Top
+////////////////
+.theforce-top-style-inset{
+  #theforce-top{
+    min-height: 0px;
+  }
+}
+
+//Change the background gradient direction based off sidebar position
+body.theforce-side-left.theforce-top-style-inset {
+  #theforce-top{
+    @include transition(left 200ms);
+    @include transition-delay(200ms);
+    @include linear-gradient(to right, $theforce-top-bg, darken($theforce-top-bg, 8%), $fallback: $theforce-top-bg);
+  }
+}
+
+body.theforce-side-right.theforce-top-style-inset {
+  #theforce-top.theforce-style-inset{
+    @include transition(right 200ms);
+    @include transition-delay(200ms);
+    @include linear-gradient(to right, darken($theforce-top-bg, 8%), $theforce-top-bg, $fallback: $theforce-top-bg);
+  }
+}
+
+// Slight Mini adjustments
+body.theforce-top-mini.theforce-top-style-inset{
+
+  #theforce-top{
+    background-image: none;
+    background-color: rgba($theforce-top-bg, 0.8);
+
+    #theforce-top-mini {
+      @include linear-gradient(to right, $theforce-top-bg, darken($theforce-top-bg, 8%), $fallback: $theforce-top-bg);
+    }
+  }
+}
+
+////////////////
+// Side
+////////////////
+.theforce-side-style-inset{
+  #theforce-side{
+    @include linear-gradient($theforce-side-bg, darken($theforce-side-bg, 12%), $fallback: $theforce-side-bg);
+
+    #theforce-side-content{
+      @include linear-gradient($theforce-side-bg, darken($theforce-side-bg, 12%), $fallback: $theforce-side-bg);
+    }
+  }
+}
+
