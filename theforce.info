@@ -7,6 +7,9 @@ core = 7.x
 dependencies[] = menu
 dependencies[] = ctools
 dependencies[] = jquery_update
+dependencies[] = views
+dependencies[] = sonar
+dependencies[] = fawesome
 
 files[] = handlers/theforce.inc
 files[] = handlers/theforceQuery.inc
