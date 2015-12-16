@@ -496,12 +496,12 @@ function theforce_settings_definition() {
   if(empty($defaults)){
     $defaults = array(
       'menu' => '',
-      'top_bg' => '#2E383E',
+      'top_bg' => '#F1F3F4',
       'top_primary' => '#0997c3',
       'side_bg' => '#273035',
       'side_primary' => '#0997c3',
       'top_icon_only' => 1,
-      'top_height' => '60px',
+      'top_height' => '64px',
       'top_style' => 'outset',
       'side_position' => 'left',
       'side_width' => '80px',
@@ -602,6 +602,18 @@ function theforce_form_alter(&$form, &$form_state, $form_id){
       $ief[$ief['#language']][0]['#required'] = 0;
     }
   }
+}
+
+/**
+ * Implements hook_fawesome_icons().
+ */
+function theforce_fawesome_icons(){
+  $icons = array(
+    'theforce' => 'rebel',
+    'the force' => 'rebel',
+  );
+
+  return $icons;
 }
 
 

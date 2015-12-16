@@ -324,7 +324,7 @@ function theforce_views_default_theforce_assets($type) {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Manage ' . $type->title;
+  $handler->display->display_options['title'] = 'Manage ' . $type->plural;
   $handler->display->display_options['css_class'] = 'theforce-table';
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['use_more_always'] = FALSE;

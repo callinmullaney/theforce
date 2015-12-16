@@ -95,7 +95,10 @@ body.theforce-enabled{
 
 .theforce{
   font-family: $theforce-font-family;
+  // font-weight: 300;
   color: $theforce-color;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
   table {
 

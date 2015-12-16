@@ -33,6 +33,15 @@
     font-size:12px;
   }
 
+  .views-align-right{
+    text-align:right;
+
+    .inline-list > li{
+      float:none;
+      display:inline-block;
+    }
+  }
+
   input{
     border:none;
     box-shadow:none;

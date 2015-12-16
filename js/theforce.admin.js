@@ -97,10 +97,10 @@ theforceAdminUI.itemsSort = function(){
               dataType: 'json',
               data: {weights: JSON.stringify(order)},
               beforeSend: function (xmlhttprequest, options) {
-                Drupal.behaviors.theforce.loading();
+                Drupal.behaviors.theforce.loader.show();
               },
               success: function(response, status) {
-                Drupal.behaviors.theforce.success();
+                Drupal.behaviors.theforce.loader.hide();
               }
             });
           }
