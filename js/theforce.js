@@ -160,13 +160,20 @@ theForce.regionSide = {
 };
 
 theForce.regionSide.init = function (settings) {
-  var self = this;
+  var self = this, clientX;
   self.$element.on('touchstart', function (e) {
     self.open();
   });
 
+  // Use mousemove event to prevent mouse from immediately trigger side
+  // active events.
+  theForce.$body.on('mousemove.theforce-side', function(e){
+    clientX = e.clientX;
+    theForce.$body.off('mousemove.theforce-side');
+  });
+
   self.$element.on('mouseenter', function (e) {
-    if(!self.locked){
+    if(!self.locked && clientX){
       self.timeout = setTimeout(function(){
         self.open();
       }, self.delay);
