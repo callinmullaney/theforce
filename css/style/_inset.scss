@@ -2,21 +2,20 @@
 /// TheForce Inset Styling
 ////////////////////////////////////////////////////////////////////////////////
 .theforce-top-style-inset {
-  
+
   #theforce-wrap{
-    box-shadow: 0 0 12px rgba(0,0,0,0.5);
+    box-shadow: 0 0 10px rgba(0,0,0,0.33);
     z-index: 1;
-    
+
     #theforce-content{
       @include transition(transform 500ms 0ms, width 500ms 0ms, filter 300ms ease 0ms);
     }
   }
 
   &.theforce-top-mini {
-  
+
     #theforce-wrap{
       z-index: 1;
-      background: $theforce-top-bg;
     }
   }
 }
@@ -76,6 +75,7 @@ body.theforce-top-mini.theforce-top-style-inset{
 .theforce-side-style-inset{
   #theforce-side{
     @include linear-gradient($theforce-side-bg, darken($theforce-side-bg, 12%), $fallback: $theforce-side-bg);
+    z-index: 0;
 
     #theforce-side-content{
       @include linear-gradient($theforce-side-bg, darken($theforce-side-bg, 12%), $fallback: $theforce-side-bg);
