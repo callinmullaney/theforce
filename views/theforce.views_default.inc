@@ -60,7 +60,7 @@ function theforce_views_default_theforce_content($type) {
     $handler->display->display_options['style_options']['columns']['edit_node'] = 'view_node';
     $handler->display->display_options['style_options']['columns']['delete_node'] = 'view_node';
   }
-  $handler->display->display_options['style_options']['default'] = 'changed';
+  $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
     'title' => array(
       'sortable' => 1,
@@ -342,7 +342,7 @@ function theforce_views_default_theforce_assets($type) {
     'changed' => 'changed',
     'asset_ops' => 'asset_ops',
   );
-  $handler->display->display_options['style_options']['default'] = 'changed';
+  $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
     'title' => array(
       'sortable' => 1,
