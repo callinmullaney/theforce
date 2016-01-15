@@ -28,7 +28,9 @@ function theforce_html_ajax($plugin){
  */
 function theforce_side_ajax($plugin){
   $commands = array();
-  $commands[] = ajax_command_theforce_side(drupal_render($plugin['handler']->renderAjax()), $plugin['handler']->values['sideTitle'], $plugin['handler']->values['sideDescription']);
+  $output = $plugin['handler']->renderAjax();
+  $output = drupal_render($output);
+  $commands[] = ajax_command_theforce_side($output, $plugin['handler']->values['sideTitle'], $plugin['handler']->values['sideDescription']);
   $result['#type'] = 'ajax';
   $result['#commands'] = $commands;
   return $result;
