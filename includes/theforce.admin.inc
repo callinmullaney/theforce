@@ -157,7 +157,7 @@ function theforce_admin_form($form, &$form_state) {
     );
   }
 
-  $form['theforce']['top']['side_style'] = array(
+  $form['theforce']['side']['side_style'] = array(
     '#type' => 'select',
     '#title' => t('Style'),
     '#options' => $styles,
