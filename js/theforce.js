@@ -96,7 +96,9 @@ theForce.regionTop = {
 
 theForce.regionTop.init = function (settings) {
   var self = this;
-  self.$items = $('.theforce-item', self.$element);
+  self.$items = $('.theforce-item', self.$element).filter(function(){
+    return !$(this).parents('.theforce-item').length;
+  });
 }
 
 theForce.regionTop.mini = function (settings) {
@@ -333,7 +335,7 @@ theForce.dropdown.close = function(e){
  * Ink handler.
  */
 theForce.inkBind = function(context, settings) {
-  var $parent, $ink, d, x, y;
+  var $parent, $ink, d, x, y, timeout;
   $(".theforce-item a").once('theforce-ink').click(function(e){
     $parent = $(this).parent();
     //create .ink element if it doesn't exist
@@ -359,6 +361,10 @@ theForce.inkBind = function(context, settings) {
 
     //set the position and add class .animate
     $ink.css({top: y+'px', left: x+'px'}).addClass('animate');
+    clearTimeout(timeout);
+    timeout = setTimeout(function(){
+      $ink.removeClass('animate');
+    }, 500);
   });
 }
 
@@ -400,9 +406,9 @@ theForce.overlay.close = function () {
   var self = this;
   if(self.$element){
     theForce.shade.close();
-    theForce.$body.removeClass('has-theforce-overlay');
     theForce.$window.off('click.theforce-overlay');
     self.$element.removeClass('animate').on('allTransitionEnd', function(e){
+      theForce.$body.removeClass('has-theforce-overlay');
       self.$element.off('allTransitionEnd');
       self.$element.remove();
       self.$element = null;
@@ -515,6 +521,8 @@ theForce.shade.close = function() {
   self.count--;
   if(!self.count){
     theForce.$body.removeClass('theforce-inset');
+    // Remove the loader if it exists.
+    theForce.loader.remove();
   }
 }
 
@@ -525,6 +533,7 @@ theForce.loader = {};
 
 theForce.loader.show = function(){
   var self = this;
+  self.remove();
   theForce.$loader.addClass('show');
   setTimeout(function(){
     theForce.$loader.addClass('animate');
@@ -533,10 +542,19 @@ theForce.loader.show = function(){
 
 theForce.loader.hide = function(){
   var self = this;
-  theForce.$loader.removeClass('animate').on('allTransitionEnd', function(e){
-    theForce.$loader.off('allTransitionEnd');
-    theForce.$loader.removeClass('show');
-  });
+  // clearTimeout(self.timeout);
+  // theForce.$loader.removeClass('animate').on('allTransitionEnd', function(e){
+  //   theForce.$loader.off('allTransitionEnd');
+  //   self.remove();
+  // });
+  theForce.$loader.removeClass('animate');
+  setTimeout(function(){
+    self.remove();
+  }, 300);
+}
+
+theForce.loader.remove = function(){
+  theForce.$loader.removeClass('show animate');
 }
 
 Drupal.behaviors.theforce = theForce;
