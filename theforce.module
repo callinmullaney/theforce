@@ -345,8 +345,6 @@ function theforce_content($region){
         'modulePath' => $path,
         'isManagement' => theforce_is_management(),
         'topIconOnly' => $settings['top_icon_only'],
-        'sideWidth' => $settings['side_width'],
-        'sideWidthActive' => $settings['side_width_active'],
       );
       $content = array(
         '#theme' => 'theforce',
@@ -513,11 +511,8 @@ function theforce_settings_definition() {
       'side_bg' => '#273035',
       'side_primary' => '#0997c3',
       'top_icon_only' => 1,
-      'top_height' => '64px',
       'top_style' => 'outset',
       'side_position' => 'left',
-      'side_width' => '80px',
-      'side_width_active' => '335px',
       'side_style' => 'outset',
     );
   }
@@ -545,15 +540,6 @@ function theforce_sonar_var(){
     ) + $defaults,
     'theforce-side-primary' => array(
       'value' => $settings['side_primary'],
-    ) + $defaults,
-    'theforce-top-height' => array(
-      'value' => $settings['top_height'],
-    ) + $defaults,
-    'theforce-side-width' => array(
-      'value' => $settings['side_width'],
-    ) + $defaults,
-    'theforce-side-width-active' => array(
-      'value' => $settings['side_width_active'],
     ) + $defaults,
   );
 }

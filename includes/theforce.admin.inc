@@ -105,13 +105,6 @@ function theforce_admin_form($form, &$form_state) {
     '#default_value' => $settings['top_icon_only'],
   );
 
-  $form['theforce']['top']['top_height'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Height'),
-    '#description' => t('Value should be entered in pixels. Example: 60px'),
-    '#default_value' => $settings['top_height'],
-  );
-
   //////////////////////////////////////////////////////////////////////////////
   /// Side Bar
   //////////////////////////////////////////////////////////////////////////////
@@ -169,20 +162,6 @@ function theforce_admin_form($form, &$form_state) {
     '#title' => t('Position'),
     '#options' => array('left' => t('Left'), 'right' => t('Right')),
     '#default_value' => $settings['side_position'],
-  );
-
-  $form['theforce']['side']['side_width'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Width'),
-    '#description' => t('Value should be entered in pixels. Example: 80px'),
-    '#default_value' => $settings['side_width'],
-  );
-
-  $form['theforce']['side']['side_width_active'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Width When Active'),
-    '#description' => t('Value should be entered in pixels. Example: 335px'),
-    '#default_value' => $settings['side_width_active'],
   );
 
   //////////////////////////////////////////////////////////////////////////////
