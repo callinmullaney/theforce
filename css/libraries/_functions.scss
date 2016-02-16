@@ -2,7 +2,7 @@
 /// Functions
 ////////////////////////////////////////////////////////////////////////////////
 
-@function theforce-color($color, $percent: 10%) {
+@function theforce-color($color, $percent: 15%) {
   @if (lightness($color) > 50) {
     @return darken($color, $percent); // Lighter backgorund, return dark color
   } @else {
@@ -10,7 +10,7 @@
   }
 }
 
-@function theforce-shade($color, $percent: 10%) {
+@function theforce-shade($color, $percent: 15%) {
   @if (lightness($color) > 50) {
     @return lighten($color, $percent); // Lighter backgorund, return dark color
   } @else {

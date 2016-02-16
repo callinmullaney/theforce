@@ -3,14 +3,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #theforce-wrap{
-  background: $theforce-bg;
+  // background: $theforce-bg;
+  background-color: transparent;
   position:absolute;
   top:0;
   right:0;
   bottom:0;
   left:0;
   overflow:none;
-  box-shadow: inset 0 0 15px rgba(0,0,0,0.25);
+  z-index: 1;
+  box-shadow: 0 0 15px rgba(0,0,0,0.25);
+  @include transform(rotate(0deg));
 
   &:after{
     display:block;
@@ -46,6 +49,7 @@
   background:#fff;
   @include transform(rotate(0deg));
   -webkit-overflow-scrolling: touch;
+  -webkit-font-smoothing: antialiased;
 }
 
 body.theforce-inset{
@@ -95,12 +99,15 @@ body.theforce-enabled{
 
 .theforce{
   font-family: $theforce-font-family;
-  // font-weight: 300;
   color: $theforce-color;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   table {
+
+    .form-item{
+      margin:0;
+    }
 
     a.tabledrag-handle{
       cursor: move;
@@ -207,15 +214,20 @@ body.theforce-enabled{
 
     &:hover{
       z-index: 100;
+
+      i{
+        color: $theforce-side-primary;
+      }
     }
 
     .theforce-element{
       display:block;
       position: relative;
+      font-weight: 400;
     }
 
     a.theforce-element{
-      @include transition(color 300ms);
+      @include transition(color 300ms, font-size 500ms);
 
       &.active{
         cursor: default;
@@ -224,6 +236,7 @@ body.theforce-enabled{
 
     i{
       text-align: center;
+      @include transition(color 300ms, font-size 300ms);
     }
   }
 
@@ -262,6 +275,7 @@ body.theforce-enabled{
   display:none;
   opacity:0;
   @include transition(opacity 300ms);
+  @include transform(rotate(0deg));
 
   &.show{
     @include display(flex);

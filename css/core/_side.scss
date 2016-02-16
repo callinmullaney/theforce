@@ -12,6 +12,7 @@
   -webkit-overflow-scrolling: touch;
   @include display(flex);
   @include flex-direction(column);
+  @include transform(rotate(0deg));
 
   a{
     color:$theforce-side-primary;
@@ -45,6 +46,10 @@
 
   #theforce-side-top{
     @include flex(auto);
+
+    #theforce-side-top-content{
+      border-bottom: 1px solid lighten($theforce-side-bg, 5%);
+    }
   }
 
   .theforce-grid{
@@ -90,7 +95,6 @@
     width: $theforce-side-font-size*2;
     text-align: center;
     padding: 0;
-    @include transition(font-size 300ms);
   }
 
   .theforce-text{
@@ -102,13 +106,14 @@
   }
 
   .theforce-item{
-    border-top: 1px solid rgba(255,255,255, 0);
+    border-top: 1px solid lighten($theforce-side-bg, 5%);
     border-right: 1px solid rgba(255,255,255, 0);
     border-left: 1px solid rgba(255,255,255, 0);
-    border-bottom: 1px solid rgba(255,255,255, 0.05);
+    border-bottom: 1px solid darken($theforce-side-bg, 5%);
     color: $theforce-side-color;
     min-height: $theforce-side-height;
     @include transition(border 200ms);
+    @include clearfix();
 
     &:first-child .theforce-element,
     &:first-child .theforce-label {
@@ -157,34 +162,34 @@
 // Left Sidebar Position
 body.theforce-side-left {
   #theforce-wrap {
-    @include transition(left 200ms);
-    @include transition-delay(200ms);
+    @include transition(left 100ms);
+    @include transition-delay(100ms);
   }
   #theforce-side{
-    @include transition(width 200ms);
-    @include transition-delay(200ms);
+    @include transition(width 100ms);
+    @include transition-delay(100ms);
     left:0;
   }
   #theforce-top{
-    @include transition(left 200ms);
-    @include transition-delay(200ms);
+    @include transition(left 100ms);
+    @include transition-delay(100ms);
   }
 }
 
 // Right Sidebar Position
 body.theforce-side-right {
   #theforce-wrap {
-    @include transition(right 200ms);
-    @include transition-delay(200ms);
+    @include transition(right 100ms);
+    @include transition-delay(100ms);
   }
   #theforce-side{
-    @include transition(width 200ms);
-    @include transition-delay(200ms);
+    @include transition(width 100ms);
+    @include transition-delay(100ms);
     right:0;
   }
   #theforce-top{
-    @include transition(right 200ms);
-    @include transition-delay(200ms);
+    @include transition(right 100ms);
+    @include transition-delay(100ms);
   }
 }
 
@@ -211,31 +216,40 @@ body.theforce-side-active{
 
   #theforce-top{
     .theforce-item{
-      opacity: 0.7;
+      opacity: 0.6;
     }
   }
 
   #theforce-side{
     width: $theforce-side-width-active !important;
+    // width: 100%;
     @include transition-delay(0ms);
+
+    // @include xlarge-device-size{
+    //   width: 20% !important;
+    // }
+
+    // @include large-device-size{
+    //   width: 25% !important;
+    // }
+
+    // @include medium-device-size{
+    //   width: 40% !important;
+    // }
 
     .theforce-side-close{
       top:0px;
       opacity:1;
     }
 
-    .theforce-element{
-      padding-left: $theforce-side-item-padding;
-    }
-
     .theforce-icon{
-      font-size: $theforce-side-font-size + 3;
+      margin-right: 5px;
     }
 
     .theforce-text{
       max-width: 100%;
       opacity:1;
-      @include transition-delay(200ms);
+      @include transition-delay(0ms);
     }
   }
 }

@@ -181,28 +181,30 @@ div.theforce{
 
 .theforce-add{
   text-align: center;
+  @include transition(opacity 300ms);
 
   a{
 
     i:before{
-      color: #fff;
+      color: $theforce-white-color;
       display:inline-block;
-      background: #6BBA31;
-      text-shadow: 0 1px 2px darken(#6BBA31, 20%);
-      border:1px solid darken(#6BBA31, 5%);
+      background: $theforce-green-color;
+      text-shadow: none;
+      border:2px solid darken($theforce-green-color, 10%);
       width:20px;
       height:20px;
       vertical-align: middle;
       font-size: 14px;
       line-height: 20px;
       border-radius:50%;
-      @include transition(background 300ms);
+      @include transition(background 300ms,border 300ms,box-shadow 300ms);
     }
 
     &:hover{
 
       i:before{
-        background: darken(#6BBA31, 5%);
+        border: 2px solid $theforce-green-color;
+        background: darken($theforce-green-color, 5%);
       }
     }
   }
@@ -229,121 +231,6 @@ div.theforce{
     }
   }
 }
-
-#theforce-top{
-
-  .theforce-ui-ops{
-    position:absolute;
-    top:100%;
-    left:0;
-    right:0;
-    text-align: center;
-    font-size: 12px;
-    line-height: 12px;
-    opacity:0;
-    z-index:5;
-    pointer-events:none;
-    @include transition(opacity 300ms);
-
-    .theforce-ui-op{
-      display:block;
-      background: $theforce-top-bg;
-      text-align: center;
-      box-shadow: 0 2px 2px rgba(#000, .2);
-      padding: 2px 0 4px;
-      margin: 0 auto;
-      width: 30px;
-      color: $theforce-top-color;
-      border-bottom:1px solid darken($theforce-top-bg, 10%);
-      @include transition(color 300ms);
-
-      &:last-child{
-        border-radius: 0 0 3px 3px;
-        border-bottom: none;
-      }
-
-      &:hover{
-        color:$theforce-top-color-alt;
-      }
-
-      i{
-        line-height:12px !important;
-        font-size:12px !important;
-      }
-
-      &.progress-disabled{
-        opacity:.7;
-      }
-    }
-
-    .theforce-ui-drag{
-      cursor: move;
-    }
-
-    .ajax-progress-throbber{
-      display: none !important;
-    }
-  }
-}
-
-#theforce-side{
-
-  .theforce-side-close{
-    display:none;
-  }
-
-  .theforce-ui-item{
-
-    &:hover{
-      border: 1px dashed lighten($theforce-side-bg, 15%);
-    }
-  }
-
-  .theforce-ui-ops{
-    position:absolute;
-    top: 0;
-    right:0;
-    text-align: center;
-    font-size: 12px;
-    white-space: nowrap;
-    opacity:0;
-    z-index:100;
-    @include transition(opacity 200ms);
-
-    .theforce-ui-op{
-      display:inline-block;
-      background-color: rgba(255,255,255,0.025);
-      text-align: center;
-      padding: 0 10px;
-      margin: 4px 2px;
-      color: $theforce-side-color;
-      line-height: $theforce-side-height - 7;
-      @include transition(color 200ms, background-color 200ms);
-
-      &:hover{
-        color:$theforce-side-color-alt;
-        background-color: rgba(255,255,255,0.05);
-      }
-
-      i{
-        font-size:14px !important;
-      }
-
-      &.progress-disabled{
-        opacity:.7;
-      }
-    }
-
-    .theforce-ui-drag{
-      cursor: move;
-    }
-
-    .ajax-progress-throbber{
-      display: none !important;
-    }
-  }
-}
-
 
 #theforce-top-ops-left{
   float:left;
@@ -424,6 +311,217 @@ div.theforce{
 
     i{
       font-size:16px;
+    }
+  }
+}
+
+
+//////////////////////////////////
+/// Top Specific Styling
+/////////////////////////////////
+#theforce-top{
+
+  .theforce-ui-ops{
+    pointer-events:none;
+    border: 1px dashed lighten($theforce-side-primary, 5%);
+    background-color: $theforce-top-bg;
+    border-radius: 3px;
+    display: table;
+    font-size: 13px;
+    line-height: 13px;
+    opacity: 0;
+    padding: 0.2rem;
+    pointer-events: none;
+    position: absolute;
+    text-align: center;
+    top: 98%;
+    transition: opacity 300ms ease 0s;
+    z-index: 5;
+    @include transition(opacity 300ms);
+
+    .theforce-ui-op{
+      display:block;
+      background: $theforce-top-bg;
+      text-align: center;
+      display: table-cell;
+      width: 1%;
+      padding: 0.5rem 0.75rem;
+      color: $theforce-top-color;
+      border-radius: 3px;
+      @include transition(color 300ms);
+
+      &:hover{
+        color:$theforce-top-color-alt;
+        background: rgba(255,255,255, 0.1);
+      }
+
+      i{
+        line-height:17px !important;
+        font-size:15px !important;
+      }
+
+      &.progress-disabled{
+        opacity:.7;
+      }
+    }
+
+    .theforce-ui-drag{
+      cursor: move;
+    }
+
+    .ajax-progress-throbber{
+      display: none !important;
+    }
+  }
+}
+
+
+//////////////////////////////////
+/// Side Specific Styling
+/////////////////////////////////
+#theforce-side{
+
+  .theforce-side-close{
+    display:none;
+  }
+
+  .theforce-ui-item{
+
+    &:hover{
+      border: 1px dashed lighten($theforce-side-primary, 5%);
+    }
+  }
+
+  .theforce-add{
+    border-color: transparent;
+
+    a{
+      padding-left: 0 !important;
+    }
+  }
+
+  .theforce-ui-ops{
+    position:absolute;
+    top: 0;
+    right:0;
+    text-align: center;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity:0;
+    z-index:100;
+    @include transition(opacity 200ms);
+
+    .theforce-ui-op{
+      display:inline-block;
+      background-color: rgba(255,255,255,0.05);
+      text-align: center;
+      padding: 0 10px;
+      margin: 4px 2px;
+      color: $theforce-side-color;
+      line-height: $theforce-side-height - 7;
+      @include transition(color 200ms, background-color 200ms);
+
+      &:hover{
+        color:$theforce-side-color-alt;
+        background-color: rgba($theforce-side-bg, 0.1);
+      }
+
+      i{
+        font-size:14px !important;
+      }
+
+      &.progress-disabled{
+        opacity:.7;
+      }
+    }
+
+    .theforce-ui-drag{
+      cursor: move;
+    }
+
+    .ajax-progress-throbber{
+      display: none !important;
+    }
+  }
+}
+
+body.theforce-side-active{
+
+  // dim add buttons when the overlay is activated
+  &.has-theforce-overlay{
+
+    #theforce-top,
+    #theforce-side{
+      .theforce-add{
+        opacity: 0.33;
+      }
+    }
+    #theforce-top{
+      .theforce-add{
+        a{
+          i:before{
+            background-color: $theforce-top-bg;
+            border-color: $theforce-top-color;
+            color: $theforce-top-color;
+          }
+        }
+      }
+    }
+    #theforce-side{
+      .theforce-add{
+        a{
+
+          i:before{
+            background-color: $theforce-side-bg;
+            border-color: $theforce-side-color;
+            color: $theforce-top-color;
+          }
+        }
+      }
+    }
+  }
+
+  #theforce-top{
+    .theforce-item{
+      opacity: 1;
+    }
+  }
+
+  //adjust outset style css only for the admin
+  &.theforce-side-left.theforce-side-style #theforce-wrap{
+    left: $theforce-side-width-active !important;
+  }
+
+  &.theforce-side-right.theforce-side-style #theforce-wrap{
+    right: $theforce-side-width-active !important;
+  }
+}
+
+///////////////////////////////
+// Overwrite outset style for config page
+///////////////////////////////
+.page-admin-config-user-interface-theforce {
+
+  &.theforce-side-style-outset.theforce-side-active{
+
+    &.theforce-side-left #theforce-wrap{
+      left: $theforce-side-width-active !important;
+      @include transition-delay(0ms);
+    }
+
+    &.theforce-side-right #theforce-wrap{
+      right: $theforce-side-width-active !important;
+      @include transition-delay(0ms);
+    }
+
+    &.theforce-side-left #theforce-top{
+      left: $theforce-side-width-active !important;
+      @include transition-delay(0ms);
+    }
+
+    &.theforce-side-right #theforce-top{
+      right: $theforce-side-width-active !important;
+      @include transition-delay(0ms);
     }
   }
 }

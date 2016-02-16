@@ -5,8 +5,15 @@
 .theforce-dropdown-content{
   display: none;
   font-size: $theforce-dropdown-size;
-  padding: 0;
-
+  @include transition(opacity 300ms, margin 300ms, max-height 400ms, background-color 300ms, border 300ms, padding 300ms, box-shadow 300ms);
+  z-index: 2;
+  max-height: 0;
+  opacity: 0;
+  display: block;
+  overflow: hidden;
+  white-space: normal;
+  background-clip: padding-box;
+  margin: 0;
   p:last-child{
     margin-bottom:0;
   }
@@ -48,23 +55,15 @@
     top: 100%;
     left: 0px;
     float: none;
-    min-width: $theforce-side-width-active;
+    min-width: 25rem;
     list-style: outside none none;
     text-align: left;
+    padding: 0 $theforce-dropdown-padding;
     background-color: theforce-shade($theforce-top-bg, 3%);
     border-top: 1px solid theforce-shade($theforce-top-bg, 3%);
     border-bottom: 1px solid darken(theforce-shade($theforce-top-bg, 3%), 5%);
     border-radius: 0 0 4px 4px;
-    background-clip: padding-box;
-    margin: 0;
-    z-index: 2;
-    max-height: 0;
-    padding: 0 $theforce-dropdown-padding;
-    opacity: 0;
-    display: block;
-    overflow: hidden;
     box-shadow: 0px 3px 3px rgba(#000, 0.2);
-    @include transition(opacity 400ms, margin 300ms, max-height 300ms, background-color 300ms, border 300ms, padding 300ms, box-shadow 300ms);
 
     > div:not(.theforce-dropdown-loader):not(.item-list) {
       @include filter(#{"blur(5px)"});
@@ -104,7 +103,8 @@
     > .theforce-dropdown-content{
       display:block;
       opacity: 1;
-      max-height: 100%;
+      max-height: 100vh;
+      padding:$theforce-dropdown-padding;
 
       > div:not(.theforce-dropdown-loader):not(.item-list) {
         @include filter(#{"blur(0px)"});
@@ -178,14 +178,24 @@
 /////////////////////////////////
 #theforce-side{
 
-  .theforce-dropdown-content{
+  .theforce-dropdown-content {
+    padding: 0 $theforce-dropdown-padding;
+    min-width: $theforce-side-width-active;
+    background-color: theforce-shade($theforce-side-bg, 3%);
+    border-top: 1px solid theforce-shade($theforce-side-bg, 3%);
+    border-bottom: 1px solid darken(theforce-shade($theforce-side-bg, 3%), 5%);
 
-    .theforce-dropdown-loader{
+    > div:not(.theforce-dropdown-loader):not(.item-list) {
+      @include filter(#{"blur(5px)"});
+      @include transition(filter 600ms);
+    }
+  }
 
-      img{
-        background:$theforce-side-primary;
-        box-shadow: 0 3px 6px darken($theforce-side-bg, 10%);
-      }
+  .theforce-dropdown-loader{
+
+    img{
+      background:$theforce-top-primary;
+      box-shadow: 0 3px 6px darken($theforce-top-bg, 10%);
     }
   }
 
@@ -197,35 +207,33 @@
     }
   }
 
-  .theforce-dropdown-content {
-    background: $theforce-side-bg-alt;
-    opacity: 0;
-    max-height: 100vh;
-    @include transition(opacity 200ms, max-height 200ms);
-
-    &.padded{
-      padding: $theforce-side-item-padding;
-    }
-  }
-
   .open{
-    // border-top-color: darken($theforce-side-bg, 5%);
-    // border-bottom-color: darken($theforce-side-bg, 5%);
     background:darken($theforce-side-bg, 2%);
     z-index: 15;
 
     > .theforce-dropdown-trigger{
-      color: $theforce-side-primary !important;
+      color: $theforce-top-primary !important;
+      padding-left: $theforce-dropdown-padding;
+      font-size: $theforce-side-font-size+2;
 
       .fa-angle-down{
-        @include transform(rotate(0deg));
+        @include transform(rotate(-180deg));
       }
     }
 
     > .theforce-dropdown-content{
       display:block;
       opacity: 1;
-      max-height: 100%;
+      max-height: 100rem;
+      padding: $theforce-dropdown-padding;
+
+      > div:not(.theforce-dropdown-loader):not(.item-list) {
+        @include filter(#{"blur(0px)"});
+      }
+
+      &.padded{
+        padding: $theforce-dropdown-padding;
+      }
     }
   }
 }

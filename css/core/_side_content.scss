@@ -10,16 +10,13 @@
   bottom:0;
   overflow-y:auto;
   background:$theforce-side-bg;
-  // box-shadow: 0 1px 1px rgba(#000, .2), inset 0 1px 3px -1px rgba(#000, .2);
   padding:10px;
-  // width: $theforce-side-width-active;
   width: 100%;
   opacity:0;
   box-sizing: border-box;
+  z-index: 3;
   @include clearfix();
   @include transition(opacity 300ms 300ms);
-  // @include transform(translate3d(($theforce-side-width-active - $theforce-side-width) * -1, 0, 0));
-  // @include transform(translate3d($theforce-side-width-active*-1, 0, 0));
 
   .theforce-side-content-inner{
     @include transition(opacity 300ms);

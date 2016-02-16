@@ -5,10 +5,9 @@
 
   #theforce-wrap{
     box-shadow: 0 0 10px rgba(0,0,0,0.33);
-    z-index: 1;
 
     #theforce-content{
-      @include transition(transform 500ms 0ms, width 500ms 0ms, filter 300ms ease 0ms);
+      @include transition(transform 500ms 0ms, width 500ms 0ms, filter 300ms ease-in-out 0ms);
     }
   }
 
@@ -42,16 +41,14 @@ body.theforce-inset.theforce-top-style-inset{
 //Change the background gradient direction based off sidebar position
 body.theforce-side-left.theforce-top-style-inset {
   #theforce-top{
-    @include transition(left 200ms);
-    @include transition-delay(200ms);
+    box-shadow: -10px 0 10px rgba(0, 0, 0, 0.25) inset;
     @include linear-gradient(to right, $theforce-top-bg, darken($theforce-top-bg, 8%), $fallback: $theforce-top-bg);
   }
 }
 
 body.theforce-side-right.theforce-top-style-inset {
-  #theforce-top.theforce-style-inset{
-    @include transition(right 200ms);
-    @include transition-delay(200ms);
+  #theforce-top{
+    box-shadow: 10px 0 10px rgba(0, 0, 0, 0.25) inset;
     @include linear-gradient(to right, darken($theforce-top-bg, 8%), $theforce-top-bg, $fallback: $theforce-top-bg);
   }
 }

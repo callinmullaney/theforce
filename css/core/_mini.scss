@@ -36,6 +36,10 @@ body.theforce-top-enabled{
   }
 }
 
+body.theforce-side-right #theforce-top .theforce-mini-location{
+  text-align:left;
+}
+
 // When mini mode has been enabled on the top bar.
 body.theforce-top-mini{
 
@@ -77,6 +81,7 @@ body.theforce-top-mini-open #theforce-top{
 
     .theforce-elements{
       float:none;
+      height: auto;
     }
 
     .theforce-element{
@@ -166,9 +171,8 @@ body.theforce-side-mini{
   #theforce-side .theforce-text,
   #theforce-side-content,
   .theforce-side-content-inner{
-    // @include transition(none);
-    @include transition-duration(0ms);
     @include transition-delay(0ms);
+    @include transition-duration(200ms !important);
   }
 
   #theforce-side{
@@ -198,5 +202,6 @@ body.theforce-side-mini:not(.theforce-top-mini-open){
   #theforce-wrap,
   #theforce-top{
     left:0 !important;
+    right:0 !important;
   }
 }

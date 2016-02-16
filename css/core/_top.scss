@@ -7,8 +7,11 @@
   top:0;
   left:0;
   right:0;
+  z-index: 2;
   font-size:$theforce-top-font-size;
   background-color: $theforce-top-bg;
+  border-bottom: 1px solid darken($theforce-top-bg, 3%) !important;
+  @include transform(rotate(0deg));
   @include clearfix();
 
   a{
@@ -61,6 +64,7 @@
   .theforce-icon{
     font-size: $theforce-top-font-size + 6;
     line-height: $theforce-top-height;
+    margin: 0 .25rem 0 0;
   }
 
   .theforce-item{
@@ -70,7 +74,7 @@
     height: $theforce-top-height;
     white-space: nowrap;
     box-shadow: none;
-    @include transition(background 300ms, box-shadow 300ms);
+    @include transition(background 300ms, box-shadow 300ms, opacity 300ms);
 
     &:hover{
       background:theforce-shade($theforce-top-bg, 3%);
@@ -168,7 +172,7 @@
           text-shadow:none;
           z-index:100;
           @include transition(opacity 300ms 0ms, max-width 0ms 0ms);
-          @include transition-delay(300ms);
+          @include transition-delay(200ms);
 
           &:before{
             display:block;
