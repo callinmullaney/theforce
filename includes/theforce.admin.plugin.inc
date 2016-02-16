@@ -133,6 +133,13 @@ function theforce_admin_plugin_settings_form($form, &$form_state, $plugin, $js =
       '#type' => 'submit',
       '#value' => t('Save'),
     );
+    if($plugin['type'] == 'master'){
+      $form['actions']['delete'] = array(
+        '#type' => 'submit',
+        '#value' => t('Delete'),
+        '#submit' => array('theforce_admin_plugin_settings_form_submit_delete'),
+      );
+    }
     if($plugin['settings_custom']){
       $form['actions']['reset'] = array(
         '#type' => 'submit',
@@ -147,6 +154,12 @@ function theforce_admin_plugin_settings_form($form, &$form_state, $plugin, $js =
       'callback' => 'theforce_admin_plugin_settings_form_ajax',
       'progress' => 'theforce',
     );
+    if($plugin['type'] == 'master'){
+      $form['actions']['delete']['#ajax'] = array(
+        'callback' => 'theforce_admin_plugin_settings_form_ajax',
+        'progress' => 'theforce',
+      );
+    }
     if(isset($form['actions']['reset'])){
       $form['actions']['reset']['#ajax'] = array(
         'callback' => 'theforce_admin_plugin_settings_form_ajax',
@@ -188,6 +201,13 @@ function theforce_admin_plugin_settings_form_submit($form, &$form_state){
 function theforce_admin_plugin_settings_form_submit_reset($form, &$form_state){
   $plugin = $form_state['plugin'];
   theforce_plugin_update($plugin['id'], null, array());
+  $form_state['redirect'] = 'admin/config/user-interface/theforce';
+}
+
+function theforce_admin_plugin_settings_form_submit_delete($form, &$form_state){
+  $plugin = $form_state['plugin'];
+  theforce_plugin_deactivate($plugin['id']);
+  theforce_plugin_delete($plugin['id']);
   $form_state['redirect'] = 'admin/config/user-interface/theforce';
 }
 
