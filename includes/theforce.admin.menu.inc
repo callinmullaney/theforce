@@ -5,10 +5,13 @@
  */
 function theforce_admin_menu_edit($menu){
   $form = drupal_get_form('theforce_admin_menu_edit_form', $menu);
+  $output = '';
+  $output .= l('<i class="fa fa-plus"></i> ' . t('Create Menu Item'), 'admin/structure/menu/manage/'.str_replace('_','-',$menu['menu_name']).'/add', array('html' => true, 'attributes' => array('class' => array('use-theforce'))));
+  $output .= drupal_render($form);
   drupal_set_title('Manage ' . $menu['title']);
 
   $commands = array();
-  $commands[] = ajax_command_theforce_overlay(drupal_render($form));
+  $commands[] = ajax_command_theforce_overlay($output);
   return array('#type' => 'ajax', '#commands' => $commands);
 }
 
@@ -181,6 +184,16 @@ function theforce_admin_menu_edit_form_redirect_ajax($form, &$form_state){
 }
 
 /**
+ * Menu item add interface.
+ */
+function theforce_admin_menu_add_item($menu){
+  $form = drupal_get_form('theforce_admin_menu_edit_item_form', NULL, 'add', $menu);
+  $commands = array();
+  $commands[] = ajax_command_theforce_overlay(drupal_render($form));
+  return array('#type' => 'ajax', '#commands' => $commands);
+}
+
+/**
  * Menu item edit interface.
  */
 function theforce_admin_menu_edit_item($item){
@@ -190,10 +203,20 @@ function theforce_admin_menu_edit_item($item){
   return array('#type' => 'ajax', '#commands' => $commands);
 }
 
-function theforce_admin_menu_edit_item_form($form, &$form_state, $item){
+function theforce_admin_menu_edit_item_form($form, &$form_state, $item, $type = 'edit', $menu = NULL){
   global $menu_admin;
   form_load_include($form_state, 'inc', 'menu', 'menu.admin');
-  $form = menu_edit_item($form, $form_state, 'edit', $item, NULL);
+  $form = menu_edit_item($form, $form_state, 'edit', $item, $menu);
+
+  if($type == 'add'){
+    // This is an add form, initialize the menu link.
+    $item = array('link_title' => '', 'mlid' => 0, 'plid' => 0, 'menu_name' => $menu['menu_name'], 'weight' => 0, 'link_path' => '', 'options' => array(), 'module' => 'menu', 'expanded' => 0, 'hidden' => 0, 'has_children' => 0);
+  }
+
+  $form['expanded']['#access'] = FALSE;
+  $form['parent']['#access'] = FALSE;
+  $form['weight']['#access'] = FALSE;
+
   $form['#validate'][] = 'menu_edit_item_validate';
   $form['#submit'][] = 'menu_edit_item_submit';
   $form['actions']['submit']['#ajax'] = array(
@@ -207,7 +230,7 @@ function theforce_admin_menu_edit_item_form($form, &$form_state, $item){
     '#href' => 'admin/structure/menu/manage/' . $item['menu_name'] . '/edit/ajax',
     '#options' => array('html' => true, 'attributes' => array('class' => array('use-theforce'))),
   );
-  if ($item['module'] == 'menu') {
+  if ($item['module'] == 'menu' && $type != 'add') {
     $title = t('Delete');
     if(module_exists('fawesome')){
       $title = '<i class="fa fa-trash-o"></i> ' . $title;

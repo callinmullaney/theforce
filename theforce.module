@@ -113,6 +113,18 @@ function theforce_menu() {
     ),
   );
 
+  $items['admin/structure/menu/manage/%menu/add/ajax'] = array(
+    'title' => 'Add menu link',
+    'delivery callback' => 'ajax_deliver',
+    'theme callback' => 'ajax_base_page_theme',
+    'page callback' => 'theforce_admin_menu_add_item',
+    'page arguments' => array(4),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer menu'),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/theforce.admin.menu.inc',
+  );
+
   $items['admin/structure/menu/manage/%menu/edit/ajax'] = array(
     'title' => 'Edit menu',
     'description' => t('Edit, add, reset and reorder menu items.'),
