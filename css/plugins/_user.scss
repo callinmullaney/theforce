@@ -6,7 +6,6 @@
   display: inline-block;
   vertical-align: middle;
   position: relative;
-  margin: 0.5rem;
   border-radius: 50%;
   box-shadow: 0 2px 3px rgba(#000, .25);
   background:theforce-shade($theforce-top-bg, 10%);
@@ -20,14 +19,46 @@
 
 #theforce-top{
 
-  #theforce-jedi-user {
+  #theforce-jedi-user{
     
     a {
       z-index: 3;
+      margin: 0;
+
+      img.theforce-avatar{
+        margin: -$theforce-dropdown-padding/2 $theforce-dropdown-padding/2;
+      }
+    }
+
+    .theforce-dropdown-content{
+      min-width: 15em;
+      padding: 0 !important;
+    }
+  }
+
+  .theforce-list.full{
+    display: table;
+    width: 100%;
+
+    > li{
+      border: none;
+      padding: 0;
     }
   }
 }
 
+.theforce-top-mini{
+  
+  #theforce-top{
+
+    #theforce-jedi-user{
+
+      img.theforce-avatar{
+        margin: -$theforce-dropdown-padding $theforce-dropdown-padding/2;
+      }
+    }
+  }  
+}
 
 //////////////////////////////////
 /// Side Specific Styling
@@ -35,29 +66,31 @@
 
 #theforce-side{
 
-  #theforce-jedi-user {
+  #theforce-jedi-user{
     text-align: center;
 
-    &:hover {
+    &:hover{
       img{
         box-shadow: 0 2px 5px rgba(#000, .4);
       }
     }
 
-    &.open {
+    &.open{
       > .theforce-dropdown-content{
         padding: 0 $theforce-dropdown-padding $theforce-dropdown-padding !important;
       }
     }
 
-    a.theforce-dropdown-trigger {
+    a.theforce-dropdown-trigger{
       padding: 0;
+      margin: 0;
       z-index: 3;
     }
 
     img {
       max-width: 82%;
       height: auto;
+      margin: $theforce-dropdown-padding/2;
       @include transition(max-width 300ms, height 300ms);
     }
 

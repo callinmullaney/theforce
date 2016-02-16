@@ -12,6 +12,7 @@
   left:0;
   overflow:none;
   z-index: 1;
+  font-size: $theforce-overlay-font-size;
   box-shadow: 0 0 15px rgba(0,0,0,0.25);
   @include transform(rotate(0deg));
 
@@ -83,6 +84,13 @@ body.theforce-enabled{
     #theforce-wrap,
     #theforce-top{
       left: $theforce-side-width;
+
+      @include small-device-size{
+        left: $theforce-side-width*1.2;
+      }
+      @include medium-device-size{
+        left: $theforce-side-width*1.1;
+      }
     }
   }
 
@@ -92,6 +100,13 @@ body.theforce-enabled{
     #theforce-wrap,
     #theforce-top{
       right: $theforce-side-width;
+
+      @include small-device-size{
+        right: $theforce-side-width*1.2;
+      }
+      @include medium-device-size{
+        right: $theforce-side-width*1.1;
+      }
     }
   }
 }
@@ -132,11 +147,11 @@ body.theforce-enabled{
   }
 
   .form-item{
-    margin-bottom:10px;
+    margin-bottom:1em;
   }
 
   .form-actions{
-    padding-top:10px;
+    padding-top:$theforce-side-item-padding;
 
     a{
       margin-right:1em;
@@ -163,14 +178,14 @@ body.theforce-enabled{
     a{
       display:block;
       text-align: center;
-      padding:10px;
-      font-size:10px;
-      text-transform: uppercase;
+      padding:$theforce-side-item-padding;
     }
 
     i{
-      display:block;
-      font-size:30px;
+      display: block;
+      font-size: $theforce-side-font-size*2.5;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.33);
+      margin: 0 0 $theforce-side-item-padding/4;
     }
   }
 
@@ -193,7 +208,7 @@ body.theforce-enabled{
       @include transform(scale(0));
 
       &.animate{
-        @include animation(ripple 500ms linear);
+        @include animation(ripple 300ms linear);
       }
     }
   }
@@ -212,8 +227,7 @@ body.theforce-enabled{
     border-color: transparent;
     position:relative;
 
-    &:hover{
-      z-index: 100;
+    a:hover{
 
       i{
         color: $theforce-side-primary;
@@ -227,7 +241,7 @@ body.theforce-enabled{
     }
 
     a.theforce-element{
-      @include transition(color 300ms, font-size 500ms);
+      @include transition(color 300ms, font-size 300ms);
 
       &.active{
         cursor: default;
@@ -243,11 +257,11 @@ body.theforce-enabled{
   .theforce-label{
     text-align: center;
     text-transform: uppercase;
-    font-size: 11px;
+    font-size: $theforce-side-font-size*0.8;
   }
 
   .theforce-icon{
-    padding-right: 4px;
+    padding-right: $theforce-side-font-size*0.2;
     vertical-align: middle;
   }
 

@@ -8,7 +8,7 @@
 
     #theforce-content{
       @include perspective(1000px);
-      @include transition(transform 500ms 0ms);
+      @include transition(transform 300ms 0ms);
     }
   }
 
@@ -17,21 +17,49 @@
     &.theforce-side-left #theforce-wrap{
       left: $theforce-side-width !important;
       @include transition-delay(0ms);
+
+      @include small-device-size{
+        left: $theforce-side-width*1.25 !important;
+      }
+      @include medium-device-size{
+        left: $theforce-side-width*1.2 !important;
+      }
     }
 
     &.theforce-side-right #theforce-wrap{
       right: $theforce-side-width !important;
       @include transition-delay(0ms);
+
+      @include small-device-size{
+        right: $theforce-side-width*1.25 !important;
+      }
+      @include medium-device-size{
+        right: $theforce-side-width*1.2 !important;
+      }
     }
 
     &.theforce-side-left #theforce-top{
       left: $theforce-side-width-active !important;
       @include transition-delay(0ms);
+
+      @include small-device-size{
+        left: $theforce-side-width-active*1.25 !important;
+      }
+      @include medium-device-size{
+        left: $theforce-side-width-active*1.2 !important;
+      }
     }
 
     &.theforce-side-right #theforce-top{
       right: $theforce-side-width-active !important;
       @include transition-delay(0ms);
+
+      @include small-device-size{
+        right: $theforce-side-width-active*1.25 !important;
+      }
+      @include medium-device-size{
+        right: $theforce-side-width-active*1.2 !important;
+      }
     }
   }
 }
@@ -39,9 +67,9 @@
 body.theforce-inset.theforce-side-style-outset{
 
   #theforce-wrap{
-	#theforce-content{
-	  @include transform-style(preserve-3d);
-	  @include transform(translate3d(0px, 0px, -200px) rotate(0deg));
+  #theforce-content{
+    @include transform-style(preserve-3d);
+    @include transform(translate3d(0px, 0px, -200px) rotate(0deg));
     }
   }
 }

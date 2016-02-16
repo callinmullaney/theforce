@@ -58,50 +58,40 @@
   }
 
   .theforce-text{
-    line-height: $theforce-top-height;
   }
 
   .theforce-icon{
-    font-size: $theforce-top-font-size + 6;
-    line-height: $theforce-top-height;
+    font-size: $theforce-side-font-size*1.5;
+    line-height: $theforce-side-font-size;
+    width: $theforce-side-font-size*1.5;
     margin: 0 .25rem 0 0;
   }
 
   .theforce-item{
     float:left;
-    margin-left: -1px;
     color: $theforce-top-color;
     height: $theforce-top-height;
     white-space: nowrap;
     box-shadow: none;
-    @include transition(background 300ms, box-shadow 300ms, opacity 300ms);
-
-    &:hover{
-      background:theforce-shade($theforce-top-bg, 3%);
-      box-shadow: inset 0px 2px 2px theforce-shade($theforce-top-bg, 5%);
-    }
-
-    &:first-child{
-      margin-left:0;
-    }
+    @include transition(background 200ms, box-shadow 200ms, opacity 200ms, margin 200ms);
 
     .theforce-element{
       // display:inline-block;
       float:left;
       display:block;
-      padding-left: $theforce-top-item-padding;
-      padding-right: $theforce-top-item-padding;
+      padding: 0 $theforce-top-item-padding;
+      margin: $theforce-top-item-padding/2 $theforce-top-item-padding/1.5;
       color: $theforce-top-color;
       text-shadow: 0 1px 0 theforce-shade($theforce-top-bg, 10%);
       font-size:$theforce-top-font-size;
-      line-height:$theforce-top-height;
+      line-height:$theforce-top-height*0.75;
 
       &:hover{
         z-index:10;
       }
     }
 
-    a.theforce-element{
+    > a.theforce-element{
 
       &:hover{
         color: $theforce-top-color-alt;
@@ -109,7 +99,14 @@
 
       &.active{
         color: $theforce-top-primary !important;
+        margin: 0 $theforce-top-item-padding/1.5;
+        line-height:$theforce-top-height;
       }
+
+      &:first-child{
+        margin-left: 0;
+      }
+
     }
   }
 

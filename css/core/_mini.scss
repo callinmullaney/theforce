@@ -34,6 +34,11 @@ body.theforce-top-enabled{
     float:none;
     display:block;
   }
+
+  .theforce-mini-toggle{
+    margin: 0;
+    line-height:$theforce-top-height;
+  }
 }
 
 body.theforce-side-right #theforce-top .theforce-mini-location{
@@ -44,6 +49,10 @@ body.theforce-side-right #theforce-top .theforce-mini-location{
 body.theforce-top-mini{
 
   #theforce-top{
+
+    #theforce-top-left{
+      margin-top: 0;
+    }
 
     .theforce-location{
       display:none;
@@ -77,6 +86,23 @@ body.theforce-top-mini-open #theforce-top{
     .theforce-item{
       float:none;
       height: auto;
+      margin: 0;
+      border-top: 1px solid lighten($theforce-top-bg, 5%);
+      border-bottom: 1px solid darken($theforce-top-bg, 5%);
+
+      &:first-child{
+
+        a{
+          border-top: none;
+        }
+      }
+
+      &:last-child{
+
+        a{
+          border-bottom: none;
+        }
+      }
     }
 
     .theforce-elements{
@@ -86,6 +112,8 @@ body.theforce-top-mini-open #theforce-top{
 
     .theforce-element{
       float:none;
+      margin: 0;
+      line-height:$theforce-top-height;
     }
 
     .theforce-dropdown-content{
@@ -130,9 +158,9 @@ body.theforce-top-mini-open #theforce-top{
   }
 
   .theforce-location:not(.theforce-mini-location){
-    margin:$theforce-top-item-padding/1.5;
+    margin:$theforce-top-item-padding;
     background: $theforce-top-bg;
-    box-shadow: 0 1px 3px rgba(#000, .5);
+    box-shadow: 0 1px 3px rgba(darken($theforce-top-bg, 15%), .2);
 
     .theforce-item{
       margin:0;
@@ -144,8 +172,9 @@ body.theforce-top-mini-open #theforce-top{
     margin:0;
 
     .theforce-item{
-      background:theforce-shade($theforce-top-bg, 3%);
-      box-shadow: inset 0px 2px 2px theforce-shade($theforce-top-bg, 5%);
+      background: transparent;
+      box-shadow: none;
+      border: none;
 
       a{
         color:$theforce-top-primary;
@@ -165,14 +194,14 @@ body.theforce-side-mini{
   #theforce-side,
   #theforce-wrap,
   #theforce-top,
-  #theforce-side .theforce-item,
-  #theforce-side .theforce-element,
-  #theforce-side .theforce-icon,
-  #theforce-side .theforce-text,
-  #theforce-side-content,
-  .theforce-side-content-inner{
-    @include transition-delay(0ms);
-    @include transition-duration(200ms !important);
+  // #theforce-side .theforce-item,
+  // #theforce-side .theforce-element,
+  // #theforce-side .theforce-icon,
+  // #theforce-side .theforce-text,
+  // #theforce-side-content,
+  // .theforce-side-content-inner
+  {
+    @include transition(none);
   }
 
   #theforce-side{
@@ -184,7 +213,7 @@ body.theforce-side-mini{
   }
 
   &.theforce-side-active #theforce-side{
-    width:100% !important;
+    width: 100% !important;
 
     .theforce-location{
       pointer-events:auto;

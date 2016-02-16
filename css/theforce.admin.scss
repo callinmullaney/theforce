@@ -348,6 +348,7 @@ div.theforce{
       padding: 0.5rem 0.75rem;
       color: $theforce-top-color;
       border-radius: 3px;
+      line-height: $theforce-top-height/3;
       @include transition(color 300ms);
 
       &:hover{
@@ -397,6 +398,7 @@ div.theforce{
 
     a{
       padding-left: 0 !important;
+      height: auto !important;
     }
   }
 
@@ -418,7 +420,7 @@ div.theforce{
       padding: 0 10px;
       margin: 4px 2px;
       color: $theforce-side-color;
-      line-height: $theforce-side-height - 7;
+      line-height: $theforce-side-height;
       @include transition(color 200ms, background-color 200ms);
 
       &:hover{
