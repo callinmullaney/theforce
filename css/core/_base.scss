@@ -12,7 +12,6 @@
   left:0;
   overflow:none;
   z-index: 1;
-  font-size: $theforce-overlay-font-size;
   box-shadow: 0 0 15px rgba(0,0,0,0.25);
   @include transform(rotate(0deg));
 
