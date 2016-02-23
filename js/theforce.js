@@ -302,7 +302,13 @@ theForce.dropdown.click = function(e){
 
   self.$dropdown = $(this).closest('.theforce-dropdown');
   if(self.$dropdown.length){
-    self.open();
+    // Make sure sidebar is open
+    if(!theForce.regionSide.active){
+      theForce.regionSide.open();
+    }
+    else{
+      self.open();
+    }
   }
 };
 
