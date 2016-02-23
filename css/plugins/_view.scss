@@ -61,6 +61,7 @@
       padding:0 0 2px;
       margin:0;
       line-height: 12px;
+      font-size:$theforce-top-font-size*.7;
     }
 
     .form-item{
@@ -77,6 +78,8 @@
       font-weight:600;
       line-height: 20px;
       text-transform: uppercase;
+      font-size:$theforce-top-font-size*.8;
+      text-transform: none;
     }
   }
 

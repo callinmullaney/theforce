@@ -36,6 +36,10 @@
     color: $theforce-side-color;
   }
 
+  table th{
+    font-size: $theforce-side-font-size*.8;
+  }
+
   .theforce-side-close{
     display:block;
     position: absolute;
