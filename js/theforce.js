@@ -229,6 +229,10 @@ theForce.regionSide.close = function () {
   }
 }
 
+theForce.regionSide.isWithin = function ($element) {
+  return $element.closest('#theforce-side').length ? 1 : 0;
+}
+
 theForce.regionSide.lock = function () {
   this.locked = 1;
 }
@@ -319,7 +323,7 @@ theForce.dropdown.click = function(e){
   self.$dropdown = $(this).closest('.theforce-dropdown');
   if(self.$dropdown.length){
     // Make sure sidebar is open
-    if(!theForce.regionSide.active){
+    if(theForce.regionSide.isWithin($(this)) && !theForce.regionSide.active){
       theForce.regionSide.open();
     }
     else{
