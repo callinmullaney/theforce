@@ -22,6 +22,20 @@ theForce.attach = function (context, settings) {
       $('#theforce-content').css('backgroundColor', $('body').css('backgroundColor'));
     }
 
+    // Allow elements with .theforce-fixed to be "fixed" positioned.
+    var $fixed = $('.theforce-fixed');
+    if(!$fixed.length){
+      self.$body.removeClass('has-theforce-fixed');
+    }
+    $fixed.once(function(){
+      var $this = $(this);
+      self.$body.addClass('has-theforce-fixed');
+      $('#theforce-content').each(function(){
+        var innerHeight = $(this).scrollTop();
+        $this.css({top: innerHeight, 'bottom': (innerHeight)*-1});
+      });
+    });
+
     // Get our regions
     $('.theforce-region').once('theforce-region').each(function(){
       var $this = $(this);
@@ -38,8 +52,10 @@ theForce.attach = function (context, settings) {
     self.linkBind(context, settings);
     // Ink link effect
     self.inkBind(context, settings);
-    // Dropdown dropdown
+    // Dropdown init
     self.dropdown.init(context, settings);
+    // Side content dropdown
+    self.side.init(context, settings);
     // Only perform when NOT in management mode
     if(!settings.theforce.isManagement){
       // Mini initialization
@@ -265,7 +281,7 @@ theForce.linkBind = function (context, settings) {
   // Side content close buttons
   $('.theforce-side-content-close:not(.used-theforce)', context).addClass('used-thefoce').on('click', function(e){
     e.preventDefault();
-    theForce.side.close();
+    theForce.side.close(true);
   });
 }
 
@@ -445,9 +461,22 @@ Drupal.ajax.prototype.commands.theforceOverlayClose = function (ajax, response, 
  */
 
 theForce.side = {
+  $triggers: null,
   $wrapper: null,
   $element: null
 };
+
+theForce.side.init = function (context, settings) {
+  var self = this;
+  self.$triggers = $('.theforce-side-trigger', context).once();
+  if(self.$triggers.length){
+    self.$triggers.on('click', function(){
+      // As soon as the link is clicked we need to prevent the sidebar from
+      // closing.
+      theForce.regionSide.lock();
+    });
+  }
+}
 
 theForce.side.build = function () {
   var self = this;
@@ -478,7 +507,7 @@ theForce.side.open = function (html, settings) {
   theForce.regionSide.open();
 }
 
-theForce.side.close = function () {
+theForce.side.close = function (keep_side_open) {
   var self = this;
   me = this;
   if(self.$element){
@@ -488,7 +517,9 @@ theForce.side.close = function () {
       self.$element = null;
     });
     theForce.regionSide.unlock();
-    theForce.regionSide.close();
+    if(!keep_side_open){
+      theForce.regionSide.close();
+    }
     theForce.shade.close();
     theForce.$window.off('click.theforce-side-content');
   }

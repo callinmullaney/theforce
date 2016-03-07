@@ -12,6 +12,8 @@ class theforceSide extends theforceLink {
   protected $sideTitle = '';
   protected $sideDescription = '';
 
+  protected $linkAttributes = array('class' => array('theforce-side-trigger'));
+
   /**
    * Constructor for top bar content.
    */
