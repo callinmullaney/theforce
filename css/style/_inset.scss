@@ -80,3 +80,12 @@ body.theforce-top-mini.theforce-top-style-inset{
   }
 }
 
+//Side Active
+body.theforce-side-style-inset.theforce-side-active{
+  #theforce-side{
+    @include small-device-size{
+      z-index: 3;
+    }
+  }
+}
+

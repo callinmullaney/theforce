@@ -38,6 +38,10 @@ body.theforce-top-enabled{
   .theforce-mini-toggle{
     margin: 0;
     line-height:$theforce-top-height;
+
+    @include small-device-size{
+      line-height: $theforce-top-height*0.8;
+    }
   }
 }
 
@@ -113,7 +117,6 @@ body.theforce-top-mini-open #theforce-top{
     .theforce-element{
       float:none;
       margin: 0;
-      line-height:$theforce-top-height;
     }
 
     .theforce-dropdown-content{

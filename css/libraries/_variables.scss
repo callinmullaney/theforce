@@ -4,13 +4,13 @@
 
 //Font(s)
 $theforce-font-family: 'Open Sans', "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif !default;
-$theforce-font-size: 14px; // it's all relative
+$theforce-font-size: 14.5px; // it's all relative
 
 //Overlay Variables
 $theforce-overlay-bg: #F2F2F2 !default;
 $theforce-overlay-color: #595959 !default;
 $theforce-overlay-color-alt: darken($theforce-overlay-color, 20%) !default;
-$theforce-overlay-font-size: $theforce-font-size !default;
+$theforce-overlay-font-size: 1em !default;
 
 //Top Variables
 $theforce-top-bg: #F2F2F2 !default;
@@ -18,24 +18,24 @@ $theforce-top-color: theforce-color($theforce-top-bg, 45%) !default;
 $theforce-top-color-alt: theforce-color($theforce-top-bg, 65%) !default;
 $theforce-top-height: 4em !default;
 $theforce-top-item-padding: 1em !default;
-$theforce-top-font-size: $theforce-font-size !default;
+$theforce-top-font-size: 1em !default;
 $theforce-top-primary: #0997c3 !default;
 
 //Side Variables
 $theforce-side-bg: #2C2E2F !default;
 $theforce-side-bg-alt: theforce-shade($theforce-side-bg, 5%) !default;
-$theforce-side-height: 2.9em !default;
+$theforce-side-height: 3em !default;
 $theforce-side-width: 6em !default;
 $theforce-side-width-active: 30em !default;
 $theforce-side-color: theforce-color($theforce-side-bg, 45%) !default;
 $theforce-side-color-alt: theforce-color($theforce-side-bg, 65%) !default;
 $theforce-side-item-padding: 1em !default;
-$theforce-side-font-size: $theforce-font-size !default;
+$theforce-side-font-size: 1em !default;
 $theforce-side-primary: #0997c3 !default;
 
 //Color Variables
-$theforce-bg: #444444 !default;
-$theforce-color: #3E3E3E !default;
+$theforce-bg: #1D2326 !default;
+$theforce-color: #3E3E3E !default; 
 $theforce-primary-color: #0080BA !default;
 $theforce-green-color: #6BBA31 !default;
 $theforce-purple-color: #7D30BF !default;

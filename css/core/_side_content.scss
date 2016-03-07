@@ -30,8 +30,8 @@
     right:5px;
     font-weight:200;
     padding:5px;
-    font-size:40px;
-    line-height:30px;
+    font-size: $theforce-side-font-size*3;
+    line-height: $theforce-side-font-size;
     color: theforce-color($theforce-side-bg, 20%);
   }
 

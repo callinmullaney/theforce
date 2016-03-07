@@ -2,9 +2,15 @@
 /// Body & Wrap Styling
 ////////////////////////////////////////////////////////////////////////////////
 
+// force best practices when it comes to font sizes.
+// This declaration makes all rem/em sizes consistant.
+// body.theforce-enabled{
+//   font-size: 100%;
+// }
+
 #theforce-wrap{
-  // background: $theforce-bg;
-  background-color: transparent;
+  background: $theforce-bg;
+  // background-color: transparent;
   position:absolute;
   top:0;
   right:0;
@@ -12,8 +18,16 @@
   left:0;
   overflow:none;
   z-index: 1;
+  font-size: $theforce-font-size;
   box-shadow: 0 0 15px rgba(0,0,0,0.25);
   @include transform(rotate(0deg));
+
+  @include small-device-size{
+    font-size: $theforce-font-size*1.25;
+  }
+  @include medium-device-size{
+    font-size: $theforce-font-size*1.1;
+  }
 
   &:after{
     display:block;
@@ -68,43 +82,46 @@ body.theforce-inset{
   }
 }
 
+// This section contains some VooDoo math due to em being translated differently on #theforce-wrap if the body tag has font-size 100%
 body.theforce-enabled{
 
   &.theforce-top-content{
 
     #theforce-wrap{
       top: $theforce-top-height;
+
+      @include small-device-size{
+        top: $theforce-top-height*0.75;
+      }
     }
   }
 
   &.theforce-side-left.theforce-side-content{
-    // margin-left: $theforce-side-width;
 
     #theforce-wrap,
     #theforce-top{
       left: $theforce-side-width;
 
       @include small-device-size{
-        left: $theforce-side-width*1.2;
+        left: $theforce-side-width*0.8;
       }
       @include medium-device-size{
-        left: $theforce-side-width*1.1;
+        left: $theforce-side-width*0.9;
       }
     }
   }
 
   &.theforce-side-right.theforce-side-content{
-    // margin-left: $theforce-side-width;
 
     #theforce-wrap,
     #theforce-top{
       right: $theforce-side-width;
 
       @include small-device-size{
-        right: $theforce-side-width*1.2;
+        right: $theforce-side-width*0.8;
       }
       @include medium-device-size{
-        right: $theforce-side-width*1.1;
+        right: $theforce-side-width*0.9;
       }
     }
   }
@@ -126,16 +143,16 @@ body.theforce-enabled{
     a.tabledrag-handle{
       cursor: move;
       float: left;
-      height: 1.7em;
-      margin-left: -1em;
+      height: 1.7rem;
+      margin-left: -1rem;
       overflow: hidden;
       text-decoration: none;
 
       .handle {
         background: transparent url("/misc/draggable.png") no-repeat scroll 6px 9px;
         height: 13px;
-        margin: -0.4em 0.5em;
-        padding: 0.42em 0.5em;
+        margin: -0.4rem 0.5rem;
+        padding: 0.42rem 0.5rem;
         width: 13px;
       }
     }
@@ -153,13 +170,13 @@ body.theforce-enabled{
     padding-top:$theforce-side-item-padding;
 
     a{
-      margin-right:1em;
+      margin-right:1rem;
     }
   }
 
   div.indentation{
     float: left;
-    height: 1.7em;
+    height: 1.7rem;
     width: 20px;
   }
 
@@ -268,6 +285,28 @@ body.theforce-enabled{
     white-space: nowrap;
     vertical-align: middle;
     display: inline-block;
+  }
+}
+
+/**
+ * A helper css/js class that will position an item as fixed. This is needed
+ * because we are using rotate(0) to take all inner elements of #theforce-content
+ * and make them relative to it.
+ */
+.theforce-fixed{
+  position:fixed;
+  top:0;
+  left:0;
+  bottom:0;
+  right:0;
+  z-index:9999;
+}
+
+body.has-theforce-fixed{
+  overflow:hidden !important;
+
+  #theforce-content{
+    overflow:hidden !important;
   }
 }
 

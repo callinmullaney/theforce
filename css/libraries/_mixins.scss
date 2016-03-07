@@ -8,25 +8,25 @@
 ///////////////////////////
 
 @mixin xlarge-device-size{
-  @media only screen and (min-width : 100em) {
+  @media only screen and (min-width : 120em) {
     @content;
   }
 }
 
 @mixin large-device-size{
-  @media only screen and (min-width : 64.001em) and (max-width : 90em) {
+  @media only screen and (min-width : 80.001em) and (max-width : 120em) {
     @content;
   }
 }
 
 @mixin medium-device-size{
-  @media only screen and (min-width: 40.001em) and (max-width: 64em) {
+  @media only screen and (min-width: 45.001em) and (max-width: 80em) {
     @content;
   }
 }
 
 @mixin small-device-size{
-  @media only screen and (max-width: 40em) {
+  @media only screen and (max-width: 45em) {
     @content;
   }
 }

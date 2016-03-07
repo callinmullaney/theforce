@@ -202,10 +202,17 @@
 
     .fa-angle-down{
       position: absolute;
-      right: $theforce-side-height/2.6;
-      top: $theforce-side-height/2.6;
+      right: $theforce-side-font-size;
+      line-height: $theforce-side-font-size*3.25;
       @include transform(rotate(-90deg));
       @include transition(transform 300ms);
+
+      @include small-device-size{
+        right: $theforce-side-font-size*0.5;
+      }
+      @include medium-device-size{
+        right: $theforce-side-font-size*0.75;
+      }
     }
   }
 
