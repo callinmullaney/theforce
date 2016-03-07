@@ -22,7 +22,7 @@ function template_preprocess_theforce(&$vars){
       '#content' => array(
         array(
           '#theme' => 'theforce_item',
-          '#content' => array('#markup' => '<div class="theforce-elements"><a href="" class="theforce-element theforce-mini-toggle"><i class="theforce-icon fa fa-bars"></i> Admin Toolbar</a></div>'),
+          '#content' => array('#markup' => '<div class="theforce-elements"><a href="" class="theforce-element theforce-mini-toggle"><i class="theforce-icon fa fa-bars"></i> '.t('Admin Toolbar').'</a></div>'),
         ),
       ),
     )
