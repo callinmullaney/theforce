@@ -595,8 +595,8 @@ function theforce_is_management() {
 function theforce_form_alter(&$form, &$form_state, $form_id){
   if(in_array($form_id, array('user_profile_form','user_register_form'))){
     // Make sure user profile image is never required.
-    if(isset($form['field_image_theforce'])){
-      $ief = &$form['field_image_theforce'][$form['field_image_theforce']['#language']]['form']['field_image'];
+    if(isset($form['field_image_asset'])){
+      $ief = &$form['field_image_asset'][$form['field_image_asset']['#language']]['form']['field_image'];
       $ief[$ief['#language']][0]['#required'] = 0;
     }
   }
