@@ -41,15 +41,15 @@ body.theforce-inset.theforce-top-style-inset{
 //Change the background gradient direction based off sidebar position
 body.theforce-side-left.theforce-top-style-inset {
   #theforce-top{
-    box-shadow: -10px 0 10px rgba(0, 0, 0, 0.25) inset;
-    @include linear-gradient(to right, $theforce-top-bg, darken($theforce-top-bg, 8%), $fallback: $theforce-top-bg);
+    box-shadow: -8px 0 8px rgba(0, 0, 0, 0.2) inset;
+    @include linear-gradient(to right, $theforce-top-bg, darken($theforce-top-bg, 5%), $fallback: $theforce-top-bg);
   }
 }
 
 body.theforce-side-right.theforce-top-style-inset {
   #theforce-top{
-    box-shadow: 10px 0 10px rgba(0, 0, 0, 0.25) inset;
-    @include linear-gradient(to right, darken($theforce-top-bg, 8%), $theforce-top-bg, $fallback: $theforce-top-bg);
+    box-shadow: 8px 0 8px rgba(0, 0, 0, 0.2) inset;
+    @include linear-gradient(to right, darken($theforce-top-bg, 5%), $theforce-top-bg, $fallback: $theforce-top-bg);
   }
 }
 
@@ -61,7 +61,7 @@ body.theforce-top-mini.theforce-top-style-inset{
     background-color: rgba($theforce-top-bg, 0.8);
 
     #theforce-top-mini {
-      @include linear-gradient(to right, $theforce-top-bg, darken($theforce-top-bg, 8%), $fallback: $theforce-top-bg);
+      @include linear-gradient(to right, $theforce-top-bg, darken($theforce-top-bg, 5%), $fallback: $theforce-top-bg);
     }
   }
 }
@@ -71,11 +71,18 @@ body.theforce-top-mini.theforce-top-style-inset{
 ////////////////
 .theforce-side-style-inset{
   #theforce-side{
-    @include linear-gradient($theforce-side-bg, darken($theforce-side-bg, 12%), $fallback: $theforce-side-bg);
+    @include linear-gradient($theforce-side-bg, darken($theforce-side-bg, 10%), $fallback: $theforce-side-bg);
     z-index: 0;
 
     #theforce-side-content{
-      @include linear-gradient($theforce-side-bg, darken($theforce-side-bg, 12%), $fallback: $theforce-side-bg);
+      @include linear-gradient($theforce-side-bg, darken($theforce-side-bg, 10%), $fallback: $theforce-side-bg);
+    }
+
+    #theforce-side-bottom{
+      .theforce-item{
+        border-top: 1px solid darken($theforce-side-bg, 2%);
+        border-bottom: 1px solid darken($theforce-side-bg, 10%);
+      }
     }
   }
 }

@@ -4,7 +4,7 @@
 
 //Font(s)
 $theforce-font-family: 'Open Sans', "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif !default;
-$theforce-font-size: 14.5px; // it's all relative
+$theforce-font-size: 14px; // it's all relative
 
 //Overlay Variables
 $theforce-overlay-bg: #F2F2F2 !default;
@@ -16,7 +16,7 @@ $theforce-overlay-font-size: 1em !default;
 $theforce-top-bg: #F2F2F2 !default;
 $theforce-top-color: theforce-color($theforce-top-bg, 45%) !default;
 $theforce-top-color-alt: theforce-color($theforce-top-bg, 65%) !default;
-$theforce-top-height: 4em !default;
+$theforce-top-height: 3.8em !default;
 $theforce-top-item-padding: 1em !default;
 $theforce-top-font-size: 1em !default;
 $theforce-top-primary: #0997c3 !default;
@@ -30,7 +30,7 @@ $theforce-side-width-active: 30em !default;
 $theforce-side-color: theforce-color($theforce-side-bg, 45%) !default;
 $theforce-side-color-alt: theforce-color($theforce-side-bg, 65%) !default;
 $theforce-side-item-padding: 1em !default;
-$theforce-side-font-size: 1em !default;
+$theforce-side-font-size: 1.1em !default;
 $theforce-side-primary: #0997c3 !default;
 
 //Color Variables
@@ -48,3 +48,4 @@ $theforce-white-color: #FFFFFF !default;
 //Dropdown Variables
 $theforce-dropdown-padding: 1em !default;
 $theforce-dropdown-size: 1em !default;
+$theforce-border-radius: 2px;

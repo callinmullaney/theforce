@@ -37,10 +37,26 @@ body.theforce-top-enabled{
 
   .theforce-mini-toggle{
     margin: 0;
-    line-height:$theforce-top-height;
+    text-align: left !important;
+    background-color: transparent;
+    background-image: none;
+    line-height: $theforce-top-font-size;
+
+    .theforce-icon{
+      margin-right: $theforce-top-font-size/4 !important;
+      padding-right: $theforce-top-font-size/4 !important;
+    }
+
+    &:hover{
+      background-color: transparent;
+      background-image: none;
+    }
 
     @include small-device-size{
-      line-height: $theforce-top-height*0.8;
+      line-height: $theforce-top-font-size*3.8;
+    }
+    @include medium-device-size{
+      line-height: $theforce-top-font-size*3.8;
     }
   }
 }
@@ -117,6 +133,15 @@ body.theforce-top-mini-open #theforce-top{
     .theforce-element{
       float:none;
       margin: 0;
+      line-height: $theforce-top-font-size*3.8;
+      border-radius: 0;
+      background-color: transparent;
+      background-image: none;
+
+      &:hover{
+        background-color: transparent;
+        background-image: none;
+      }
     }
 
     .theforce-dropdown-content{

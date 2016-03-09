@@ -27,9 +27,27 @@
     color: lighten($theforce-top-color, 10%);
   }
 
-  td,
-  td i{
+  td{
+    padding: $theforce-side-item-padding/2;
+
+    &.views-field-status{
+      padding: $theforce-side-item-padding*0.75 0;
+    }
   }
+
+  // table{
+
+  //   tbody{
+
+  //     tr{
+  //       background-color: lighten($theforce-side-bg, 5%);
+
+  //       &.even{
+  //         background-color: darken($theforce-side-bg, 2%);
+  //       }
+  //     }
+  //   }
+  // }
 
   .views-align-right{
     text-align:right;
@@ -45,23 +63,20 @@
     box-shadow:none;
     margin:0;
     height:auto;
-    line-height: 20px;
-    padding:0 5px;
     width:100%;
-    background: theforce-color($theforce-top-bg, 5%);
+    border-radius: $theforce-border-radius;
   }
 
   .views-exposed-form{
     padding: 0 0 10px 0;
     margin: 0 0 10px 0;
-    border-bottom: 1px solid darken($theforce-top-bg, 5%);
 
     label{
       // color: $theforce-top-bg;
       padding:0 0 2px;
       margin:0;
       line-height: 12px;
-      font-size:$theforce-top-font-size*.7;
+      font-size:$theforce-top-font-size*0.7;
     }
 
     .form-item{
@@ -78,7 +93,7 @@
       font-weight:600;
       line-height: 20px;
       text-transform: uppercase;
-      font-size:$theforce-top-font-size*.8;
+      font-size:$theforce-top-font-size*0.8;
       text-transform: none;
     }
   }
@@ -115,9 +130,6 @@
     text-align: center;
     text-transform: uppercase;
     font-weight: 700;
-    border-top: 1px solid darken($theforce-top-bg, 5%);
-    padding: 10px 0 10px 0;
-    margin: 10px 0 -10px 0;
   }
 }
 
@@ -126,7 +138,100 @@
 /// Top Specific Styling
 /////////////////////////////////
 
+#theforce-top{
+
+  .view{
+
+    td.views-field-view-node a{
+      float: left;
+      display:block;
+      text-align: center;
+      padding: 0 $theforce-top-item-padding/2;
+      margin: 0 $theforce-top-item-padding/4;
+      color: $theforce-top-primary !important;
+      line-height: $theforce-top-height - $theforce-top-item-padding;
+      border-radius: $theforce-border-radius;
+      min-width: $theforce-top-font-size*2;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+      @include linear-gradient(to bottom, rgba(lighten($theforce-top-bg, 5%), 0.9), rgba(lighten($theforce-top-bg,  10%), 0.25), $fallback: rgba($theforce-top-bg, 0.01));
+      background-color: transparent;
+
+      &:hover{
+        z-index:10;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        @include linear-gradient(to bottom, rgba(lighten($theforce-top-bg, 5%), 1), rgba(lighten($theforce-top-bg,  10%), 0.4), $fallback: rgba($theforce-top-bg, 0.01));
+        background-color: transparent;
+      }
+    }
+
+    input{
+      line-height: $theforce-top-font-size*2;
+      padding:0 $theforce-top-item-padding/2;  
+      background: theforce-color($theforce-top-bg, 20%);
+    }
+
+    .views-exposed-form{
+      border-bottom: 1px solid darken($theforce-top-bg, 8%);
+    }
+
+    .more-link{
+      border-top: 1px solid darken($theforce-top-bg, 8%);
+      padding: $theforce-top-item-padding/2 0 0;
+      margin: $theforce-top-item-padding/2 0 0 0;
+    }
+  }
+}
+
 
 //////////////////////////////////
 /// Side Specific Styling
 /////////////////////////////////
+
+#theforce-side{
+
+  .view{
+
+    td.views-field-view-node {
+      border-collapse: separate;
+      display: table;
+      table-layout: inherit;
+
+      a{
+        display: table-cell;
+        text-align: center;
+        padding: 0 $theforce-side-item-padding/2;
+        margin: 0 $theforce-side-item-padding/4;
+        color: $theforce-side-primary !important;
+        line-height: $theforce-side-height - $theforce-side-item-padding;
+        border-radius: $theforce-border-radius;
+        min-width: $theforce-side-font-size*2;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+        @include linear-gradient(to bottom, rgba(lighten($theforce-side-bg, 5%), 0.9), rgba(lighten($theforce-side-bg,  10%), 0.25), $fallback: rgba($theforce-side-bg, 0.01));
+        background-color: transparent;
+
+        &:hover{
+          z-index:10;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+          @include linear-gradient(to bottom, rgba(lighten($theforce-side-bg, 5%), 1), rgba(lighten($theforce-side-bg,  10%), 0.4), $fallback: rgba($theforce-side-bg, 0.01));
+          background-color: transparent;
+        }
+      }
+    }
+
+    input{
+      line-height: $theforce-side-font-size*2;
+      padding:0 $theforce-side-item-padding/2;
+      background: theforce-color($theforce-side-bg, 20%);
+    }
+
+    .views-exposed-form{
+      border-bottom: 1px solid darken($theforce-side-bg, 8%);
+    }
+
+    .more-link{
+      border-top: 1px solid darken($theforce-side-bg, 8%);
+      padding: $theforce-side-item-padding 0 0;
+      margin: $theforce-side-item-padding/2 0 -$theforce-side-item-padding 0;
+    }
+  }
+}

@@ -18,11 +18,16 @@
       left: $theforce-side-width !important;
       @include transition-delay(0ms);
 
-      @include small-device-size{
-        left: $theforce-side-width*1.25 !important;
-      }
-      @include medium-device-size{
-        left: $theforce-side-width*1.2 !important;
+      #theforce-overlay{
+        left: $theforce-side-width-active*0.8 !important;
+        @include transition-delay(0ms);
+
+        @include small-device-size{
+          left: $theforce-side-width-active*0.9 !important;
+        }
+        @include medium-device-size{
+          left: $theforce-side-width-active*0.9 !important;
+        }
       }
     }
 
@@ -30,11 +35,16 @@
       right: $theforce-side-width !important;
       @include transition-delay(0ms);
 
-      @include small-device-size{
-        right: $theforce-side-width*1.25 !important;
-      }
-      @include medium-device-size{
-        right: $theforce-side-width*1.2 !important;
+      #theforce-overlay{
+        right: $theforce-side-width-active*0.8 !important;
+        @include transition-delay(0ms);
+
+        @include small-device-size{
+          right: $theforce-side-width-active*0.9 !important;
+        }
+        @include medium-device-size{
+          right: $theforce-side-width-active*0.9 !important;
+        }
       }
     }
 
@@ -43,10 +53,10 @@
       @include transition-delay(0ms);
 
       @include small-device-size{
-        left: $theforce-side-width-active*1.25 !important;
+        left: $theforce-side-width-active*1.1 !important;
       }
       @include medium-device-size{
-        left: $theforce-side-width-active*1.2 !important;
+        left: $theforce-side-width-active*1.1 !important;
       }
     }
 
@@ -55,10 +65,10 @@
       @include transition-delay(0ms);
 
       @include small-device-size{
-        right: $theforce-side-width-active*1.25 !important;
+        right: $theforce-side-width-active*1.1 !important;
       }
       @include medium-device-size{
-        right: $theforce-side-width-active*1.2 !important;
+        right: $theforce-side-width-active*1.1 !important;
       }
     }
   }

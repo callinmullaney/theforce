@@ -30,11 +30,53 @@
   }
 
   .theforce-tabs-secondary{
-    background: darken($theforce-top-bg, 5%);
-    border-radius: 2px;
+    background: lighten($theforce-top-bg, 5%);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 0 $theforce-top-item-padding/4;
+    margin: 0 $theforce-top-item-padding/4;
+    position: relative;
+
+    &:before{
+      display:block;
+      content:"";
+      position: absolute;
+      top:$theforce-top-font-size*1.33;
+      left:-15px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 8px;
+      border-color: transparent lighten($theforce-top-bg, 5%) transparent transparent;
+    
+      @include small-device-size{
+        top:$theforce-top-font-size*1.5;
+      }
+      @include medium-device-size{
+        top:$theforce-top-font-size*1.5;
+      }
+    }
 
     > li{
+      .theforce-element{
+        background-color: transparent;
+        @include linear-gradient(to bottom, rgba($theforce-top-primary, 1), rgba($theforce-top-primary, 0.66), $fallback: rgba($theforce-top-primary, 0.5));
+        
+        &.active{
+          .theforce-icon{
+            color: rgba($theforce-top-color-alt, 0.75);
+          }
+        }
 
+        &:hover{
+          @include linear-gradient(to bottom, rgba(lighten($theforce-top-primary, 5%), 1), rgba(lighten($theforce-top-primary,  5%), 0.66), $fallback: rgba($theforce-top-primary, 0.01));
+          background-color: transparent;
+        }
+
+        .theforce-icon{
+          color: rgba(#fff, 0.9);
+        }
+
+      }
     }
   }
 }

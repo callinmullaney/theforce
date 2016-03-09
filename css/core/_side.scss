@@ -17,10 +17,10 @@
   @include transform(rotate(0deg));
 
   @include small-device-size{
-    font-size: $theforce-font-size*1.2;
+    font-size: $theforce-font-size*1.15;
   }
   @include medium-device-size{
-    font-size: $theforce-font-size*1.1;
+    font-size: $theforce-font-size*1.15;
   }
 
   a{
@@ -64,11 +64,6 @@
       &:first-child .theforce-label {
         height: $theforce-top-height;
         line-height:$theforce-top-height;
-
-        @include small-device-size{
-          height: $theforce-top-height*0.8;
-          line-height:$theforce-top-height*0.8;
-        }
       }
     }
 
@@ -153,17 +148,17 @@
     }
 
     .theforce-element{
-      padding-left: $theforce-side-font-size*2;
+      padding-left: $theforce-side-font-size*1.8;
       color: $theforce-side-color;
       text-shadow: 0 1px 0 theforce-shade($theforce-side-bg, 10%);
       line-height:$theforce-side-height;
       @include transition(padding 200ms 0ms, background-color 300ms);
 
       @include small-device-size{
-        padding-left: $theforce-side-font-size*1.33;
+        padding-left: $theforce-side-font-size*1.5;
       }
       @include medium-device-size{
-        padding-left: $theforce-side-font-size*1.6;
+        padding-left: $theforce-side-font-size*1.5;
       }
     }
 
@@ -228,7 +223,7 @@ body.theforce-side-content{
     width: $theforce-side-width;
 
     @include small-device-size{
-      width: $theforce-side-width*0.8 !important;
+      width: $theforce-side-width*0.9 !important;
     }
     @include medium-device-size{
       width: $theforce-side-width*0.9 !important;
@@ -244,7 +239,7 @@ body.theforce-side-active{
     @include transition-delay(0ms);
 
     @include small-device-size{
-      left: $theforce-side-width-active*1.2 !important;
+      left: $theforce-side-width-active*1.1 !important;
     }
     @include medium-device-size{
       left: $theforce-side-width-active*1.1 !important;
@@ -257,7 +252,7 @@ body.theforce-side-active{
     @include transition-delay(0ms);
 
     @include small-device-size{
-      right: $theforce-side-width-active*1.2 !important;
+      right: $theforce-side-width-active*1.1 !important;
     }
     @include medium-device-size{
       right: $theforce-side-width-active*1.1 !important;

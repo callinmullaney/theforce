@@ -184,6 +184,10 @@ div.theforce{
   @include transition(opacity 300ms);
 
   a{
+    margin: 0 !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    line-height: $theforce-top-height !important;
 
     i:before{
       color: $theforce-white-color;
