@@ -11,67 +11,6 @@
       @include transition(transform 300ms 0ms);
     }
   }
-
-  &.theforce-side-active{
-
-    &.theforce-side-left #theforce-wrap{
-      left: $theforce-side-width !important;
-      @include transition-delay(0ms);
-
-      #theforce-overlay{
-        left: $theforce-side-width-active*0.8 !important;
-        @include transition-delay(0ms);
-
-        @include small-device-size{
-          left: $theforce-side-width-active*0.9 !important;
-        }
-        @include medium-device-size{
-          left: $theforce-side-width-active*0.9 !important;
-        }
-      }
-    }
-
-    &.theforce-side-right #theforce-wrap{
-      right: $theforce-side-width !important;
-      @include transition-delay(0ms);
-
-      #theforce-overlay{
-        right: $theforce-side-width-active*0.8 !important;
-        @include transition-delay(0ms);
-
-        @include small-device-size{
-          right: $theforce-side-width-active*0.9 !important;
-        }
-        @include medium-device-size{
-          right: $theforce-side-width-active*0.9 !important;
-        }
-      }
-    }
-
-    &.theforce-side-left #theforce-top{
-      left: $theforce-side-width-active !important;
-      @include transition-delay(0ms);
-
-      @include small-device-size{
-        left: $theforce-side-width-active*1.1 !important;
-      }
-      @include medium-device-size{
-        left: $theforce-side-width-active*1.1 !important;
-      }
-    }
-
-    &.theforce-side-right #theforce-top{
-      right: $theforce-side-width-active !important;
-      @include transition-delay(0ms);
-
-      @include small-device-size{
-        right: $theforce-side-width-active*1.1 !important;
-      }
-      @include medium-device-size{
-        right: $theforce-side-width-active*1.1 !important;
-      }
-    }
-  }
 }
 
 body.theforce-inset.theforce-side-style-outset{

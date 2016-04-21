@@ -18,16 +18,8 @@
   left:0;
   overflow:none;
   z-index: 1;
-  font-size: $theforce-font-size;
   box-shadow: 0 0 15px rgba(0,0,0,0.33);
   @include transform(rotate(0deg));
-
-  @include small-device-size{
-    font-size: $theforce-font-size*1.15;
-  }
-  @include medium-device-size{
-    font-size: $theforce-font-size*1.15;
-  }
 
   &:after{
     display:block;
@@ -102,6 +94,13 @@ body.theforce-enabled{
 
     #theforce-wrap{
       top: $theforce-top-height;
+
+      @include small-device-size{
+        top: $theforce-top-height*1.15;
+      }
+      @include medium-device-size{
+        top: $theforce-top-height*1.15;
+      }
     }
   }
 

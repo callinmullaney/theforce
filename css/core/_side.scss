@@ -44,26 +44,50 @@
   .theforce-side-close{
     display:block;
     position: absolute;
-    top:0px;
-    right:5px;
+    background-color: rgba(0, 0, 0, 0.2);
+    top:0;
+    right:0;
     font-weight:200;
-    padding:5px;
+    padding:0 $theforce-side-font-size/3;
     font-size: $theforce-side-font-size*3;
-    line-height: $theforce-side-font-size;
     color: theforce-color($theforce-side-bg, 20%);
     opacity:0;
-    @include transition(opacity 300ms);
-    @include transition-delay(100ms);
+    @include transition(opacity 100ms);
+    @include transition-delay(0);
+
+    //height should match theforce top
+    height: $theforce-top-height;
+    line-height:$theforce-top-height;
+
+    @include small-device-size{
+      height: $theforce-top-height*1.15;
+      line-height: $theforce-top-height*1.15;
+    }
+    @include medium-device-size{
+      height: $theforce-top-height*1.13;
+      line-height: $theforce-top-height*1.13;
+    }
   }
 
   #theforce-side-top{
     @include flex(auto);
 
     .theforce-item{
+
+      //minor tweaks to the multiplier to compensate for the 1px borders
       &:first-child .theforce-element,
       &:first-child .theforce-label {
-        height: $theforce-top-height;
-        line-height:$theforce-top-height;
+        height: $theforce-top-height*0.97;
+        line-height:$theforce-top-height*0.97;
+
+        @include small-device-size{
+          height: $theforce-top-height*1.13;
+          line-height: $theforce-top-height*1.13;
+        }
+        @include medium-device-size{
+          height: $theforce-top-height*1.13;
+          line-height: $theforce-top-height*1.13;
+        }
       }
     }
 
@@ -148,17 +172,17 @@
     }
 
     .theforce-element{
-      padding-left: $theforce-side-font-size*1.8;
+      padding-left: $theforce-side-font-size*1.9;
       color: $theforce-side-color;
       text-shadow: 0 1px 0 theforce-shade($theforce-side-bg, 10%);
       line-height:$theforce-side-height;
       @include transition(padding 200ms 0ms, background-color 300ms);
 
       @include small-device-size{
-        padding-left: $theforce-side-font-size*1.5;
+        padding-left: $theforce-side-font-size*1.25;
       }
       @include medium-device-size{
-        padding-left: $theforce-side-font-size*1.5;
+        padding-left: $theforce-side-font-size*1.25;
       }
     }
 
@@ -279,6 +303,7 @@ body.theforce-side-active{
     .theforce-side-close{
       top:0;
       opacity:1;
+      z-index: 2;
     }
 
     .theforce-icon{

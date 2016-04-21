@@ -149,7 +149,7 @@
       padding: 0 $theforce-top-item-padding/2;
       margin: 0 $theforce-top-item-padding/4;
       color: $theforce-top-primary !important;
-      line-height: $theforce-top-height - $theforce-top-item-padding;
+      line-height: $theforce-top-height-inner - $theforce-top-item-padding;
       border-radius: $theforce-border-radius;
       min-width: $theforce-top-font-size*2;
       box-shadow: 0 1px 2px rgba(0,0,0,0.08);
@@ -202,7 +202,7 @@
         padding: 0 $theforce-side-item-padding/2;
         margin: 0 $theforce-side-item-padding/4;
         color: $theforce-side-primary !important;
-        line-height: $theforce-side-height - $theforce-side-item-padding;
+        line-height: $theforce-top-height-inner - $theforce-side-item-padding;
         border-radius: $theforce-border-radius;
         min-width: $theforce-side-font-size*2;
         box-shadow: 0 1px 2px rgba(0,0,0,0.08);
