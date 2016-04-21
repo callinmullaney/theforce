@@ -61,8 +61,12 @@ class theforceJediUser extends theforceDropdownList {
     global $user;
     $output = array();
 
-    $output[] = l('<i class="fa fa-user"></i> Profile', 'user/' . $user->uid, array('html' => TRUE));
-    $output[] = l('<i class="fa fa-edit"></i> Settings', 'user/' . $user->uid . '/edit', array('html' => TRUE));
+    if(drupal_valid_path('user/' . $user->uid)){
+      $output[] = l('<i class="fa fa-user"></i> Profile', 'user/' . $user->uid, array('html' => TRUE));
+    }
+    if(drupal_valid_path('user/' . $user->uid . '/edit')){
+      $output[] = l('<i class="fa fa-edit"></i> Settings', 'user/' . $user->uid . '/edit', array('html' => TRUE));
+    }
     $output[] = l('<i class="fa fa-sign-out"></i> Logout', 'user/logout', array('html' => TRUE));
 
     return $output;
