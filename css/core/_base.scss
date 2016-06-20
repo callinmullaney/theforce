@@ -251,12 +251,11 @@ body.theforce-enabled{
     .ink {
       display: block;
       position: absolute;
-      // background: $theforce-ink-color;
       border-radius: 100%;
       @include transform(scale(0));
 
       &.animate{
-        @include animation(ripple 300ms linear);
+        @include animation(ripple 200ms linear);
       }
     }
   }
