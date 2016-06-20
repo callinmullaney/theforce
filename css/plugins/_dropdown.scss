@@ -45,7 +45,7 @@
     padding: 0 $theforce-top-item-padding*2.5 0 $theforce-top-item-padding;
 
     .theforce-dropdown-direction{
-      @include linear-gradient(to bottom, rgba(lighten($theforce-top-bg, 8%), 1), rgba(lighten($theforce-top-bg,  12%), 0.4), $fallback: rgba($theforce-top-bg, 0.015));
+      @include linear-gradient(to bottom, rgba(lighten($theforce-top-bg, 9%), 1), rgba(lighten($theforce-top-bg,  12%), 0.4), $fallback: rgba($theforce-top-bg, 0.015));
       background-color: transparent;
       position: absolute;
       right: 0;
@@ -58,14 +58,13 @@
     .fa-angle-down{
       color: $theforce-top-color;
       @include transform(rotate(0deg));
-      @include transition(transform 300ms);
     }
   }
 
   .theforce-dropdown-content {
     position: absolute;
     top: 98%;
-    left: 0px;
+    left: $theforce-top-item-padding/4;
     float: none;
     min-width: 25rem;
     list-style: outside none none;
@@ -97,7 +96,6 @@
   }
 
   .open{
-    z-index: 15;
 
     > .theforce-dropdown-trigger{
       color: $theforce-top-primary !important;
@@ -231,6 +229,7 @@
       }
     }
   }
+
   .open{
     background-color: theforce-shade($theforce-side-bg, 6%);
     z-index: 15;

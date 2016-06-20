@@ -253,10 +253,6 @@ body.theforce-enabled{
       position: absolute;
       border-radius: 100%;
       @include transform(scale(0));
-
-      &.animate{
-        @include animation(ripple 200ms linear);
-      }
     }
   }
 
