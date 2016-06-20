@@ -213,10 +213,20 @@
 
   .theforce-dropdown-trigger{
 
-    .fa-angle-down{
+    padding: 0 $theforce-top-item-padding*2.5 0 $theforce-top-item-padding;
+
+    .theforce-dropdown-direction{
+      @include linear-gradient(to right, transparent, rgba(lighten($theforce-side-bg,  5%), 1), $fallback: rgba($theforce-side-bg, 0.015));
+      background-color: transparent;
       position: absolute;
-      right: $theforce-side-font-size;
-      line-height: $theforce-side-font-size*3.25;
+      right: 2px;
+      top: 3px;
+      padding: 0 $theforce-side-item-padding*0.25 0 $theforce-side-item-padding*0.75;
+      height: 91%;
+    }
+
+    .fa-angle-down{
+      line-height: $theforce-side-height;
       @include transform(rotate(-90deg));
       @include transition(transform 300ms);
 
