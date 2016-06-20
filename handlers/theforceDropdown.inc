@@ -29,6 +29,7 @@ class theforceDropdown extends theforceLink {
 
     // $form['linkPath']['#access'] = false;
     unset($form['linkPath']);
+    unset($form['linkOptions']);
 
     $form['dropdown'] = array(
       '#type' => 'textarea',

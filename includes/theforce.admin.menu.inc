@@ -243,6 +243,13 @@ function theforce_admin_menu_edit_item_form($form, &$form_state, $item, $type = 
       '#weight' => 10,
     );
   }
+
+  // Invoke hook_form_alter(), hook_form_BASE_FORM_ID_alter(), and
+  // hook_form_FORM_ID_alter() implementations.
+  $hooks = array('form', 'form_menu_edit_item');
+  $form_id = 'menu_edit_item';
+  drupal_alter($hooks, $form, $form_state, $form_id);
+
   return $form;
 }
 
