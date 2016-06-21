@@ -53,6 +53,7 @@
       padding: 0 $theforce-top-item-padding/2;
       height: $theforce-top-height-inner - ($theforce-top-item-padding/2);
       border-radius: 0 $theforce-border-radius $theforce-border-radius 0;
+      box-shadow: 0 0 2px rgba(0,0,0,0.05);
     }
 
     .fa-angle-down{
