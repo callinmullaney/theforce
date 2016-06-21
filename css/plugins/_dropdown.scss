@@ -63,7 +63,7 @@
 
   .theforce-dropdown-content {
     position: absolute;
-    top: 98%;
+    top: 100%;
     left: $theforce-top-item-padding/4;
     float: none;
     min-width: 25rem;
@@ -162,6 +162,7 @@
         @include animation(expandIn 300ms linear);
         width:auto;
         max-width:1000px;
+        line-height: $theforce-side-height/2;
         opacity:1;
       }
 
@@ -186,12 +187,13 @@
     }
   }
 }
+
 //////////////////////////////////
 /// Side Specific Styling
 /////////////////////////////////
 #theforce-side{
 
-  .theforce-dropdown-content {
+  .theforce-dropdown-content{
     padding: 0 $theforce-dropdown-padding;
     min-width: $theforce-side-width-active;
     background-color: theforce-shade($theforce-side-bg, 6%);
@@ -212,21 +214,21 @@
   }
 
   .theforce-dropdown-trigger{
-
     padding: 0 $theforce-top-item-padding*2.5 0 $theforce-top-item-padding;
 
     .theforce-dropdown-direction{
-      @include linear-gradient(to right, transparent, rgba(lighten($theforce-side-bg,  5%), 1), $fallback: rgba($theforce-side-bg, 0.015));
-      background-color: transparent;
+      background-color: lighten($theforce-side-bg,  1%);
       position: absolute;
-      right: 2px;
-      top: 3px;
-      padding: 0 $theforce-side-item-padding*0.25 0 $theforce-side-item-padding*0.75;
-      height: 91%;
+      right: 1px;
+      top: 2px;
+      padding: 0 $theforce-side-item-padding*0.15;
+      height: 94%;
+      line-height: $theforce-side-height;
     }
 
     .fa-angle-down{
-      line-height: $theforce-side-height;
+      line-height: 0;
+      color: theforce-color($theforce-side-bg, 20%);
       @include transform(rotate(-90deg));
       @include transition(transform 300ms);
 
@@ -252,7 +254,12 @@
         background-color: theforce-shade($theforce-side-bg, 6%);
       }
 
+      .theforce-dropdown-direction{
+        @include linear-gradient(to right, transparent, transparent, $fallback: rgba($theforce-side-bg, 0));
+      }
+
       .fa-angle-down{
+        color: theforce-color($theforce-side-bg, 25%);
         @include transform(rotate(0deg));
       }
     }

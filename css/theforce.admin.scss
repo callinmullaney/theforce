@@ -188,6 +188,7 @@ div.theforce{
     background-color: transparent !important;
     background-image: none !important;
     line-height: $theforce-top-height !important;
+    box-shadow: none !important;
 
     i:before{
       color: $theforce-white-color;
@@ -198,7 +199,7 @@ div.theforce{
       width:$theforce-dropdown-padding*2;
       height:$theforce-dropdown-padding*2;
       vertical-align: middle;
-      line-height: $theforce-dropdown-padding*1.75;
+      line-height: $theforce-dropdown-padding*2;
       border-radius:50%;
       @include transition(background 300ms,border 300ms,box-shadow 300ms);
     }
