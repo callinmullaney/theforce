@@ -13,14 +13,14 @@
   line-height: $theforce-top-height-inner - ($theforce-top-item-padding/2);
   border-radius: $theforce-border-radius;
   min-width: $theforce-top-font-size*3;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-  @include linear-gradient(to bottom, rgba(lighten($theforce-top-bg, 4%), 1), rgba(lighten($theforce-top-bg,  9%), 0.25), $fallback: rgba($theforce-top-bg, 0.01));
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  @include linear-gradient(to bottom, rgba(lighten($theforce-top-bg, 5%), 1), rgba(lighten($theforce-top-bg,  10%), 0.25), $fallback: rgba($theforce-top-bg, 0.01));
   background-color: transparent;
 
   &:hover{
     z-index:10;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.22);
-    @include linear-gradient(to bottom, rgba(lighten($theforce-top-bg, 6%), 1), rgba(lighten($theforce-top-bg,  12%), 0.45), $fallback: rgba($theforce-top-bg, 0.01));
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    @include linear-gradient(to bottom, rgba(lighten($theforce-top-bg, 6.5%), 1), rgba(lighten($theforce-top-bg,  13%), 0.45), $fallback: rgba($theforce-top-bg, 0.01));
     background-color: transparent;
   }
 }

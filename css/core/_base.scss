@@ -270,6 +270,10 @@ body.theforce-enabled{
     border-color: transparent;
     position:relative;
 
+    &:hover{
+      z-index: 1;
+    }
+
     .theforce-element{
       display:block;
       position: relative;
