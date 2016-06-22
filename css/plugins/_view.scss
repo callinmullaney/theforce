@@ -57,6 +57,13 @@
   //   }
   // }
 
+  .views-field-view-node,
+  .views-field-asset-ops{
+    padding-top: $theforce-side-item-padding/2;
+    padding-bottom: $theforce-side-item-padding/2;
+    padding-left:0;
+  }
+
   .views-align-right{
     text-align:right;
 
@@ -202,7 +209,8 @@
 
   .view{
 
-    td.views-field-view-node {
+    td.views-field-view-node,
+    td.views-field-asset-ops {
 
       a{
         @include button-side();
