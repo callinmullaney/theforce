@@ -134,7 +134,13 @@ class theforceJediCreate extends theforceSide {
   }
 
   public function access(){
-    return _node_add_access();
+    if( $this->values['nodeEnabled'] && _node_add_access()) {
+      return TRUE;
+    }
+    if( $this->values['assetEnabled'] && function_exists('_asset_add_access') && _asset_add_access()) {
+      return TRUE;
+    }
+    return FALSE;
   }
 
   /**
