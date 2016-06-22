@@ -94,7 +94,7 @@ class theforceLink extends theforceText {
       'attributes' => array(),
       'html' => $this->linkHtml,
     );
-    $linkOptions['attributes'] = drupal_array_merge_deep($linkOptions['attributes'], $this->linkAttributes);
+    $linkOptions['attributes'] = array_filter(drupal_array_merge_deep($linkOptions['attributes'], $this->linkAttributes));
 
     $link['#markup'] = l(drupal_render($output), $this->values['linkPath'], $linkOptions);
     $link['#prefix'] = $this->linkPrefix;
