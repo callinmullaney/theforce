@@ -366,7 +366,7 @@ theForce.inkBind = function(context, settings) {
     $parent = $(this).parent();
     //create .ink element if it doesn't exist
     if($parent.find(".ink").length == 0){
-      $parent.prepend('<span class="ink-wrap"><span class="ink"></span></span>');
+      $(this).prepend('<span class="ink-wrap"><span class="ink"></span></span>');
     }
 
     $ink = $parent.find(".ink");

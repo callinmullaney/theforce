@@ -251,13 +251,8 @@ body.theforce-enabled{
     .ink {
       display: block;
       position: absolute;
-      // background: $theforce-ink-color;
       border-radius: 100%;
       @include transform(scale(0));
-
-      &.animate{
-        @include animation(ripple 300ms linear);
-      }
     }
   }
 
@@ -274,6 +269,10 @@ body.theforce-enabled{
     display:block;
     border-color: transparent;
     position:relative;
+
+    &:hover{
+      z-index: 1;
+    }
 
     .theforce-element{
       display:block;

@@ -2,14 +2,29 @@
 /// Animations
 ////////////////////////////////////////////////////////////////////////////////
 
-@include keyframes(ripple) {
+@include keyframes(rippleTop) {
   from {
     opacity: 1;
     @include transform(scale(0));
+    background-color: $theforce-top-primary;
   }
   to {
     opacity: 0;
     @include transform(scale(2.5));
+    background-color: transparent;
+  }
+}
+
+@include keyframes(rippleSide) {
+  from {
+    opacity: 1;
+    @include transform(scale(0));
+    background-color: $theforce-side-primary;
+  }
+  to {
+    opacity: 0;
+    @include transform(scale(2.5));
+    background-color: transparent;
   }
 }
 

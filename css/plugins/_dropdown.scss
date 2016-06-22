@@ -13,11 +13,14 @@
   white-space: normal;
   background-clip: padding-box;
   margin: 0;
+
   p:last-child{
     margin-bottom:0;
   }
+
   .theforce-dropdown-loader{
     text-align: center;
+
     img{
       display:block;
       width:30px;
@@ -28,6 +31,7 @@
       box-shadow: 0 3px 6px rgba(#000, .3);
     }
   }
+
   table{
     white-space: nowrap;
   }
@@ -36,16 +40,32 @@
 /// Top Specific Styling
 /////////////////////////////////
 #theforce-top{
-  .theforce-dropdown-trigger{
+
+  .theforce-element.theforce-dropdown-trigger{
+    padding: 0 $theforce-top-item-padding*2.5 0 $theforce-top-item-padding;
+
+    .theforce-dropdown-direction{
+      @include linear-gradient(to bottom, rgba(lighten($theforce-top-bg, 9%), 1), rgba(lighten($theforce-top-bg,  12%), 0.4), $fallback: rgba($theforce-top-bg, 0.015));
+      background-color: transparent;
+      position: absolute;
+      right: 0;
+      top: 0;
+      padding: 0 $theforce-top-item-padding/2;
+      height: $theforce-top-height-inner - ($theforce-top-item-padding/2);
+      border-radius: 0 $theforce-border-radius $theforce-border-radius 0;
+      box-shadow: 0 0 2px rgba(0,0,0,0.05);
+    }
+
     .fa-angle-down{
+      color: $theforce-top-color;
       @include transform(rotate(0deg));
-      @include transition(transform 300ms);
     }
   }
+
   .theforce-dropdown-content {
     position: absolute;
     top: 100%;
-    left: 0px;
+    left: $theforce-top-item-padding/4;
     float: none;
     min-width: 25rem;
     list-style: outside none none;
@@ -55,43 +75,54 @@
     border-top: 1px solid theforce-shade($theforce-top-bg, 3%);
     border-bottom: 1px solid darken(theforce-shade($theforce-top-bg, 3%), 5%);
     border-radius: 0 0 4px 4px;
-    box-shadow: 0px 3px 3px rgba(#000, 0.2);
+    box-shadow: 0px 4px 3px rgba(#000, 0.25);
+
     > div:not(.theforce-dropdown-loader):not(.item-list) {
       @include filter(#{"blur(5px)"});
       @include transition(filter 600ms);
     }
   }
+
   .theforce-dropdown-loader{
+
     img{
       background:$theforce-top-primary;
       box-shadow: 0 3px 6px darken($theforce-top-bg, 10%);
     }
   }
+
   #theforce-top-right .theforce-dropdown-content{
     right: 0px;
     left: auto;
   }
+
   .open{
-    z-index: 15;
+
     > .theforce-dropdown-trigger{
       color: $theforce-top-primary !important;
+
       .fa-angle-down{
         @include transform(rotate(0deg));
       }
+
       .theforce-text{
+
         &:before{
           display: none !important;
         }
       }
     }
+
     > .theforce-dropdown-content{
       display:block;
       opacity: 1;
       max-height: 100vh;
       padding:$theforce-dropdown-padding;
+
       > div:not(.theforce-dropdown-loader):not(.item-list) {
         @include filter(#{"blur(0px)"});
       }
+
       &.padded{
         padding: $theforce-dropdown-padding;
       }
@@ -99,14 +130,17 @@
   }
   // Mini Specific Styling
   &.theforce-mini{
+
     .theforce-dropdown-content {
       border: 1px solid rgba(0,0,0,0);
       box-shadow: none;
       margin:0 $theforce-top-item-padding/2;
     }
+
     .open {
       padding-bottom: $theforce-top-item-padding/2;
       box-shadow: 0px 0 5px rgba(#000, 0.2);
+      
       .theforce-dropdown-content {
         border: 1px solid darken($theforce-top-bg, 5%);
         border-radius: 0;
@@ -120,24 +154,32 @@
 // Hide icons if body class is set
 ////////////////////////////////////
 .theforce-top-icon-only {
+  
   #theforce-top{
+    
     .open{
+      
       .theforce-text{
         @include animation(expandIn 300ms linear);
         width:auto;
         max-width:1000px;
+        line-height: $theforce-side-height/2;
         opacity:1;
       }
+
       > .theforce-dropdown-trigger{
         color: $theforce-top-primary !important;
+
         .theforce-icon{
           padding: 0 $theforce-top-font-size/4 0 0;
           margin: 0 $theforce-top-font-size/4 0 0;
         }
+
         .fa-angle-down{
           @include transform(rotate(-180deg));
         }
       }
+
       > .theforce-dropdown-content{
         display:block;
         opacity: 1;
@@ -146,62 +188,93 @@
     }
   }
 }
+
 //////////////////////////////////
 /// Side Specific Styling
 /////////////////////////////////
 #theforce-side{
-  .theforce-dropdown-content {
+
+  .theforce-dropdown-content{
     padding: 0 $theforce-dropdown-padding;
     min-width: $theforce-side-width-active;
     background-color: theforce-shade($theforce-side-bg, 6%);
     border-bottom: 1px solid darken(theforce-shade($theforce-side-bg, 6%), 5%);
+
     > div:not(.theforce-dropdown-loader):not(.item-list) {
       @include filter(#{"blur(5px)"});
       @include transition(filter 600ms);
     }
   }
+
   .theforce-dropdown-loader{
+
     img{
       background:$theforce-side-primary;
       box-shadow: 0 3px 6px darken($theforce-side-bg, 10%);
     }
   }
+
   .theforce-dropdown-trigger{
-    .fa-angle-down{
+    padding: 0 $theforce-top-item-padding*2.5 0 $theforce-top-item-padding;
+
+    .theforce-dropdown-direction{
+      background-color: lighten($theforce-side-bg,  1%);
       position: absolute;
-      right: $theforce-side-font-size;
-      line-height: $theforce-side-font-size*3.25;
+      right: 1px;
+      top: 2px;
+      padding: 0 $theforce-side-item-padding*0.15;
+      height: 94%;
+      line-height: $theforce-side-height;
+    }
+
+    .fa-angle-down{
+      line-height: 0;
+      color: theforce-color($theforce-side-bg, 20%);
       @include transform(rotate(-90deg));
       @include transition(transform 300ms);
+
       @include small-device-size{
         right: $theforce-side-font-size*0.5;
       }
+
       @include medium-device-size{
         right: $theforce-side-font-size*0.75;
       }
     }
   }
+
   .open{
     background-color: theforce-shade($theforce-side-bg, 6%);
     z-index: 15;
+
     > .theforce-dropdown-trigger{
       color: $theforce-side-primary !important;
       padding-left: $theforce-dropdown-padding*0.8;
+
       &.theforce-element:hover {
         background-color: theforce-shade($theforce-side-bg, 6%);
       }
+
+      .theforce-dropdown-direction{
+        @include linear-gradient(to right, transparent, transparent, $fallback: rgba($theforce-side-bg, 0));
+      }
+
       .fa-angle-down{
+        color: theforce-color($theforce-side-bg, 25%);
         @include transform(rotate(0deg));
       }
     }
+
     > .theforce-dropdown-content{
       display:block;
       opacity: 1;
       max-height: 100rem;
       padding: $theforce-dropdown-padding;
+
       > div:not(.theforce-dropdown-loader):not(.item-list) {
         @include filter(#{"blur(0px)"});
       }
+
       &.padded{
         padding: $theforce-dropdown-padding;
       }

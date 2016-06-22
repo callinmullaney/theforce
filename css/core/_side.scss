@@ -133,6 +133,10 @@
 
   .ink{
     background: darken($theforce-side-bg, 10%);
+
+    &.animate{
+      @include animation(rippleSide 500ms linear);
+    }
   }
 
   .theforce-label{

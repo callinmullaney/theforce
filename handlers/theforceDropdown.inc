@@ -78,7 +78,7 @@ class theforceDropdown extends theforceLink {
     $content = $this->values['dropdown'];
 
     if(!empty($content)){
-      $this->linkAfter = ' <i class="fa fa-angle-down"></i>';
+      $this->linkAfter = '<span class="theforce-dropdown-direction"><i class="fa fa-angle-down"></i></span>';
       $this->dropdownAttributes['class'][] = 'theforce-dropdown-content';
 
       if($this->values['ajax']){
