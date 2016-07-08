@@ -188,6 +188,7 @@ div.theforce{
     background-color: transparent !important;
     background-image: none !important;
     line-height: $theforce-top-height !important;
+    box-shadow: none !important;
 
     i:before{
       color: $theforce-white-color;
@@ -198,7 +199,7 @@ div.theforce{
       width:$theforce-dropdown-padding*2;
       height:$theforce-dropdown-padding*2;
       vertical-align: middle;
-      line-height: $theforce-dropdown-padding*1.75;
+      line-height: $theforce-dropdown-padding*2;
       border-radius:50%;
       @include transition(background 300ms,border 300ms,box-shadow 300ms);
     }
@@ -221,6 +222,7 @@ div.theforce{
 
     .theforce-ui-ops{
       opacity:1 !important;
+      max-height: 1000px !important;
     }
   }
 }
@@ -326,43 +328,24 @@ div.theforce{
 
   .theforce-ui-ops{
     pointer-events:none;
-    border: 1px dashed lighten($theforce-side-primary, 5%);
+    border: 1px dashed lighten($theforce-top-primary, 5%);
     background-color: $theforce-top-bg;
     border-radius: 3px;
-    display: table;
-    font-size: 13px;
-    line-height: 13px;
+    display: block;
     opacity: 0;
-    padding: 0.2rem;
+    padding: $theforce-side-item-padding/4;
     pointer-events: none;
     position: absolute;
     text-align: center;
     top: 98%;
-    transition: opacity 300ms ease 0s;
+    max-height: 0px;
+    overflow: hidden;
     z-index: 5;
-    @include transition(opacity 300ms);
+    @include transition(opacity 300ms, max-height 300ms);
 
     .theforce-ui-op{
-      display:block;
-      background: $theforce-top-bg;
-      text-align: center;
-      display: table-cell;
-      width: 1%;
-      padding: 0.5rem 0.75rem;
-      color: $theforce-top-color;
-      border-radius: 3px;
-      line-height: $theforce-top-height/3;
-      @include transition(color 300ms);
-
-      &:hover{
-        color:$theforce-top-color-alt;
-        background: rgba(255,255,255, 0.1);
-      }
-
-      i{
-        line-height:17px !important;
-        font-size:15px !important;
-      }
+      @include button-top();
+      margin: $theforce-top-item-padding/4;
 
       &.progress-disabled{
         opacity:.7;

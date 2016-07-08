@@ -41,6 +41,13 @@ class theforceLink extends theforceText {
       '#default_value' => $this->values['linkPath'],
     );
 
+    $form['linkOptions']['attributes']['target'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Open link in new tab'),
+      '#default_value' => !empty($this->values['linkOptions']['attributes']['target']),
+      '#return_value' => '_blank',
+    );
+
     return $form;
   }
 
@@ -52,7 +59,7 @@ class theforceLink extends theforceText {
   }
 
   /**
-   * Link path
+   * Link options
    */
   protected function linkOptions(){
     return $this->linkOptions;
@@ -87,7 +94,7 @@ class theforceLink extends theforceText {
       'attributes' => array(),
       'html' => $this->linkHtml,
     );
-    $linkOptions['attributes'] = drupal_array_merge_deep($linkOptions['attributes'], $this->linkAttributes);
+    $linkOptions['attributes'] = array_filter(drupal_array_merge_deep($linkOptions['attributes'], $this->linkAttributes));
 
     $link['#markup'] = l(drupal_render($output), $this->values['linkPath'], $linkOptions);
     $link['#prefix'] = $this->linkPrefix;
@@ -102,10 +109,12 @@ class theforceLink extends theforceText {
    *   A Drupal render array.
    */
   protected function output(){
-    $content = parent::output();
     $output = array();
-    $output['link'] = $this->renderLink($content);
-    $output['#attributes']['id'] = drupal_html_id($this->camel2dashed($this->info['id']));
+    if (empty($this->values['linkPath']) || drupal_valid_path($this->values['linkPath'])) {
+      $content = parent::output();
+      $output['link'] = $this->renderLink($content);
+      $output['#attributes']['id'] = drupal_html_id($this->camel2dashed($this->info['id']));
+    }
     return $output;
   }
 

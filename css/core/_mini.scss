@@ -40,7 +40,8 @@ body.theforce-top-enabled{
     text-align: left !important;
     background-color: transparent;
     background-image: none;
-    line-height: $theforce-top-font-size;
+    height: $theforce-top-height*1.15;
+    line-height: $theforce-top-height*1.15;
 
     .theforce-icon{
       margin-right: $theforce-top-font-size/4 !important;
@@ -50,13 +51,6 @@ body.theforce-top-enabled{
     &:hover{
       background-color: transparent;
       background-image: none;
-    }
-
-    @include small-device-size{
-      line-height: $theforce-top-font-size*3.8;
-    }
-    @include medium-device-size{
-      line-height: $theforce-top-font-size*3.8;
     }
   }
 }
@@ -91,6 +85,7 @@ body.theforce-top-mini-open #theforce-top{
   overflow-x: hidden;
   overflow-y: auto;
   z-index: 1;
+  height: 100%;
   -webkit-overflow-scrolling: touch;
 
   .theforce-location{
@@ -133,10 +128,12 @@ body.theforce-top-mini-open #theforce-top{
     .theforce-element{
       float:none;
       margin: 0;
-      line-height: $theforce-top-font-size*3.8;
       border-radius: 0;
       background-color: transparent;
       background-image: none;
+
+      height: $theforce-top-height*1.15;
+      line-height: $theforce-top-height*1.15;
 
       &:hover{
         background-color: transparent;
@@ -218,16 +215,9 @@ body.theforce-top-mini-open #theforce-top{
 
 body.theforce-side-mini{
 
-  // For speed... most animations are disabled in mini mode.
   #theforce-side,
   #theforce-wrap,
-  #theforce-top,
-  // #theforce-side .theforce-item,
-  // #theforce-side .theforce-element,
-  // #theforce-side .theforce-icon,
-  // #theforce-side .theforce-text,
-  // #theforce-side-content,
-  // .theforce-side-content-inner
+  #theforce-top
   {
     @include transition(none);
   }
