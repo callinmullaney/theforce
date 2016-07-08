@@ -14,7 +14,7 @@
   width: 100%;
   opacity:0;
   box-sizing: border-box;
-  z-index: 4;
+  z-index: 15;
   @include clearfix();
   @include transition(opacity 300ms 300ms);
 

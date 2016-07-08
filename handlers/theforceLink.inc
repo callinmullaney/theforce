@@ -115,6 +115,11 @@ class theforceLink extends theforceText {
       $output['link'] = $this->renderLink($content);
       $output['#attributes']['id'] = drupal_html_id($this->camel2dashed($this->info['id']));
     }
+    if (!empty($this->values['linkPath']) || drupal_valid_path($this->values['linkPath'])) {
+      $content = parent::output();
+      $output['link'] = $this->renderLink($content);
+      $output['#attributes']['id'] = drupal_html_id($this->camel2dashed($this->info['id']));
+    }
     return $output;
   }
 
