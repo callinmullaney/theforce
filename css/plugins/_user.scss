@@ -26,14 +26,14 @@
       z-index: 3;
       margin: 0;
       background: transparent;
-      line-height: $theforce-top-height-inner + ($theforce-top-item-padding/2);
+      line-height: $theforce-top-height-inner + ($theforce-top-item-padding*0.3);
 
       img.theforce-avatar{
-        margin: -$theforce-dropdown-padding/1.5 $theforce-dropdown-padding/2;
+        margin: (-$theforce-dropdown-padding*0.75) ($theforce-dropdown-padding/2) (-$theforce-dropdown-padding*0.75) 0;
       }
 
       .theforce-dropdown-direction{
-        height: $theforce-top-height-inner + ($theforce-top-item-padding/2);
+        height: $theforce-top-height-inner + ($theforce-top-item-padding*0.4);
       }
     }
 
@@ -46,10 +46,15 @@
   .theforce-list.full{
     display: table;
     width: 100%;
+    padding-top: $theforce-dropdown-padding;
 
     > li{
       border: none;
       padding: 0;
+
+      a{
+        line-height: $theforce-dropdown-padding !important;
+      }
     }
   }
 }
