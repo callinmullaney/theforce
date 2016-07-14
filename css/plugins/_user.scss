@@ -22,7 +22,7 @@
 
   #theforce-jedi-user{
     
-    a {
+    a.theforce-element{
       z-index: 3;
       margin: 0;
       background: transparent;
@@ -54,6 +54,8 @@
 
       a{
         line-height: $theforce-dropdown-padding !important;
+        display: block;
+        margin: 0;
       }
     }
   }
