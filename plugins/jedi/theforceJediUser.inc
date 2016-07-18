@@ -47,7 +47,7 @@ class theforceJediUser extends theforceDropdownList {
     if($this->values['show_avatar']){
       $output['image'] = $this->userImage();
     }
-    $output['name']['#markup'] = '<span>' . $account->name . '</span>';
+    $output['name']['#markup'] = '<span class="theforce-text">' . $account->name . '</span>';
     return $output;
   }
 

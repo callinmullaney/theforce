@@ -14,3 +14,36 @@
 //////////////////////////////////
 /// Side Specific Styling
 /////////////////////////////////
+#theforce-side{
+
+  .theforce-item.theforce-text{
+    display: block;
+
+    &:after{
+      content: "";
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      @include linear-gradient(to left, rgba(lighten($theforce-side-bg, 2.5%), 1), rgba(lighten($theforce-side-bg,  6.5%), 0.2), $fallback: rgba($theforce-side-bg, 0.01));
+    }
+
+    .theforce-element{
+      padding-left: $theforce-side-font-size*1.25;
+
+      @include small-device-size{
+        padding-left: $theforce-side-font-size*0.9;
+      }
+      @include medium-device-size{
+        padding-left: $theforce-side-font-size*0.9;
+      }
+    }
+
+    .theforce-text{
+      overflow: visible;
+      opacity: 1;
+    }
+  }
+}

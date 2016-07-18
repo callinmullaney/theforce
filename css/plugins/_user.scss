@@ -7,6 +7,7 @@
   vertical-align: middle;
   position: relative;
   border-radius: 50%;
+  z-index: 1;
   box-shadow: 0 2px 3px rgba(#000, .25);
   background:theforce-shade($theforce-top-bg, 10%);
   @include transition(box-shadow 300ms);
@@ -21,12 +22,18 @@
 
   #theforce-jedi-user{
     
-    a {
+    a.theforce-element{
       z-index: 3;
       margin: 0;
+      background: transparent;
+      line-height: $theforce-top-height-inner + ($theforce-top-item-padding*0.3);
 
       img.theforce-avatar{
-        margin: -$theforce-dropdown-padding/2 $theforce-dropdown-padding/2;
+        margin: (-$theforce-dropdown-padding*0.75) ($theforce-dropdown-padding/2) (-$theforce-dropdown-padding*0.75) 0;
+      }
+
+      .theforce-dropdown-direction{
+        height: $theforce-top-height-inner + ($theforce-top-item-padding*0.4);
       }
     }
 
@@ -39,10 +46,17 @@
   .theforce-list.full{
     display: table;
     width: 100%;
+    padding-top: $theforce-dropdown-padding;
 
     > li{
       border: none;
       padding: 0;
+
+      a{
+        line-height: $theforce-dropdown-padding !important;
+        display: block;
+        margin: 0;
+      }
     }
   }
 }
@@ -58,6 +72,21 @@
       }
     }
   }  
+}
+
+// Hide icons if body class is set
+.theforce-top-icon-only:not(.theforce-top-mini-open) {
+
+  #theforce-top {
+
+    #theforce-jedi-user:not(.open) .theforce-element{
+      padding-right: $theforce-side-item-padding + ($theforce-top-item-padding/4);
+
+      .theforce-dropdown-direction{
+        padding: 0 $theforce-top-item-padding/2 0 $theforce-top-item-padding*2 ;
+      }
+    }
+  }
 }
 
 //////////////////////////////////

@@ -150,6 +150,7 @@ class theforceText extends theforce {
     $output['icon'] = $this->iconRender();
     $output['text'] = $this->textRender();
     $output['badge'] = $this->badgeRender();
+    $output['#attributes']['class'][] = 'theforce-text';
     return $output;
   }
 

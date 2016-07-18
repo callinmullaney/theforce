@@ -360,6 +360,11 @@ div.theforce{
       display: none !important;
     }
   }
+
+  //placeholder text
+  .theforce-label.theforce-element{
+    line-height: $theforce-side-height*1.18;
+  }
 }
 
 
@@ -372,10 +377,22 @@ div.theforce{
     display:none;
   }
 
+  .theforce-label.theforce-element{
+    line-height: $theforce-side-height*1.25;
+  }
+
   .theforce-ui-item{
 
     &:hover{
       border: 1px dashed lighten($theforce-side-primary, 5%);
+
+      // hide the dropdown direction toggle
+      .theforce-dropdown-trigger{
+
+        .theforce-dropdown-direction{
+          display: none;
+        }
+      }
     }
   }
 
@@ -400,14 +417,11 @@ div.theforce{
     @include transition(opacity 200ms);
 
     .theforce-ui-op{
-      display:inline-block;
-      background-color: rgba(255,255,255,0.05);
-      text-align: center;
-      padding: 0 10px;
-      margin: 4px 2px;
-      color: $theforce-side-color;
-      line-height: $theforce-side-height;
+      @include button-side();
       @include transition(color 200ms, background-color 200ms);
+      line-height: $theforce-side-height;
+      padding: 0 $theforce-side-item-padding;
+      margin: $theforce-side-item-padding/3 $theforce-side-item-padding/4 0 0;
 
       &:hover{
         color:$theforce-side-color-alt;

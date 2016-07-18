@@ -119,7 +119,7 @@ class theforce {
       return null;
     }
     if(empty($output) && $this->isManagement){
-      $output['#markup'] = '<div class="theforce-label">' . t('@title Placeholder', array('@title' => $this->info['title'])) . '</div>';
+      $output['#markup'] = '<div class="theforce-label theforce-element">' . t('@title Placeholder', array('@title' => $this->info['title'])) . '</div>';
     }
     if(!empty($this->itemElement)){
       $this->itemElementAttributes['class']['wrap'] = $this->elementWrapperClass;
